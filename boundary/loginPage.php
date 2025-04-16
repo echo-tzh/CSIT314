@@ -1,23 +1,22 @@
-
 <?php
-/*
 session_start();
-require_once "user.php";
+include "/Applications/XAMPP/xamppfiles/htdocs/CSIT314/controller/loginController.php"; 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $_POST["email"];
-    $name = $_POST["name"];
+    $username = $_POST["username"];
+    $password = $_POST["password"];
 
-    $user = new user();
-    $user->login($email, $name);
+    
+    $loginController = new loginController();
+    $loginController->login($username, $password);
 }
 
 if (isset($_SESSION["message"])) {
     echo $_SESSION["message"];
     unset($_SESSION["message"]);
 }
-    */
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +97,7 @@ if (isset($_SESSION["message"])) {
     <p>Login to your account</p>
   </div>
 
-  <form action="loginProcess.php" method="post">
+  <form action="loginPage.php" method="post">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
