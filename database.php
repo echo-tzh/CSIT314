@@ -32,7 +32,7 @@ $checktable = $conn->query("SHOW TABLES LIKE '$dbtable'");
 if ($checktable->num_rows == 0) {
     $sql = "CREATE TABLE $dbtable (
         userProfileID INT AUTO_INCREMENT PRIMARY KEY,
-        userProfileName ENUM('userAdmin', 'homeOwner', 'cleaner', 'platformManagement') NOT NULL
+        userProfileName VARCHAR(255) NOT NULL
     )";
     echo $conn->query($sql) ? "Table '$dbtable' created successfully.<br>" : "Error creating '$dbtable': " . $conn->error . "<br>";
 } else {
