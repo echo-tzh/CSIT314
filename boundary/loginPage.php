@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "/Applications/XAMPP/xamppfiles/htdocs/CSIT314/controller/loginController.php"; 
+include "../controller/loginController.php"; 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
