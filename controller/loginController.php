@@ -1,8 +1,10 @@
 <?php
 
+include '../Entity/userAccount.php';
+
 class loginController {
     private $db;
-    
+
     public function __construct() {
         $this->db = new mysqli("localhost", "root", "", "CSIT314");
         if ($this->db->connect_error) {
@@ -11,27 +13,34 @@ class loginController {
     }
 
     public function login($username, $password) {
-        $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password'";
+        $username = $this->db->real_escape_string($username);
+        $sql = "SELECT * FROM userAccount WHERE username = '$username'";
         $result = $this->db->query($sql);
 
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            session_start();
-            $_SESSION["userAccountID"] = $user["userAccountID"];
-            $_SESSION["username"] = $user["username"];
-            $_SESSION["password"] = $user["password"];
-            $_SESSION["name"] = $user["name"];
-            $_SESSION["userProfileID"] = $user["userProfileID"];
 
-            header("Location: homepage.php"); // Redirect to dashboard
-            exit();
-        } else {
-            echo "Invalid credentials.";
+            // Create UserAccount entity
+            $userAccount = new UserAccount(
+                $user["username"],
+                $user["password"],
+                $user["name"],
+                $user["userProfileID"]
+            );
+
+            if ($userAccount->login($username, $password)) {
+                session_start();
+                $_SESSION["userAccountID"] = $user["userAccountID"];
+                $_SESSION["username"] = $user["username"];
+                $_SESSION["password"] = $user["password"];
+                $_SESSION["name"] = $user["name"];
+                $_SESSION["userProfileID"] = $user["userProfileID"];
+
+                header("Location: homepage.php");
+                exit();
+            }
         }
+
+        echo "Invalid credentials.";
     }
-
 }
-
-
-
-
