@@ -28,8 +28,8 @@ class UserAccount
     public function setUserProfileID(int $userProfileID): void { $this->userProfileID = $userProfileID; }
 
     // Simulated login method (should check against stored hashed password in a real app)
-    public function login(string $inputUsername, string $inputPassword): bool
+    public function login(string $username, string $password): bool
     {
-        return $this->username === $inputUsername && $this->password === $inputPassword;
+        return $this->username === $username && $this->password === $password;
     }
 }
