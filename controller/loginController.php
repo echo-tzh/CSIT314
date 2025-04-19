@@ -1,6 +1,6 @@
 <?php
 
-include '../Entity/userAccount.php';
+include '../entity/userAccount.php';
 
 class loginController {
     private $db;
