@@ -35,6 +35,14 @@ if ($checktable->num_rows == 0) {
         userProfileName VARCHAR(255) NOT NULL
     )";
     echo $conn->query($sql) ? "Table '$dbtable' created successfully.<br>" : "Error creating '$dbtable': " . $conn->error . "<br>";
+
+    // Insert default user profiles
+    $sql = "INSERT INTO userProfile (userProfileID, userProfileName) VALUES
+        (1, 'userAdmin'),
+        (2, 'cleaner'),
+        (3, 'homeOwner'),
+        (4, 'platformManagement')";
+    echo $conn->query($sql) ? "Default records inserted into 'userProfile'.<br>" : "Error inserting into 'userProfile': " . $conn->error . "<br>";
 } else {
     echo "Table '$dbtable' already exists.<br>";
 }
@@ -52,6 +60,14 @@ if ($checktable->num_rows == 0) {
         FOREIGN KEY (userProfileID) REFERENCES userProfile(userProfileID)
     )";
     echo $conn->query($sql) ? "Table '$dbtable' created successfully.<br>" : "Error creating '$dbtable': " . $conn->error . "<br>";
+
+    // Insert default user accounts
+    $sql = "INSERT INTO userAccount (userAccountID, username, password, name, userProfileID) VALUES
+        (1, 'harry_tan', 'password123', 'Harry Tan', 1),
+        (2, 'will_ng', 'qwerty456', 'Will Ng', 2),
+        (3, 'hui_yi', 'qwerty456', 'Lim Hui Yi', 3),
+        (4, 's_kumar', 'qwerty456', 'Shamugan Kumar', 4)";
+    echo $conn->query($sql) ? "Default records inserted into 'userAccount'.<br>" : "Error inserting into 'userAccount': " . $conn->error . "<br>";
 } else {
     echo "Table '$dbtable' already exists.<br>";
 }
