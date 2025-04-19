@@ -1,12 +1,11 @@
 <?php
 session_start();
-include "../controller/loginController.php"; 
+include "../controller/loginController.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    
     $loginController = new loginController();
     $loginController->login($username, $password);
 }
@@ -17,14 +16,13 @@ if (isset($_SESSION["message"])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login - One Stop Cleaning Services</title>
-  
-  <style>
+    <meta charset="UTF-8">
+    <title>Login - One Stop Cleaning Services</title>
+
+    <style>
     body {
       background-color: white;
       font-family: Arial, sans-serif;
@@ -89,15 +87,15 @@ if (isset($_SESSION["message"])) {
       background-color: #b7f3bb;
     }
   </style>
-</head>
+    </head>
 <body>
 
-  <div class="heading">
+<div class="heading">
     <h1>One Stop Cleaning Services</h1>
     <p>Login to your account</p>
-  </div>
+</div>
 
-  <form action="loginPage.php" method="post">
+<form action="loginPage.php" method="post">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
@@ -105,7 +103,7 @@ if (isset($_SESSION["message"])) {
     <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
     <input type="submit" value="Login">
-  </form>
+</form>
 
 </body>
 </html>
