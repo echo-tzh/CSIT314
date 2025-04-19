@@ -17,11 +17,11 @@ class loginController {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             session_start();
-            //$_SESSION["userAccountID"] = $user["userAccountID"];
+            $_SESSION["userAccountID"] = $user["userAccountID"];
             $_SESSION["username"] = $user["username"];
             $_SESSION["password"] = $user["password"];
-            //$_SESSION["name"] = $user["name"];
-            //$_SESSION["userProfileID"] = $user["userProfileID"];
+            $_SESSION["name"] = $user["name"];
+            $_SESSION["userProfileID"] = $user["userProfileID"];
 
             header("Location: homepage.php"); // Redirect to dashboard
             exit();
