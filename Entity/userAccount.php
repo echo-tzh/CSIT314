@@ -1,33 +1,54 @@
 <?php
-
 class UserAccount {
-    private string $username;
-    private string $password; // Storing plaintext password (VERY BAD!)
-    private string $name;
-    private int $userProfileID;
-
-    public function __construct(string $username, string $password, string $name, int $userProfileID) {
-        $this->username = $username;
-        $this->password = $password;  
-        $this->name = $name;
-        $this->userProfileID = $userProfileID;
+    private $conn;
+    
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
-
-    // Getters
-    public function getUsername(): string { return $this->username; }
-    public function getPassword(): string { return $this->password; }  // DANGER!
-    public function getName(): string { return $this->name; }
-    public function getUserProfileID(): int { return $this->userProfileID; }
-
-    // Setters
-    public function setUsername(string $username): void { $this->username = $username; }
-    public function setPassword(string $password): void { $this->password = $password; }  // DANGER!
-    public function setName(string $name): void { $this->name = $name; }
-    public function setUserProfileID(int $userProfileID): void { $this->userProfileID = $userProfileID; }
-
-    // Insecure login method (DO NOT USE IN PRODUCTION)
-    public function login(string $enteredUsername, string $enteredPassword): bool {
-        return $this->username === $enteredUsername && $this->password === $enteredPassword;  // Plaintext comparison
+    
+    public function login($username, $password) {
+        // Validate input
+        if (empty($username) || empty($password)) {
+            return false;
+        }
+        
+        // Check credentials directly with SQL query
+        $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password'";
+        $result = $this->conn->query($sql);
+        
+        if ($result && $result->num_rows > 0) {
+            return true; // Login successful
+        }
+        
+        return false; // Login failed
+    }
+    
+    public function createAccount($username, $password, $name, $userProfileID) {
+        // Validate input
+        if (empty($username) || empty($password) || empty($name) || empty($userProfileID)) {
+            return false;
+        }
+        
+        // Check if username already exists
+        $checkSql = "SELECT * FROM userAccount WHERE username = '$username'";
+        $checkResult = $this->conn->query($checkSql);
+        
+        if ($checkResult && $checkResult->num_rows > 0) {
+            return false; // Username already exists
+        }
+        
+        // Insert new account
+        $sql = "INSERT INTO userAccount (username, password, name, userProfileID) 
+                VALUES ('$username', '$password', '$name', $userProfileID)";
+        
+        $result = $this->conn->query($sql);
+        
+        if (!$result) {
+            // Log the error for debugging
+            error_log("Database error: " . $this->conn->error);
+        }
+        
+        return $result ? true : false;
     }
 }
 ?>

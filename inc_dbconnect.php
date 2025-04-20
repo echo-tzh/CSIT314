@@ -1,18 +1,20 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$pass = "";
-$DBName = "csit314";
+$password = "";
+$dbname = "CSIT314";
 
 // Create connection
-try 
-{
-    $conn = new mysqli($servername, $username, $pass, $DBName);	
-}
-catch (mysqli_sql_exception $e)
-{
-    die("Connection failed: " . $e->getCode(). ": " . $e->getMessage());
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
+// Set charset to handle special characters correctly
+$conn->set_charset("utf8mb4");
+
+// Return connection object
+return $conn;
 ?>
-

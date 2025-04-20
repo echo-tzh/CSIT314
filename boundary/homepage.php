@@ -91,12 +91,13 @@ if (!isset($_SESSION["username"])) {
 <body>
     <div class="container">
         <div class="header">User Admin Homepage</div>
-        <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["username"]); ?>!</div>
+        <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
 
         <?php if ($_SESSION["userProfileID"] == 1): ?>
             <div class="button-container">
                 <a href="userAccountManagement.php" class="nav-button">User Account Management</a>
                 <a href="./viewAllUserProfilePage.php" class="nav-button">User Profile Management</a>
+                <a href="./createAccountPage.php" class="nav-button">Create User Account </a>
             </div>  
         <?php endif; ?>
 
