@@ -2,7 +2,7 @@
 include '../Entity/userAccount.php';
 require_once '../Entity/userProfile.php';
 
-include 'UserAccount.php';
+
 
 class createAccountController {
     private $db;
