@@ -1,7 +1,7 @@
 <?php
 // Include entities
-include_once '../Entity/userAccount.php';
-include_once '../Entity/userProfile.php';
+include_once '../entity/userAccount.php';
+include_once '../entity/userProfile.php';
 include_once '../inc_dbconnect.php';
 
 class ViewAccountController {

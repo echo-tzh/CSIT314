@@ -1,6 +1,6 @@
 <?php
-include '../Entity/userAccount.php';
-require_once '../Entity/userProfile.php';
+include '../entity/userAccount.php';
+require_once '../entity/userProfile.php';
 
 
 

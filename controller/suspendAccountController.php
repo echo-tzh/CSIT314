@@ -1,6 +1,6 @@
 <?php
 // Include entity
-include_once '../Entity/userAccount.php';
+include_once '../entity/userAccount.php';
 include_once '../inc_dbconnect.php';
 
 class SuspendAccountController {

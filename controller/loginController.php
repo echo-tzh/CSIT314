@@ -1,5 +1,5 @@
 <?php
-include '../Entity/UserAccount.php';
+include '../entity/UserAccount.php';
 include '../inc_dbconnect.php';
 
 class loginController {
