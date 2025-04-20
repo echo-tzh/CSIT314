@@ -1,6 +1,6 @@
 <?php
 include '../controller/createAccountController.php';
-include '/Applications/XAMPP/xamppfiles/htdocs/CSIT314/inc_dbconnect.php';
+include '../inc_dbconnect.php';
 
 
 session_start();
