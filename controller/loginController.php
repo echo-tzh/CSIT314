@@ -55,7 +55,7 @@ class loginController {
             exit();
         } else {
             // Failed login
-            $_SESSION["message"] = "<p style='color: red;'>Invalid username or password.</p>";
+            $_SESSION["message"] = "<p style='color: red;'>Invalid username or password Or Suspended Account.</p>";
             return false;
         }
     }

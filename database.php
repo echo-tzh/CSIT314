@@ -140,6 +140,35 @@ if ($checktable->num_rows == 0) {
     echo "Table '$dbtable' already exists.<br>";
 }
 
+
+// Update existing userProfile names
+$sql = "UPDATE userProfile SET userProfileName = 'User Admin' WHERE userProfileName = 'userAdmin'";
+$conn->query($sql);
+
+$sql = "UPDATE userProfile SET userProfileName = 'Cleaner' WHERE userProfileName = 'cleaner'";
+$conn->query($sql);
+
+
+
+$sql = "UPDATE userProfile SET userProfileName = 'Home Owner' WHERE userProfileName = 'homeOwner'";
+$conn->query($sql);
+
+$sql = "UPDATE userProfile SET userProfileName = 'Platform Management' WHERE userProfileName = 'platformManagement'";
+$conn->query($sql);
+
+echo "User profile names updated successfully if old values existed.<br>";
+
+// Add 'status' column to userAccount table if it doesn't exist
+$checkColumn = $conn->query("SHOW COLUMNS FROM userAccount LIKE 'status'");
+if ($checkColumn->num_rows == 0) {
+    $sql = "ALTER TABLE userAccount ADD status BOOLEAN DEFAULT 1";
+    echo $conn->query($sql) ? "'status' column added to 'userAccount'.<br>" : "Error adding 'status' column: " . $conn->error . "<br>";
+} else {
+    echo "'status' column already exists in 'userAccount'.<br>";
+}
+
+
+
 return $conn;
 
 ?>

@@ -95,9 +95,9 @@ if (!isset($_SESSION["username"])) {
 
         <?php if ($_SESSION["userProfileID"] == 1): ?>
             <div class="button-container">
-                <a href="userAccountManagement.php" class="nav-button">User Account Management</a>
+                <a href="viewAlluserAccountPage.php" class="nav-button">User Account Management</a>
                 <a href="./viewAllUserProfilePage.php" class="nav-button">User Profile Management</a>
-                <a href="./createAccountPage.php" class="nav-button">Create User Account </a>
+               
             </div>  
         <?php endif; ?>
 

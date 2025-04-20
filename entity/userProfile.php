@@ -16,8 +16,18 @@ class UserProfile {
         $this->userProfileID = $userProfileID;
     }
 
-    public function getUserProfileName() {
-        return $this->userProfileName;
+    public static function getAllUserProfiles($db) {
+        $userProfiles = [];
+        $query = "SELECT userProfileID, userProfileName FROM userProfile";
+        $result = $db->query($query);
+        
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $userProfiles[] = $row;
+            }
+        }
+        
+        return $userProfiles;
     }
 
     public function setUserProfileName($userProfileName) {
