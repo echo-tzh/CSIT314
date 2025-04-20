@@ -118,7 +118,7 @@ if (!$userAccount) {
         <a href="viewAlluserAccountPage.php" class="button back">Back to User Management</a>
         <form action="updateAccountPage.php" method="post" style="display:inline;">
             <input type="hidden" name="userID" value="<?php echo $userAccount['userAccountID']; ?>">
-            <button type="submit" class="button">Update User</button>
+            
         </form>
     </div>
 </body>
