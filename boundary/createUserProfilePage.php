@@ -1,10 +1,27 @@
 <?php
+include '../controller/createUserProfileController.php'; // Include the controller
+include '../inc_dbconnect.php'; // Include the database connection
+
 session_start();
 if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $newProfile = [
+        'profile' => $_POST['profile']
+    ];
+
+    $controller = new createUserProfileController($conn); // Instantiate the controller
+    $result = $controller->createUserProfile($newProfile); // Call the create user profile method
+
+    if ($result) {
+        echo "<p style='color: green;'>User profile successfully created!</p>";
+    } else {
+        echo "<p style='color: red;'>Failed to create user profile.</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -14,62 +31,54 @@ if (!isset($_SESSION["username"])) {
     <title>Create User Profile</title>
     <style>
         body {
-            background-color: white;
             font-family: Arial, sans-serif;
-            color: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            margin: 20px;
         }
 
         .form-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            width: 400px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .form-container h2 {
-            margin-top: 0;
-            margin-bottom: 25px;
-            font-size: 26px;
-            text-align: left;
+        .form-group {
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
-            font-size: 16px;
+            margin-bottom: 5px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f5f5f5;
+            padding: 8px;
+            box-sizing: border-box;
         }
 
         input[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            background-color: #c8facc;
-            border: 1px solid #3d3d3d;
-            border-radius: 8px;
-            color: #000;
-            font-size: 16px;
-            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
             cursor: pointer;
         }
 
         input[type="submit"]:hover {
-            background-color: #b7f3bb;
+            background-color: #45a049;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .back-button:hover {
+             background-color: #45a049;
         }
     </style>
 </head>
@@ -77,11 +86,14 @@ if (!isset($_SESSION["username"])) {
 
     <div class="form-container">
         <h2>Create User Profile</h2>
-        <form action="../controller/createUserProfileController.php" method="post">
-            <label for="profile">User Profile Name:</label>
-            <input type="text" id="profile" name="profile" placeholder="Enter new user profile name" required>
-            <input type="submit" value="Submit">
-        </form>
+        <form action="" method="post">  <div class="form-group">
+                <label for="profile">User Profile Name:</label>
+                <input type="text" id="profile" name="profile" placeholder="Enter new user profile name" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit">
+            </div>
+            <a href="viewAlluserProfilePage.php" class="back-button">Back to User Profile Management</a> </form>
     </div>
 
 </body>

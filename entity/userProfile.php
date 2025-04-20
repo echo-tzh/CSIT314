@@ -1,84 +1,198 @@
 <?php
 
 class UserProfile {
-    private $userProfileID;
-    private $userProfileName;
+    private $conn; // Database connection
 
-    public function __construct($userProfileName) {
-        $this->userProfileName = $userProfileName;
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
 
-    public function getUserProfileID() {
-        return $this->userProfileID;
+    public function getUserProfile($userProfileID) {
+        // Validate input
+        if (empty($userProfileID) || !is_numeric($userProfileID)) {
+            return false;
+        }
+
+        // Use prepared statement to prevent SQL injection
+        $sql = "SELECT userProfileID, userProfileName FROM userProfile WHERE userProfileID = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $userProfileID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc();
+        }
+
+        return false;
     }
 
-    public function setUserProfileID($userProfileID) {
-        $this->userProfileID = $userProfileID;
-    }
-
-    public static function getAllUserProfiles($db) {
+    public function getAllUserProfiles() {
         $userProfiles = [];
         $query = "SELECT userProfileID, userProfileName FROM userProfile";
-        $result = $db->query($query);
-        
+        $result = $this->conn->query($query); // Can be improved with prepared statement for consistency
+
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $userProfiles[] = $row;
             }
         }
-        
+
         return $userProfiles;
     }
 
-    public function setUserProfileName($userProfileName) {
-        $this->userProfileName = $userProfileName;
-    }
-
-    public static function createUserProfile(UserProfile $userProfile, mysqli $db) {
-        $profileName = trim($db->real_escape_string($userProfile->getUserProfileName()));
-
-        if (empty($profileName)) {
+    public function createUserProfile($userProfileName) {
+        // Validate input
+        if (empty(trim($userProfileName))) {
             return false;
         }
 
-        if (!preg_match("/^[A-Za-z0-9_ ]{3,30}$/", $profileName)) {
+        if (!preg_match("/^[A-Za-z0-9_ ]{3,30}$/", trim($userProfileName))) {
             return false;
         }
 
-        // Check if profile already exists (Prepared Statement - Recommended)
+        $profileName = trim($userProfileName); // Trim again for consistency
+
+        // Check if profile already exists (Prepared Statement)
         $checkSql = "SELECT * FROM userProfile WHERE userProfileName = ?";
-        $checkStmt = $db->prepare($checkSql);
+        $checkStmt = $this->conn->prepare($checkSql);
+
+        if (!$checkStmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
         $checkStmt->bind_param("s", $profileName);
         $checkStmt->execute();
         $checkResult = $checkStmt->get_result();
 
         if ($checkResult && $checkResult->num_rows > 0) {
-            $checkStmt->close();
             return false;
         }
-        $checkStmt->close();
 
-        // Insert into database (Prepared Statement - Recommended)
+        // Insert into database (Prepared Statement)
         $sql = "INSERT INTO userProfile (userProfileName) VALUES (?)";
-        $stmt = $db->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
         $stmt->bind_param("s", $profileName);
 
         if ($stmt->execute()) {
-            $stmt->close();
             return true;
         } else {
-            $stmt->close();
+            error_log("Database error: " . $this->conn->error);
             return false;
         }
     }
 
-    
+    public function updateUserProfile($userProfileID, $userProfileName) {
+        // Validate input
+        if (empty($userProfileID) || !is_numeric($userProfileID) || empty(trim($userProfileName))) {
+            return false;
+        }
 
+        if (!preg_match("/^[A-Za-z0-9_ ]{3,30}$/", trim($userProfileName))) {
+            return false;
+        }
 
+        $profileName = trim($userProfileName);
 
+        // Check if profile name already exists for other profiles
+        $checkSql = "SELECT * FROM userProfile WHERE userProfileName = ? AND userProfileID != ?";
+        $checkStmt = $this->conn->prepare($checkSql);
 
+        if (!$checkStmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
 
+        $checkStmt->bind_param("si", $profileName, $userProfileID);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
 
+        if ($checkResult && $checkResult->num_rows > 0) {
+            return false;
+        }
+
+        // Update profile (Prepared Statement)
+        $sql = "UPDATE userProfile SET userProfileName = ? WHERE userProfileID = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
+        $stmt->bind_param("si", $profileName, $userProfileID);
+        $result = $stmt->execute();
+
+        if (!$result) {
+            error_log("Database error: " . $this->conn->error);
+            return false;
+        }
+
+        return $result;
+    }
+
+    public function deleteUserProfile($userProfileID) {
+        // Validate input
+        if (empty($userProfileID) || !is_numeric($userProfileID)) {
+            return false;
+        }
+
+        // Delete profile (Prepared Statement)
+        $sql = "DELETE FROM userProfile WHERE userProfileID = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $userProfileID);
+        $result = $stmt->execute();
+
+        if (!$result) {
+            error_log("Database error: " . $this->conn->error);
+            return false;
+        }
+
+        return $result;
+    }
+
+    public function suspendUserProfile($userProfileID) {
+        // Validate input
+        if (empty($userProfileID) || !is_numeric($userProfileID)) {
+            return false;
+        }
+
+        // Update status to 0 (suspended) using a prepared statement
+        $sql = "UPDATE userProfile SET status = 0 WHERE userProfileID = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $userProfileID);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Database error: " . $this->conn->error);
+            return false;
+        }
+    }
 }
-
 ?>

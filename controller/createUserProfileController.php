@@ -1,39 +1,29 @@
 <?php
-
-include '../entity/userProfile.php';
+include '../Entity/userProfile.php';
 
 class createUserProfileController {
     private $db;
 
-    public function __construct() {
-        $this->db = new mysqli("localhost", "root", "", "CSIT314");
+    public function __construct($conn) {
+        $this->db = $conn;
         if ($this->db->connect_error) {
             die("Database connection failed: " . $this->db->connect_error);
         }
     }
 
-    public function createUserProfile(UserProfile $userProfile) {
-        // Pass the connection to the UserProfile method
-        return UserProfile::createUserProfile($userProfile, $this->db);
+    public function createUserProfile($newProfile) {
+        // Validate input
+        if (empty($newProfile['profile'])) {
+            return false;
+        }
+
+        // Create UserProfile entity
+        $userProfile = new UserProfile($this->db);
+
+        // Call createUserProfile method in the entity (Corrected method name)
+        return $userProfile->createUserProfile(
+            $newProfile['profile']
+        );
     }
 }
-
-// Handle the POST request
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["profile"])) {
-    session_start();
-    $controller = new createUserProfileController();
-    $userProfile = new UserProfile($_POST["profile"]);
-    $result = $controller->createUserProfile($userProfile); // Capture the result
-
-    if ($result) {
-        $_SESSION["status"] = "User profile created successfully.";
-        header("Location: ../boundary/viewAlluserProfilePage.php");
-        exit();
-    } else {
-        $_SESSION["error"] = "Error creating profile.";
-        header("Location: createUserProfilePage.php");
-        exit();
-    }
-}
-
 ?>
