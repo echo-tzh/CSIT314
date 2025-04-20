@@ -17,11 +17,9 @@ class SuspendAccountController {
     public function suspendAccount($userID) {
         $success = $this->userAccountEntity->suspendAccount($userID);
 
-        if ($success) {
-            return "Account has been suspended successfully.";
-        } else {
-            return "Failed to suspend the account.";
-        }
+        return $success;
+
+        
     }
 }
 ?>

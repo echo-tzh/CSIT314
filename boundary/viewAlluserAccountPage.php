@@ -51,7 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
     $controller = new SuspendAccountController();
     $result = $controller->suspendAccount($_POST["id"]);
 
-    $message = $result ? "User account suspended." : "Suspension failed.";
+    if ($result) {
+        echo '<div class="text-green-600">Account has been suspended successfully.</div>';
+    } else {
+        echo '<div class="text-red-600">Failed to suspend the account.</div>';
+    }
 }
 
 $conn->close();
