@@ -58,9 +58,11 @@ else if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 // Include database connection
 include_once '../inc_dbconnect.php';
 
-// Get user profiles for dropdown using the static method
+
 include_once '../entity/userProfile.php';
-$userProfiles = UserProfile::getAllUserProfiles($conn);
+$userProfile = new UserProfile($conn); // assuming constructor accepts $conn
+$userProfiles = $userProfile->getAllUserProfiles();
+
 ?>
 
 <!DOCTYPE html>
