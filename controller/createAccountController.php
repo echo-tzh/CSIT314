@@ -25,12 +25,20 @@ class createAccountController {
         $userAccount = new UserAccount($this->db);
         
         // Call createAccount method in the entity
-        return $userAccount->createAccount(
+        $result = $userAccount->createAccount(
             $newUser['username'],
             $newUser['password'],
             $newUser['name'],
             $newUser['userProfileID']
         );
+        
+        // Explicitly return true or false
+        if ($result === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
+    
 }
 ?>
