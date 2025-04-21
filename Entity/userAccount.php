@@ -28,6 +28,29 @@ class UserAccount {
         return false; // Login failed
     }
 
+
+
+    public function getAllUsers() {
+        $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
+                  FROM userAccount ua
+                  LEFT JOIN userProfile up ON ua.userProfileID = up.userProfileID";
+                  
+        $result = $this->conn->query($query);
+        $users = [];
+        
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+        }
+        
+        return $users;
+    }
+
+
+
+
+
     public function viewAccount($userID) {
         // Validate input
         if (empty($userID) || !is_numeric($userID)) {
@@ -152,6 +175,30 @@ class UserAccount {
         return $result;
     }
     
+    public function search($searchTerm) {
+        $searchTerm = "%{$searchTerm}%"; // Add wildcards for LIKE query
+        
+        $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
+                  FROM userAccount ua
+                  LEFT JOIN userProfile up ON ua.userProfileID = up.userProfileID
+                  WHERE ua.username LIKE ? OR ua.name LIKE ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ss", $searchTerm, $searchTerm);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $users = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+        }
+
+        $stmt->close();
+        return $users;
+    }
 
 
 
