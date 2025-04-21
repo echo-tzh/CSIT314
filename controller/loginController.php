@@ -50,8 +50,11 @@ class loginController {
             // Set success message
             $_SESSION["message"] = "<p style='color: green;'>Login successful!</p>";
             
+            
             // Redirect to homepage
             header("Location: homepage.php");
+            return true;
+            
             exit();
         } else {
             // Failed login
