@@ -26,6 +26,39 @@ class UserAccount {
         return false; // No matching user found
     }
 
+    public function createAccount($username, $password, $name, $userProfileID) {
+        // Check if username already exists
+        $checkSql = "SELECT * FROM userAccount WHERE username = ?";
+        $checkStmt = $this->conn->prepare($checkSql);
+        if (!$checkStmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+    
+        $checkStmt->bind_param("s", $username);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+    
+        if ($checkResult && $checkResult->num_rows > 0) {
+            return false; // Username already exists
+        }
+    
+        // Insert new user
+        $sql = "INSERT INTO userAccount (username, password, name, userProfileID, status) 
+                VALUES (?, ?, ?, ?, 1)";
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->conn->error);
+            return false;
+        }
+    
+        $stmt->bind_param("sssi", $username, $password, $name, $userProfileID);
+        return $stmt->execute();
+    }
+    
+
+
+
     public function getAllUsers() {
         $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
                   FROM userAccount ua
