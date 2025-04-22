@@ -98,7 +98,7 @@ if ($checktable->num_rows == 0) {
         serviceDate DATETIME,
         categoryID INT,
         status BOOLEAN,
-        viewCount INT DEFAULT 0,  -- viewCount column to track views
+        viewCount INT DEFAULT 0,
         FOREIGN KEY (cleanerID) REFERENCES userAccount(userAccountID),
         FOREIGN KEY (categoryID) REFERENCES cleaningCategory(categoryID)
     )";
@@ -140,15 +140,12 @@ if ($checktable->num_rows == 0) {
     echo "Table '$dbtable' already exists.<br>";
 }
 
-
 // Update existing userProfile names
 $sql = "UPDATE userProfile SET userProfileName = 'User Admin' WHERE userProfileName = 'userAdmin'";
 $conn->query($sql);
 
 $sql = "UPDATE userProfile SET userProfileName = 'Cleaner' WHERE userProfileName = 'cleaner'";
 $conn->query($sql);
-
-
 
 $sql = "UPDATE userProfile SET userProfileName = 'Home Owner' WHERE userProfileName = 'homeOwner'";
 $conn->query($sql);
@@ -158,6 +155,24 @@ $conn->query($sql);
 
 echo "User profile names updated successfully if old values existed.<br>";
 
+// Add 'description' column to userProfile table if it doesn't exist
+$checkColumn = $conn->query("SHOW COLUMNS FROM userProfile LIKE 'description'");
+if ($checkColumn->num_rows == 0) {
+    $sql = "ALTER TABLE userProfile ADD COLUMN description VARCHAR(255)";
+    echo $conn->query($sql) ? "'description' column added to 'userProfile'.<br>" : "Error adding 'description' column: " . $conn->error . "<br>";
+} else {
+    echo "'description' column already exists in 'userProfile'.<br>";
+}
+
+// Add 'status' column to userProfile table if it doesn't exist
+$checkColumn = $conn->query("SHOW COLUMNS FROM userProfile LIKE 'status'");
+if ($checkColumn->num_rows == 0) {
+    $sql = "ALTER TABLE userProfile ADD COLUMN status INT";
+    echo $conn->query($sql) ? "'status' column added to 'userProfile'.<br>" : "Error adding 'status' column: " . $conn->error . "<br>";
+} else {
+    echo "'status' column already exists in 'userProfile'.<br>";
+}
+
 // Add 'status' column to userAccount table if it doesn't exist
 $checkColumn = $conn->query("SHOW COLUMNS FROM userAccount LIKE 'status'");
 if ($checkColumn->num_rows == 0) {
@@ -166,8 +181,6 @@ if ($checkColumn->num_rows == 0) {
 } else {
     echo "'status' column already exists in 'userAccount'.<br>";
 }
-
-
 
 return $conn;
 

@@ -2,18 +2,31 @@
 session_start();
 include "../controller/loginController.php";
 
+$message = '';
+ini_set('display_errors', 1); 
+error_reporting(E_ALL);
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $loginController = new loginController();
-    $loginController->login($username, $password);
+    // Create login controller and call the login method
+
+}
+$controller = new loginController();
+$user = $controller->login($username, $password);
+
+if ($user) {
+    
+    $_SESSION['userAccountID'] = $user['userAccountID'];
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['name'] = $user['name'];
+    $_SESSION['userProfileID'] = $user['userProfileID'];
+    header("Location: homepage.php");
+    exit();
 }
 
-if (isset($_SESSION["message"])) {
-    echo $_SESSION["message"];
-    unset($_SESSION["message"]);
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -23,71 +36,74 @@ if (isset($_SESSION["message"])) {
     <title>Login - One Stop Cleaning Services</title>
 
     <style>
-    body {
-      background-color: white;
-      font-family: Arial, sans-serif;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    .heading {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    .heading h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #333;
-    }
+        .heading h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #333;
+        }
 
-    .heading p {
-      margin: 8px 0 0;
-      font-size: 18px;
-      color: #555;
-    }
+        .heading p {
+            margin: 8px 0 0;
+            font-size: 18px;
+            color: #555;
+        }
 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
 
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 16px;
-    }
+        input[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #c8facc;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 20px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f5f5f5;
-    }
+        input[type="submit"]:hover {
+            background-color: #b7f3bb;
+        }
 
-    input[type="submit"] {
-      width: 100%;
-      padding: 14px;
-      background-color: #c8facc;
-      border: 1px solid #3d3d3d;
-      border-radius: 8px;
-      color: #000;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #b7f3bb;
-    }
-  </style>
-    </head>
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
 <body>
 
 <div class="heading">
@@ -104,6 +120,13 @@ if (isset($_SESSION["message"])) {
 
     <input type="submit" value="Login">
 </form>
+
+<?php
+// Show the error message if it exists
+if ($message) {
+    echo "<p class='error-message'>$message</p>";
+}
+?>
 
 </body>
 </html>

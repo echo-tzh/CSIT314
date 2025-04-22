@@ -4,6 +4,9 @@ if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 
 ?>
 

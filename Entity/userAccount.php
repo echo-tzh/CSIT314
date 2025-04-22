@@ -1,34 +1,32 @@
 <?php
+include_once '../inc_dbconnect.php';
 class UserAccount {
     private $conn;
     
-    public function __construct($conn) {
+
+
+    public function __construct() {
+        // You can either connect here directly or include a separate db class
+        include '../inc_dbconnect.php'; // Sets up $conn
         $this->conn = $conn;
+
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
+        }
     }
+
     
     public function login($username, $password) {
-        // Validate input
-        if (empty($username) || empty($password)) {
-            return false;
-        }
-        
-        // Check credentials directly with SQL query
+        // Prepare SQL query to check for matching credentials
         $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password' AND status = 1";
-
         $result = $this->conn->query($sql);
         
         if ($result && $result->num_rows > 0) {
-            return true; // Login successful
-
-            
-
-
+            return $result->fetch_assoc(); // Return the user data
         }
         
-        return false; // Login failed
+        return false; // No matching user found
     }
-
-
 
     public function getAllUsers() {
         $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 

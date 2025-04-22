@@ -117,7 +117,7 @@ $conn->close();
                                 </form>
                             </td>
                             <td class="px-4 py-2 border">
-                                <form action="updateUserPage.php" method="post" style="display:inline;">
+                                <form action="updateAccountPage.php" method="post" style="display:inline;">
                                     <input type="hidden" name="id" value="<?php echo $account['userAccountID']; ?>">
                                     <button type="submit" class="text-green-500 hover:underline" style="background:none;border:none;padding:0;cursor:pointer;">Update</button>
                                 </form>
