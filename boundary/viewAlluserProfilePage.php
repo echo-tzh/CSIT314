@@ -20,6 +20,7 @@ if (isset($_SESSION["status"])): ?>
 // Include the UserProfile class and the Search Controller
 include_once '../entity/userProfile.php';
 include_once '../controller/searchUserProfileController.php';
+
 $userProfile = new UserProfile();
 $searchController = new SearchUserProfileController();
 
@@ -61,15 +62,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
     <h1 class="text-2xl font-semibold text-center mb-6">User Profile Management</h1>
 
     <div class="flex justify-center items-center mb-6">
-        <form action="viewAlluserProfilePage.php" method="get" class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
-            <button type="submit" class="text-lg mr-2">☰</button>
-            <input type="text" name="search" placeholder="Search" value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-1" />
-            <button type="submit" class="text-xl"></button>
-        </form>
-        <a href="./createUserProfilePage.php" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-4">
-            Create User Profile
-        </a>
-    </div>
+    <form action="viewAlluserProfilePage.php" method="get" class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
+        <input type="text" name="search" placeholder="Search user profile or description" value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-1" />
+    </form>
+    <button type="submit" onclick="document.forms[0].submit();" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-2">Search</button>
+    <a href="./createUserProfilePage.php" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-4">
+        Create User Profile
+    </a>
+</div>
 
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
     </div>
 
     <div class="flex justify-center mt-6">
-        <a href="homePage.php" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+        <a href="homePage.php" style="display: inline-block; padding: 10px 20px; background-color: #C0FFC0; color: black; text-decoration: none; border-radius: 5px;">
             Back to Home
         </a>
     </div>

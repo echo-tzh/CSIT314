@@ -54,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-white text-gray-800 p-8">
 
 <div class="max-w-md mx-auto bg-white shadow-md rounded-md overflow-hidden">
-    <div class="bg-blue-200 py-4 px-6">
-        <h1 class="text-2xl font-semibold text-center">Edit User Profile</h1>
+    <div class="bg-[#C0FFC0] py-4 px-6">
+        <h1 class="text-2xl font-semibold text-center">Update User Profile</h1>
     </div>
 
     <div class="p-6">
@@ -72,8 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="viewAlluserProfilePage.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow inline-block">
                     Cancel
                 </a>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow inline-block">
-                    Update
+                <button type="submit" class="bg-[#C0FFC0] hover:bg-blue-600 text-black px-4 py-2 rounded-md shadow inline-block">
+                    Submit
                 </button>
             </div>
         </form>

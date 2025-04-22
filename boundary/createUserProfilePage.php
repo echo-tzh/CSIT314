@@ -9,7 +9,7 @@ if (!isset($_SESSION["username"])) {
 
 include '../controller/createUserProfileController.php';
 
-$message = ''; // Initialize message
+$message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newProfile = [
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'description' => filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING)
     ];
 
-    $controller = new CreateUserProfileController(); // No DB conn passed
+    $controller = new CreateUserProfileController();
     $result = $controller->createUserProfile($newProfile);
 
     if ($result) {
@@ -34,65 +34,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Create User Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
 
-        .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
+    .form-container {
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+    .form-group {
+        margin-bottom: 15px;
+        text-align: center;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        text-align: left;
+    }
 
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 8px 12px;  /* Add horizontal padding */
+        box-sizing: border-box;
+        border: 1px solid #ddd;  /* Light gray border */
+        border-radius: 8px;   /* Rounded corners */
+        color: #333;       /* Default text color */
+    }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-        }
+    input[type="text"]::placeholder, textarea::placeholder { /* Style placeholder text */
+        color: #aaa;       /* Light gray placeholder */
+    }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+    input[type="submit"] {
+        background-color: #c0ffc0;
+        color: #333;
+        padding: 10px 15px;
+        border: 1px solid #8fbc8f;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+    }
 
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
+    input[type="submit"]:hover {
+        background-color: #a2d149;
+    }
 
-        .back-button:hover {
-             background-color: #45a049;
-        }
+    .back-button {
+        display: inline-block;
+        background-color: #c0ffc0;
+        color: #333;
+        padding: 10px 15px;
+        border: 1px solid #8fbc8f;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        margin-top: 10px;
+    }
 
-        .success-message {
-            color: green;
-        }
+    .back-button:hover {
+        background-color: #a2d149;
+    }
 
-        .error-message {
-            color: red;
-        }
-    </style>
+    .success-message {
+        color: green;
+        text-align: center;
+    }
+
+    .error-message {
+        color: red;
+        text-align: center;
+    }
+</style>
 </head>
 <body>
 
@@ -105,13 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="profile" name="profile" placeholder="Enter new user profile name" required>
             </div>
             <div class="form-group">
-                <label for="description">User Profile Description:</label>
-                <textarea id="description" name="description" placeholder="Enter user profile description"></textarea>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" placeholder="Enter new user profile description" required>
             </div>
             <div class="form-group">
                 <input type="submit" value="Submit">
             </div>
-            <a href="viewAlluserProfilePage.php" class="back-button">Back to User Profile Management</a>
+            <div class="form-group">
+                <a href="viewAlluserProfilePage.php" class="back-button">Back to User Profile Management</a>
+            </div>
         </form>
     </div>
 

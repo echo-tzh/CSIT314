@@ -58,7 +58,7 @@ class UserProfile {
         return $userProfiles;
     }
 
-    public function createUserProfile(string $userProfileName, string $userProfileDescription): bool {
+    public function createUserProfile(string $userProfileName, string $description): bool {
          // Validation is now in the controller
         $sql = "INSERT INTO userProfile (userProfileName, description) VALUES (?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -68,7 +68,7 @@ class UserProfile {
             return false;
         }
 
-        $stmt->bind_param("ss", $userProfileName, $userProfileDescription);
+        $stmt->bind_param("ss", $userProfileName, $description);
 
         if ($stmt->execute()) {
             return true;
@@ -166,15 +166,15 @@ class UserProfile {
     public function searchUserProfiles(string $searchTerm): array {
         $searchTerm = "%" . $this->conn->real_escape_string($searchTerm) . "%";  //  For security and correct SQL
     
-        $sql = "SELECT userProfileID, userProfileName, description FROM userProfile WHERE userProfileName LIKE ?";
+        $sql = "SELECT userProfileID, userProfileName, description FROM userProfile WHERE userProfileName LIKE ? OR description LIKE ?";  // Modified SQL
         $stmt = $this->conn->prepare($sql);
     
         if (!$stmt) {
             error_log("Prepare failed: " . $this->conn->error);
-            return []; // Or handle the error as appropriate for your application
+            return [];
         }
     
-        $stmt->bind_param("s", $searchTerm);
+        $stmt->bind_param("ss", $searchTerm, $searchTerm);  // Bind the parameter twice
         $stmt->execute();
         $result = $stmt->get_result();
     
