@@ -1,25 +1,29 @@
 <?php
-include '../controller/createUserProfileController.php'; // Include the controller
-include '../inc_dbconnect.php'; // Include the database connection
-
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
 
+include '../controller/createUserProfileController.php';
+
+$message = ''; // Initialize message
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newProfile = [
-        'profile' => $_POST['profile']
+        'profile' => filter_input(INPUT_POST, 'profile', FILTER_SANITIZE_STRING),
+        'description' => filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING)
     ];
 
-    $controller = new createUserProfileController($conn); // Instantiate the controller
-    $result = $controller->createUserProfile($newProfile); // Call the create user profile method
+    $controller = new CreateUserProfileController(); // No DB conn passed
+    $result = $controller->createUserProfile($newProfile);
 
     if ($result) {
-        echo "<p style='color: green;'>User profile successfully created!</p>";
+        $message = "<p class='success-message'>User profile successfully created!</p>";
     } else {
-        echo "<p style='color: red;'>Failed to create user profile.</p>";
+        $message = "<p class='error-message'>Failed to create user profile.</p>";
     }
 }
 ?>
@@ -49,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 5px;
         }
 
-        input[type="text"] {
+        input[type="text"], textarea {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
@@ -80,20 +84,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .back-button:hover {
              background-color: #45a049;
         }
+
+        .success-message {
+            color: green;
+        }
+
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
 
     <div class="form-container">
         <h2>Create User Profile</h2>
-        <form action="" method="post">  <div class="form-group">
+        <?php if ($message) echo $message; ?>
+        <form action="" method="post">
+            <div class="form-group">
                 <label for="profile">User Profile Name:</label>
                 <input type="text" id="profile" name="profile" placeholder="Enter new user profile name" required>
             </div>
             <div class="form-group">
+                <label for="description">User Profile Description:</label>
+                <textarea id="description" name="description" placeholder="Enter user profile description"></textarea>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Submit">
             </div>
-            <a href="viewAlluserProfilePage.php" class="back-button">Back to User Profile Management</a> </form>
+            <a href="viewAlluserProfilePage.php" class="back-button">Back to User Profile Management</a>
+        </form>
     </div>
 
 </body>

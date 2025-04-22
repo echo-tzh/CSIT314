@@ -1,6 +1,6 @@
 <?php
 include '../entity/UserAccount.php';
-include '../inc_dbconnect.php';
+//include '../inc_dbconnect.php';
 
 class loginController {
     public function login($username, $password) {

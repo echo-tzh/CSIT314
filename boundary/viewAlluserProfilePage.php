@@ -17,48 +17,36 @@ if (isset($_SESSION["status"])): ?>
     <?php unset($_SESSION["status"]); ?>
 <?php endif;
 
-// Database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "csit314";
+// Include the UserProfile class and the Search Controller
+include_once '../entity/userProfile.php';
+include_once '../controller/searchUserProfileController.php';
+$userProfile = new UserProfile();
+$searchController = new SearchUserProfileController();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Get the search term
+$searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Fetch user profiles - either all or search results
+if (!empty($searchTerm)) {
+    $userProfiles = $searchController->searchUserProfiles($searchTerm);
+} else {
+    $userProfiles = $userProfile->getAllUserProfiles();
 }
 
-// Fetch data from the database
-$sql = "SELECT userProfileID, userProfileName FROM userprofile";
-$result = $conn->query($sql);
-
-$userProfiles = [];
-if ($result->num_rows > 0) {
-    // Fetch all rows into an associative array
-    while ($row = $result->fetch_assoc()) {
-        $userProfiles[] = $row;
-    }
-}
-
-// Include the controller (assuming it's in the correct relative path)
+// Include the suspend controller
 include_once '../controller/suspendUserProfileController.php';
 
 // Handle the form submission for suspending
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
-    $controller = new SuspendUserProfileController();  // Assuming this is the correct class name
-    $result = $controller->suspendUserProfile($_POST["id"]); // Assuming this is the correct method
+    $controller = new SuspendUserProfileController();
+    $result = $controller->suspendUserProfile($_POST["id"]);
 
     $message = $result ? "User profile suspended." : "Suspension failed.";
-    $_SESSION['status'] = $message; // Set the status message to display
-    header("Location: viewAlluserProfilePage.php"); // Redirect back to this page
+    $_SESSION['status'] = $message;
+    header("Location: viewAlluserProfilePage.php");
     exit();
 }
 
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -73,11 +61,11 @@ $conn->close();
     <h1 class="text-2xl font-semibold text-center mb-6">User Profile Management</h1>
 
     <div class="flex justify-center items-center mb-6">
-        <div class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
-            <button class="text-lg mr-2">☰</button>
-            <input type="text" placeholder="search" class="bg-transparent outline-none flex-1" />
-            <button class="text-xl"></button>
-        </div>
+        <form action="viewAlluserProfilePage.php" method="get" class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
+            <button type="submit" class="text-lg mr-2">☰</button>
+            <input type="text" name="search" placeholder="Search" value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-1" />
+            <button type="submit" class="text-xl"></button>
+        </form>
         <a href="./createUserProfilePage.php" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-4">
             Create User Profile
         </a>
@@ -89,6 +77,7 @@ $conn->close();
                 <tr class="bg-gray-100 text-left">
                     <th class="px-4 py-2 border">ID</th>
                     <th class="px-4 py-2 border">User Profile</th>
+                    <th class="px-4 py-2 border">Description</th>
                     <th class="px-4 py-2 border">View</th>
                     <th class="px-4 py-2 border">Update</th>
                     <th class="px-4 py-2 border">Suspend</th>
@@ -100,8 +89,11 @@ $conn->close();
                         <tr class="<?php echo ($profile['userProfileID'] % 2 == 0) ? 'bg-white' : ''; ?>">
                             <td class="px-4 py-2 border"><?php echo $profile['userProfileID']; ?></td>
                             <td class="px-4 py-2 border"><?php echo htmlspecialchars($profile['userProfileName']); ?></td>
-                            <td class="px-4 py-2 border"><a href="#" class="text-blue-500 hover:underline">View</a></td>
-                            <td class="px-4 py-2 border"><a href="#" class="text-green-500 hover:underline">Update</a></td>
+                            <td class="px-4 py-2 border"><?php echo htmlspecialchars($profile['description']); ?></td>
+                            <td class="px-4 py-2 border">
+                                <a href="viewUserProfilePage.php?id=<?php echo $profile['userProfileID']; ?>" class="text-blue-500 hover:underline">View</a>
+                            </td>
+                            <td class="px-4 py-2 border"><a href="updateUserProfilePage.php?id=<?php echo $profile['userProfileID']; ?>" class="text-green-500 hover:underline">Update</a></td>
                             <td class="px-4 py-2 border">
                                 <form action="viewAlluserProfilePage.php" method="post" onsubmit="return confirm('Are you sure you want to suspend this user profile?');">
                                     <input type="hidden" name="id" value="<?php echo $profile['userProfileID']; ?>">

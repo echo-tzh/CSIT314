@@ -1,29 +1,26 @@
 <?php
 include '../Entity/userProfile.php';
 
-class createUserProfileController {
-    private $db;
+class CreateUserProfileController {
 
-    public function __construct($conn) {
-        $this->db = $conn;
-        if ($this->db->connect_error) {
-            die("Database connection failed: " . $this->db->connect_error);
-        }
-    }
-
-    public function createUserProfile($newProfile) {
+    public function createUserProfile(array $newProfile): bool {
         // Validate input
-        if (empty($newProfile['profile'])) {
+        if (empty(trim($newProfile['profile']))) {
             return false;
         }
 
-        // Create UserProfile entity
-        $userProfile = new UserProfile($this->db);
+        if (!preg_match("/^[A-Za-z0-9_ ]{3,30}$/", trim($newProfile['profile']))) {
+             return false;
+        }
 
-        // Call createUserProfile method in the entity (Corrected method name)
-        return $userProfile->createUserProfile(
-            $newProfile['profile']
-        );
+        $profileName = trim($newProfile['profile']);
+        $profileDescription = trim($newProfile['description']);
+
+        // Create UserProfile entity
+        $userProfile = new UserProfile(); // DB conn inside
+
+        // Call createUserProfile method in the entity
+        return $userProfile->createUserProfile($profileName, $profileDescription);
     }
 }
 ?>
