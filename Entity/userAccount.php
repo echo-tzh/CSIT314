@@ -1,9 +1,8 @@
 <?php
 include_once '../inc_dbconnect.php';
+
 class UserAccount {
     private $conn;
-    
-
 
     public function __construct() {
         // You can either connect here directly or include a separate db class
@@ -15,7 +14,6 @@ class UserAccount {
         }
     }
 
-    
     public function login($username, $password) {
         // Prepare SQL query to check for matching credentials
         $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password' AND status = 1";
@@ -45,10 +43,6 @@ class UserAccount {
         return $users;
     }
 
-
-
-
-
     public function viewAccount($userID) {
         // Validate input
         if (empty($userID) || !is_numeric($userID)) {
@@ -76,36 +70,6 @@ class UserAccount {
         }
         
         return false;
-    }
-
-
-
-    public function createAccount($username, $password, $name, $userProfileID) {
-        // Validate input
-        if (empty($username) || empty($password) || empty($name) || empty($userProfileID)) {
-            return false;
-        }
-        
-        // Check if username already exists
-        $checkSql = "SELECT * FROM userAccount WHERE username = '$username'";
-        $checkResult = $this->conn->query($checkSql);
-        
-        if ($checkResult && $checkResult->num_rows > 0) {
-            return false; // Username already exists
-        }
-        
-        // Insert new account
-        $sql = "INSERT INTO userAccount (username, password, name, userProfileID) 
-                VALUES ('$username', '$password', '$name', $userProfileID)";
-        
-        $result = $this->conn->query($sql);
-        
-        if (!$result) {
-            // Log the error for debugging
-            error_log("Database error: " . $this->conn->error);
-        }
-        
-        return $result ? true : false;
     }
 
     public function updateAccount($userID, $username, $name, $userProfileID) {
@@ -150,10 +114,6 @@ class UserAccount {
         return $result;
     }
 
-
-
-
-
     public function suspendAccount($userID) {
         $sql = "UPDATE userAccount SET status = 0 WHERE userAccountID = ?";
         $stmt = $this->conn->prepare($sql);
@@ -172,37 +132,5 @@ class UserAccount {
     
         return $result;
     }
-    
-    public function search($searchTerm) {
-        $searchTerm = "%{$searchTerm}%"; // Add wildcards for LIKE query
-        
-        $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
-                  FROM userAccount ua
-                  LEFT JOIN userProfile up ON ua.userProfileID = up.userProfileID
-                  WHERE ua.username LIKE ? OR ua.name LIKE ?";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ss", $searchTerm, $searchTerm);
-        $stmt->execute();
-        
-        $result = $stmt->get_result();
-        $users = [];
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $users[] = $row;
-            }
-        }
-
-        $stmt->close();
-        return $users;
-    }
-
-
-
-
-
-
-
 }
 ?>

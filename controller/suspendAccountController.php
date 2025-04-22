@@ -1,25 +1,16 @@
 <?php
-// Include entity
+// Include only the entity
 include_once '../entity/userAccount.php';
-include_once '../inc_dbconnect.php';
 
 class SuspendAccountController {
-    private $userAccountEntity;
-    
-    public function __construct() {
-        // Get the database connection from inc_dbconnect.php
-        global $conn;
-        
-        // Initialize the UserAccount entity
-        $this->userAccountEntity = new UserAccount($conn);
-    }
     
     public function suspendAccount($userID) {
-        $success = $this->userAccountEntity->suspendAccount($userID);
-
-        return $success;
-
+        // Initialize the UserAccount entity directly in this method
+        $userAccountEntity = new UserAccount();
         
+        // Call suspendAccount method in the entity
+        $success = $userAccountEntity->suspendAccount($userID);
+        return $success;
     }
 }
 ?>

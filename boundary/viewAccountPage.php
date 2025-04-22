@@ -26,7 +26,11 @@ $controller = new ViewAccountController();
 $userAccount = $controller->viewAccount($userID);
 
 // Check if user data was retrieved successfully
-
+if (!$userAccount) {
+    $_SESSION["status"] = "User not found.";
+    header("Location: viewAlluserAccountPage.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

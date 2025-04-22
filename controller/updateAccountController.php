@@ -1,31 +1,17 @@
 <?php
-// Include entity
+// Include only the entity
 include_once '../entity/userAccount.php';
-include_once '../inc_dbconnect.php';
 
 class UpdateAccountController {
-    private $userAccountEntity;
-    
-    public function __construct() {
-        // Get the database connection from inc_dbconnect.php
-        global $conn;
-        
-        // Initialize the UserAccount entity
-        $this->userAccountEntity = new UserAccount($conn);
-    }
     
     public function updateAccount($userID, $username, $name, $userProfileID) {
-        // Validate input
-        if (empty($userID) || !is_numeric($userID)) {
-            return false;
-        }
         
-        if (empty($username) || empty($name) || empty($userProfileID)) {
-            return false;
-        }
+        
+        // Initialize the UserAccount entity directly in this method
+        $userAccountEntity = new UserAccount();
         
         // Call updateAccount method in the entity
-        return $this->userAccountEntity->updateAccount($userID, $username, $name, $userProfileID);
+        return $userAccountEntity->updateAccount($userID, $username, $name, $userProfileID);
     }
 }
 ?>

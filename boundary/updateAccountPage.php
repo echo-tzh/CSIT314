@@ -58,11 +58,9 @@ else if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 // Include database connection
 include_once '../inc_dbconnect.php';
 
-
 include_once '../entity/userProfile.php';
 $userProfile = new UserProfile($conn); // assuming constructor accepts $conn
 $userProfiles = $userProfile->getAllUserProfiles();
-
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +134,7 @@ $userProfiles = $userProfile->getAllUserProfiles();
             <div class="error"><?php echo $error; ?></div>
         <?php endif; ?>
         
-        <form action="updateUserPage.php" method="post">
+        <form action="updateAccountPage.php" method="post">
             <input type="hidden" name="userID" value="<?php echo $userAccount['userAccountID']; ?>">
             
             <div class="form-group">
