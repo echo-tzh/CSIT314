@@ -1,11 +1,12 @@
 <?php
-// Include the entity class
+
+
+// Include entity classes
 include_once '../entity/userAccount.php';
 require_once '../entity/userProfile.php';
 
 class SearchUserController {
-
-    public function searchUserAccount($searchTerm) {
+    public function searchUserAccount(string $searchTerm) {
         // Create UserAccount entity (this handles the DB connection internally)
         $userAccount = new UserAccount();
         
@@ -17,17 +18,5 @@ class SearchUserController {
             return $userAccount->search($searchTerm);
         }
     }
-}
-
-// Process AJAX request if this file is called directly
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
-    // Create controller and get results
-    $controller = new SearchUserController();
-    $searchResults = $controller->searchUserAccount($_POST['search']);
-    
-    // Return results as JSON
-    header('Content-Type: application/json');
-    echo json_encode($searchResults);
-    exit;
 }
 ?>
