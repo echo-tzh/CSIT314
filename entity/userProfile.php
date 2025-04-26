@@ -144,22 +144,30 @@ class UserProfile {
             return false;
         }
 
-        $sql = "UPDATE userProfile SET status = 0 WHERE userProfileID = ?";
-        $stmt = $this->conn->prepare($sql);
+        $this->conn->begin_transaction();
 
-        if (!$stmt) {
-            error_log("Prepare failed: " . $this->conn->error);
+        // Suspend the user profile
+        $sqlProfile = "UPDATE userProfile SET status = 0 WHERE userProfileID = ?";
+        $stmtProfile = $this->conn->prepare($sqlProfile);
+
+        if (!$stmtProfile || !$stmtProfile->bind_param("i", $userProfileID) || !$stmtProfile->execute()) {
+            $this->conn->rollback();
+            error_log("Failed to suspend user profile: " . $this->conn->error);
             return false;
         }
 
-        $stmt->bind_param("i", $userProfileID);
+        // Suspend related user accounts (within UserProfile class - BAD!)
+        $sqlAccount = "UPDATE userAccount SET status = 0 WHERE userProfileID = ?";
+        $stmtAccount = $this->conn->prepare($sqlAccount);
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            error_log("Database error: " . $this->conn->error);
+        if (!$stmtAccount || !$stmtAccount->bind_param("i", $userProfileID) || !$stmtAccount->execute()) {
+            $this->conn->rollback();
+            error_log("Failed to suspend user accounts: " . $this->conn->error);
             return false;
         }
+
+        $this->conn->commit();
+        return true;
     }
 
 
