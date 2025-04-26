@@ -20,9 +20,9 @@ class UserProfile {
     }
 
 
-    public function getUserProfile(int $userProfileID): mixed {
+    public function getUserProfile(int $userProfileID): array {  // Changed return type to array
         if (empty($userProfileID)) {
-            return false;
+            return [];  // Return an empty array on failure
         }
 
         $sql = "SELECT userProfileID, userProfileName, description FROM userProfile WHERE userProfileID = ?";  // Added 'description'
@@ -30,7 +30,7 @@ class UserProfile {
 
         if (!$stmt) {
             error_log("Prepare failed: " . $this->conn->error);
-            return false;
+            return [];  // Return an empty array on failure
         }
 
         $stmt->bind_param("i", $userProfileID);
@@ -41,7 +41,7 @@ class UserProfile {
             return $result->fetch_assoc();
         }
 
-        return false;
+        return [];  // Return an empty array if no data found
     }
 
     public function getAllUserProfiles(): array {
@@ -171,7 +171,7 @@ class UserProfile {
     }
 
 
-    public function searchUserProfiles(string $searchTerm): array {
+    public function searchUserProfile(string $searchTerm): array {
         $searchTerm = "%" . $this->conn->real_escape_string($searchTerm) . "%";  //  For security and correct SQL
     
         $sql = "SELECT userProfileID, userProfileName, description FROM userProfile WHERE userProfileName LIKE ? OR description LIKE ?";  // Modified SQL

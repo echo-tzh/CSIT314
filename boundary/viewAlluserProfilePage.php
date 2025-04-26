@@ -29,7 +29,7 @@ $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Fetch user profiles - either all or search results
 if (!empty($searchTerm)) {
-    $userProfiles = $searchController->searchUserProfiles($searchTerm);
+    $userProfiles = $searchController->searchUserProfile($searchTerm);
 } else {
     $userProfiles = $userProfile->getAllUserProfiles();
 }
