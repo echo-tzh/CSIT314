@@ -3,30 +3,29 @@ session_start();
 include "../controller/loginController.php";
 
 $message = '';
-ini_set('display_errors', 1); 
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Create login controller and call the login method
+    $controller = new loginController();
+    $loginResult = $controller->login($username, $password);
 
+    if (is_array($loginResult) && $loginResult['success']) { // Safest check
+        $user = $loginResult['user_data'];
+        $_SESSION['userAccountID'] = $user['userAccountID'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['name'] = $user['name'];
+        $_SESSION['userProfileID'] = $user['userProfileID'];
+        header("Location: homepage.php");
+        exit();
+    } else {
+        // Login failed - either not an array, or 'success' is false
+        $message = "Invalid username or password.";
+    }
 }
-$controller = new loginController();
-$user = $controller->login($username, $password);
-
-if ($user) {
-    
-    $_SESSION['userAccountID'] = $user['userAccountID'];
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['name'] = $user['name'];
-    $_SESSION['userProfileID'] = $user['userProfileID'];
-    header("Location: homepage.php");
-    exit();
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -34,9 +33,8 @@ if ($user) {
 <head>
     <meta charset="UTF-8">
     <title>Login - One Stop Cleaning Services</title>
-
     <style>
-        body {
+         body {
             background-color: white;
             font-family: Arial, sans-serif;
             color: #000;
@@ -122,7 +120,6 @@ if ($user) {
 </form>
 
 <?php
-// Show the error message if it exists
 if ($message) {
     echo "<p class='error-message'>$message</p>";
 }

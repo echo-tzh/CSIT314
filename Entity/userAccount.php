@@ -14,16 +14,23 @@ class UserAccount {
         }
     }
 
-    public function login($username, $password) {
+    public function login(string $username, string $password): array|bool {
         // Prepare SQL query to check for matching credentials
         $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password' AND status = 1";
         $result = $this->conn->query($sql);
-        
+
         if ($result && $result->num_rows > 0) {
-            return $result->fetch_assoc(); // Return the user data
+            $userData = $result->fetch_assoc();
+            return [
+                'success' => true,
+                'user_data' => $userData
+            ];
+        } else {
+            return [
+                'success' => false,
+                'user_data' => null  
+            ];
         }
-        
-        return false; // No matching user found
     }
 
     public function createAccount($username, $password, $name, $userProfileID) {
