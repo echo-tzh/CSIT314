@@ -106,6 +106,7 @@ if (!isset($_SESSION["username"])) {
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="createCategoryPage.php" class="nav-button">Create Category</a>
+                <a href="viewAllCleaningCategoryPage.php" class="nav-button">View All Category</a>
             </div>
         <?php endif; ?>
 

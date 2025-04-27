@@ -2,14 +2,11 @@
 include '../entity/cleaningCategory.php';
 
 class CreateCategoryController {
-    public function createCategory($categoryData) {
-        // Create CleaningCategory entity
+    public function createCategory($categoryName, $description) {
         $cleaningCategory = new CleaningCategory();
-        
-        // Call createCategory method in the entity
-        $result = $cleaningCategory->createCategory($categoryData['categoryName']);
-        
+        $result = $cleaningCategory->createCategory($categoryName, $description);
         return $result === true;
     }
+    
 }
 ?>

@@ -182,6 +182,15 @@ if ($checkColumn->num_rows == 0) {
     echo "'status' column already exists in 'userAccount'.<br>";
 }
 
+
+$checkColumn = $conn->query("SHOW COLUMNS FROM cleaningCategory LIKE 'description'");
+if ($checkColumn->num_rows == 0) {
+    $sql = "ALTER TABLE cleaningCategory ADD COLUMN description VARCHAR(255)";
+    echo $conn->query($sql) ? "'description' column added to 'cleaningCategory'.<br>" : "Error adding 'description' column: " . $conn->error . "<br>";
+} else {
+    echo "'description' column already exists in 'cleaningCategory'.<br>";
+}
+
 return $conn;
 
 ?>

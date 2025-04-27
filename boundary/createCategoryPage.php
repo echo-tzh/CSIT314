@@ -5,17 +5,19 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
     header("Location: login.php");
     exit();
 }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Initialize the controller if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once '../controller/createCategoryController.php';
     
-    $categoryData = [
-        'categoryName' => trim($_POST['categoryName'])
-    ];
+    $categoryName = trim($_POST['categoryName']);
+    $description = trim($_POST['description']);
+;
     
     $controller = new CreateCategoryController();
-    $result = $controller->createCategory($categoryData);
+    $result = $controller->createCategory($categoryName, $description);
     
     if ($result) {
         $_SESSION['message'] = [
@@ -110,6 +112,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             box-sizing: border-box;
         }
 
+        input[type="textbox"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
         .button-group {
             display: flex;
             justify-content: center;
@@ -167,6 +178,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="categoryName">Category Name:</label>
                 <input type="text" id="categoryName" name="categoryName" required>
             </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+  
+                <input type="text" id="description" name="description" required>
+            </div>
+
+
             
             <div class="button-group">
                 <button type="submit" class="btn-primary">Create Category</button>
