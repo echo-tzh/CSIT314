@@ -53,7 +53,25 @@ class cleaningCategory {
         
         return $categories;
     }
+
+    public function viewCleaningCategory($categoryID) {
+        $categoryDetails = null;
     
+        $stmt = $this->conn->prepare("SELECT categoryID, categoryName, description FROM cleaningCategory WHERE categoryID = ?");
+        $stmt->bind_param("i", $categoryID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result && $result->num_rows > 0) {
+            $categoryDetails = $result->fetch_assoc();
+        }
+    
+        $stmt->close();
+        return $categoryDetails;
+    }
+    
+
+
 
 
 

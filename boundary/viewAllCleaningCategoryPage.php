@@ -8,6 +8,10 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
+
+
+
 // Initialize the controller to get categories
 require_once '../controller/viewAllCleaningCategoryController.php';
 $controller = new viewAllCleaningCategoryController();
@@ -194,10 +198,11 @@ $categories = $controller->viewAllCleaningCategory();
                         <td>
                             <a href="#" class="btn-edit">Update</a>
                             <a href="#" class="btn-delete">Delete</a>
-                            <form action="viewCategory.php" method="post" style="display:inline;">
+                        <form action="viewCleaningCategoryPage.php" method="post" style="display:inline;">
                             <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
                             <button type="submit" class="btn-view">View</button>
-                            </form>
+                        </form>
+
 
                         </td>
                     </tr>
