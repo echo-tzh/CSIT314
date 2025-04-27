@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     } else {
         // Login failed - either not an array, or 'success' is false
-        $message = "Invalid username or password.";
+        $message = "Invalid username or password or account suspended.";
     }
 }
 ?>

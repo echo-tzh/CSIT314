@@ -59,7 +59,7 @@ else if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 include_once '../inc_dbconnect.php';
 
 include_once '../entity/userProfile.php';
-$userProfile = new UserProfile($conn); // assuming constructor accepts $conn
+$userProfile = new UserProfile(); 
 $userProfiles = $userProfile->getAllUserProfiles();
 ?>
 

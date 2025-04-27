@@ -4,10 +4,6 @@ if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
-//echo '<pre>';
-//print_r($_SESSION);
-//echo '</pre>';
-
 ?>
 
 <!DOCTYPE html>
@@ -93,20 +89,27 @@ if (!isset($_SESSION["username"])) {
 </head>
 <body>
     <div class="container">
-        <div class="header">User Admin Homepage</div>
-        <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
+
 
         <?php if ($_SESSION["userProfileID"] == 1): ?>
+            <div class="header">Platform Management Homepage</div>
+            <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="viewAlluserAccountPage.php" class="nav-button">User Account Management</a>
                 <a href="./viewAllUserProfilePage.php" class="nav-button">User Profile Management</a>
-               
-            </div>  
+            </div>
+        <?php endif; ?>
+
+        <?php if ($_SESSION["userProfileID"] == 4): ?>
+            
+            <div class="header">Platform Management Homepage</div>
+            <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
+            <div class="button-container">
+                <a href="createCategoryPage.php" class="nav-button">Create Category</a>
+            </div>
         <?php endif; ?>
 
         <a href="logoutPage.php" class="logout-button">Log Out</a>
-
-        
     </div>
 </body>
 </html>

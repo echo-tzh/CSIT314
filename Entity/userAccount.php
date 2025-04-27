@@ -33,7 +33,7 @@ class UserAccount {
         }
     }
 
-    public function createAccount($username, $password, $name, $userProfileID) {
+    public function createAccount($username, $password, $name, $userProfileID): bool {
         // Check if username already exists
         $checkSql = "SELECT * FROM userAccount WHERE username = ?";
         $checkStmt = $this->conn->prepare($checkSql);
@@ -66,7 +66,7 @@ class UserAccount {
 
 
 
-    public function getAllUsers() {
+    public function getAllUsers():array {
         $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
                   FROM userAccount ua
                   LEFT JOIN userProfile up ON ua.userProfileID = up.userProfileID";
@@ -83,13 +83,7 @@ class UserAccount {
         return $users;
     }
 
-    public function viewAccount($userID) {
-        // Validate input
-        if (empty($userID) || !is_numeric($userID)) {
-            return false;
-        }
-        
-        // Use prepared statement to prevent SQL injection
+    public function viewAccount($userID): array {
         $sql = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName as profileName
                 FROM userAccount ua
                 LEFT JOIN userProfile up ON ua.userProfileID = up.userProfileID
@@ -98,7 +92,7 @@ class UserAccount {
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) {
             error_log("Prepare failed: " . $this->conn->error);
-            return false;
+            return []; // return empty array on error
         }
         
         $stmt->bind_param("i", $userID);
@@ -106,17 +100,16 @@ class UserAccount {
         $result = $stmt->get_result();
         
         if ($result && $result->num_rows > 0) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc(); // normal case
         }
         
-        return false;
+        return []; // if no user found, return empty array
     }
+    
 
-    public function updateAccount($userID, $username, $name, $userProfileID) {
-        // Validate input
-        if (empty($userID) || !is_numeric($userID) || empty($username) || empty($name) || empty($userProfileID)) {
-            return false;
-        }
+    public function updateAccount($userID, $username, $name, $userProfileID):bool {
+
+ 
         
         // Check if username already exists for different users
         $checkSql = "SELECT * FROM userAccount WHERE username = ? AND userAccountID != ?";
@@ -154,7 +147,7 @@ class UserAccount {
         return $result;
     }
 
-    public function suspendAccount($userID) {
+    public function suspendAccount($userID): bool {
         $sql = "UPDATE userAccount SET status = 0 WHERE userAccountID = ?";
         $stmt = $this->conn->prepare($sql);
         
@@ -172,7 +165,7 @@ class UserAccount {
     
         return $result;
     }
-    public function search($searchTerm) {
+    public function search($searchTerm): array {
         $searchTerm = "%{$searchTerm}%"; // Add wildcards for LIKE query
 
         $query = "SELECT ua.userAccountID, ua.username, ua.name, ua.status, ua.userProfileID, up.userProfileName 
