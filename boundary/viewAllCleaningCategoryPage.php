@@ -8,10 +8,6 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
-
-
-
 // Initialize the controller to get categories
 require_once '../controller/viewAllCleaningCategoryController.php';
 $controller = new viewAllCleaningCategoryController();
@@ -23,7 +19,7 @@ $categories = $controller->viewAllCleaningCategory();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleaning Categories</title>
+    <title>View All Cleaning Categories</title>
     <style>
         body {
             font-family: sans-serif;
@@ -74,7 +70,8 @@ $categories = $controller->viewAllCleaningCategory();
             color: #2e7d32;
         }
 
-        .btn-primary, .btn-secondary, .btn-view {
+        /* Common button styles */
+        .btn {
             padding: 12px 24px;
             font-size: 16px;
             border: none;
@@ -83,6 +80,11 @@ $categories = $controller->viewAllCleaningCategory();
             text-decoration: none;
             transition: all 0.3s ease;
             margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
         }
 
         .btn-primary {
@@ -92,7 +94,6 @@ $categories = $controller->viewAllCleaningCategory();
 
         .btn-primary:hover {
             background-color: #45a049;
-            transform: scale(1.05);
         }
 
         .btn-secondary {
@@ -102,7 +103,6 @@ $categories = $controller->viewAllCleaningCategory();
 
         .btn-secondary:hover {
             background-color: #d5d5d5;
-            transform: scale(1.05);
         }
 
         .btn-view {
@@ -112,7 +112,24 @@ $categories = $controller->viewAllCleaningCategory();
 
         .btn-view:hover {
             background-color: #218838;
-            transform: scale(1.05);
+        }
+
+        .btn-edit {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e68900;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #e53935;
         }
 
         .data-table {
@@ -135,37 +152,11 @@ $categories = $controller->viewAllCleaningCategory();
         .data-table td {
             background-color: #fff;
         }
-
-        .btn-edit, .btn-delete, .btn-view {
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-edit {
-            background-color: #ff9800;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background-color: #e68900;
-        }
-
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: #e53935;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Cleaning Categories</h1>
+        <h1>View All Cleaning Categories</h1>
         
         <?php
         // Display message if it exists
@@ -175,7 +166,7 @@ $categories = $controller->viewAllCleaningCategory();
         }
         ?>
         
-        <a href="createCategory.php" class="btn-primary">Create New Category</a>
+        <a href="createCategoryPage.php" class="btn btn-primary">Create New Category</a>
         
         <table class="data-table">
             <thead>
@@ -196,14 +187,17 @@ $categories = $controller->viewAllCleaningCategory();
                         <td><?php echo $category['categoryID']; ?></td>
                         <td><?php echo $category['categoryName']; ?></td>
                         <td>
-                            <a href="#" class="btn-edit">Update</a>
-                            <a href="#" class="btn-delete">Delete</a>
-                        <form action="viewCleaningCategoryPage.php" method="post" style="display:inline;">
-                            <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
-                            <button type="submit" class="btn-view">View</button>
-                        </form>
+                            <form action="updateCleaningCategoryPage.php" method="post" style="display:inline;">
+                                <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
+                                <button type="submit" class="btn btn-edit">Update Cleaning Categories</button>
+                            </form>
 
-
+                            <a href="#" class="btn btn-delete">Delete</a>
+                            
+                            <form action="viewCleaningCategoryPage.php" method="post" style="display:inline;">
+                                <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
+                                <button type="submit" class="btn btn-view">View Cleaning Category Details</button>
+                            </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -211,7 +205,7 @@ $categories = $controller->viewAllCleaningCategory();
             </tbody>
         </table>
         
-        <a href="homepage.php" class="btn-secondary">Back to Homepage</a>
+        <a href="homepage.php" class="btn btn-secondary">Back to Homepage</a>
     </div>
 </body>
 </html>

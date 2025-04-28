@@ -12,10 +12,11 @@ ini_set('display_errors', 1);
 require_once '../controller/viewCleaningCategoryController.php';
 
 
+$categoryID =$_POST['categoryID'];
 
 
 $controller = new viewCleaningCategoryController();
-$categoryDetails = $controller->viewCleaningCategory($_POST['categoryID']);
+$categoryDetails = $controller->viewCleaningCategory($categoryID);
 
 
 
@@ -101,8 +102,7 @@ $categoryDetails = $controller->viewCleaningCategory($_POST['categoryID']);
                 <p><strong>Category Name:</strong> <?php echo $categoryDetails['categoryName']; ?></p>
                 <p><strong>Category Description:</strong> <?php echo $categoryDetails['description']; ?></p>
             </div>
-        <?php else: ?>
-            <p>Category not found.</p>
+
         <?php endif; ?>
 
         <a href="viewAllCleaningCategoryPage.php" class="btn-secondary">Back to All Categories</a>

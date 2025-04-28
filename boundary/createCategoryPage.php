@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <div class="button-group">
                 <button type="submit" class="btn-primary">Create Category</button>
-                <a href="homepage.php" class="btn-secondary">Back to Homepage</a>
+                <a href="viewAllCleaningCategoryPage.php" class="btn-secondary">Back to View All Cleaning Category Page</a>
             </div>
         </form>
     </div>

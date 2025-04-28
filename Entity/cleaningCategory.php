@@ -54,7 +54,7 @@ class cleaningCategory {
         return $categories;
     }
 
-    public function viewCleaningCategory($categoryID) {
+    public function viewCleaningCategory($categoryID):array {
         $categoryDetails = null;
     
         $stmt = $this->conn->prepare("SELECT categoryID, categoryName, description FROM cleaningCategory WHERE categoryID = ?");
@@ -68,6 +68,15 @@ class cleaningCategory {
     
         $stmt->close();
         return $categoryDetails;
+    }
+    
+    public function updateCategory($categoryID, $newName, $newDescription): bool {
+        $stmt = $this->conn->prepare("UPDATE cleaningCategory SET categoryName = ?, description = ? WHERE categoryID = ?");
+        $stmt->bind_param("ssi", $newName, $newDescription, $categoryID);
+        $success = $stmt->execute();
+        $stmt->close();
+        
+        return $success;
     }
     
 
