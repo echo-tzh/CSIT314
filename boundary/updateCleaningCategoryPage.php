@@ -5,6 +5,8 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
     header("Location: login.php");
     exit();
 }
+
+// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -13,9 +15,15 @@ require_once '../controller/viewCleaningCategoryController.php';
 require_once '../controller/updateCleaningCategoryController.php';
 
 // Get categoryID from POST first, then from session if not in POST
-$categoryID = null;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryID'])) {
+if (isset($_POST['categoryID'])) {
     $categoryID = $_POST['categoryID'];
+} else {
+    $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => 'Invalid category ID.'
+    ];
+    header("Location: viewAllCleaningCategoryPage.php");
+    exit();
 }
 
 // Get category data
@@ -33,10 +41,11 @@ if (!$category) {
 }
 
 // Process form submission for updating
-$newName = $_POST['categoryName'] ?? null;
-$newDescription = $_POST['categoryDescription'] ?? null;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryName'])) {
+    // Get form data
+    $newName = $_POST['categoryName'];
+    $newDescription = $_POST['categoryDescription'];
+    
     // If POST request with category name, update the category
     $updateController = new updateCleaningCategoryController();
     $success = $updateController->updateCleaningCategory($categoryID, $newName, $newDescription);
@@ -48,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryName'])) {
         ];
         // Clear the session variable
         unset($_SESSION['current_category_id']);
-        header("Location: viewAllCleaningCategory.php");
+        header("Location: viewAllCleaningCategoryPage.php");
         exit();
     } else {
         $error = "Failed to update category.";
@@ -73,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryName'])) {
             padding: 20px;
             background-color: #ffffff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.5s forwards;
         }
         h1 {
             font-size: 24px;
@@ -123,9 +135,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryName'])) {
             margin-top: 20px;
             text-decoration: none;
             color: #007bff;
+            padding: 10px 20px;
+            background-color: #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
         }
         a:hover {
-            text-decoration: underline;
+            background-color: #999;
+        }
+
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>

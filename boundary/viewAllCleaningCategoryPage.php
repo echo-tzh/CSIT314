@@ -12,6 +12,26 @@ ini_set('display_errors', 1);
 require_once '../controller/viewAllCleaningCategoryController.php';
 $controller = new viewAllCleaningCategoryController();
 $categories = $controller->viewAllCleaningCategory();
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_categoryID'])) {
+    require_once '../controller/deleteCleaningCategoryController.php';
+    $deleteController = new deleteCleaningCategoryController();
+    
+    $categoryID = ($_POST['delete_categoryID']);
+    $success = $deleteController->deleteCleaningCategory($categoryID);
+
+    if ($success) {
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Category deleted successfully.'
+        ];
+    }
+    
+    header("Location: viewAllCleaningCategoryPage.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -152,6 +172,12 @@ $categories = $controller->viewAllCleaningCategory();
         .data-table td {
             background-color: #fff;
         }
+
+        .back-button {
+        margin-top: 30px;
+        display: inline-block;
+        }
+
     </style>
 </head>
 <body>
@@ -187,17 +213,30 @@ $categories = $controller->viewAllCleaningCategory();
                         <td><?php echo $category['categoryID']; ?></td>
                         <td><?php echo $category['categoryName']; ?></td>
                         <td>
-                            <form action="updateCleaningCategoryPage.php" method="post" style="display:inline;">
-                                <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
-                                <button type="submit" class="btn btn-edit">Update Cleaning Categories</button>
-                            </form>
-
-                            <a href="#" class="btn btn-delete">Delete</a>
                             
                             <form action="viewCleaningCategoryPage.php" method="post" style="display:inline;">
                                 <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
                                 <button type="submit" class="btn btn-view">View Cleaning Category Details</button>
                             </form>
+
+
+
+
+                            <form action="updateCleaningCategoryPage.php" method="post" style="display:inline;">
+                                <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
+                                <button type="submit" class="btn btn-edit">Update Cleaning Categories</button>
+                            </form>
+
+                           
+                            
+
+
+                            <form action="viewAllCleaningCategoryPage.php" method="post" style="display:inline;">
+                                <input type="hidden" name="delete_categoryID" value="<?php echo $category['categoryID']; ?>">
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this category?');">Delete</button>
+                            </form>
+
+
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -205,7 +244,9 @@ $categories = $controller->viewAllCleaningCategory();
             </tbody>
         </table>
         
-        <a href="homepage.php" class="btn btn-secondary">Back to Homepage</a>
+        <a href="homepage.php" class="btn btn-secondary back-button">Back to Homepage</a>
+
     </div>
+    
 </body>
 </html>

@@ -24,7 +24,11 @@ if (!isset($_SESSION["username"])) {
             position: relative;
             min-height: 100vh;
             box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideFadeIn 0.6s ease forwards;
         }
+
 
         .header {
             font-size: 20px;
@@ -84,6 +88,13 @@ if (!isset($_SESSION["username"])) {
             border-radius: 10px;
             text-decoration: none;
         }
+        @keyframes slideFadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        }
+
 
     </style>
 </head>
@@ -105,8 +116,7 @@ if (!isset($_SESSION["username"])) {
             <div class="header">Platform Management Homepage</div>
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
-                <a href="createCategoryPage.php" class="nav-button">Create Category</a>
-                <a href="viewAllCleaningCategoryPage.php" class="nav-button">View All Category</a>
+                <a href="viewAllCleaningCategoryPage.php" class="nav-button">View And Manage All Category</a>
             </div>
         <?php endif; ?>
 

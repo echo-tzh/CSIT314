@@ -78,6 +78,21 @@ class cleaningCategory {
         
         return $success;
     }
+
+    public function deleteCleaningCategory($categoryID) {
+        $conn = $this->conn; 
+    
+        $stmt = $conn->prepare("DELETE FROM cleaningcategory WHERE categoryID = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $categoryID);
+            $result = $stmt->execute();
+            $stmt->close();
+            return $result;
+        } else {
+            return false;
+        }
+    }
+    
     
 
 
