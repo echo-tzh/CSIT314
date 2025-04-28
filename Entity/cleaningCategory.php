@@ -92,6 +92,25 @@ class cleaningCategory {
             return false;
         }
     }
+
+    public function searchCategory($searchCleaningCat) {
+        $categories = [];
+    
+        $stmt = $this->conn->prepare("SELECT categoryID, categoryName FROM cleaningCategory WHERE categoryName LIKE ?");
+        $searchTerm = "%" . $searchCleaningCat . "%";
+        $stmt->bind_param("s", $searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $categories[] = $row;
+            }
+        }
+    
+        $stmt->close();
+        return $categories;
+    }
     
     
 

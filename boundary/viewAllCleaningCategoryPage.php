@@ -9,9 +9,19 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Initialize the controller to get categories
-require_once '../controller/viewAllCleaningCategoryController.php';
-$controller = new viewAllCleaningCategoryController();
-$categories = $controller->viewAllCleaningCategory();
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty(trim($_POST['search']))) {
+    require_once '../controller/searchCleaningCategoryController.php';
+    $searchCleaningCat = trim($_POST['search']);
+    $controller = new searchCleaningCategoryController();
+    $categories = $controller->searchCleaningCategory($searchCleaningCat);
+} else {
+    require_once '../controller/viewAllCleaningCategoryController.php';
+    $controller = new viewAllCleaningCategoryController();
+    $categories = $controller->viewAllCleaningCategory();
+}
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_categoryID'])) {
@@ -193,6 +203,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_categoryID']))
         ?>
         
         <a href="createCategoryPage.php" class="btn btn-primary">Create New Category</a>
+        <form action="viewAllCleaningCategoryPage.php" method="post" style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <input type="text" name="search" placeholder="Search categories..." style="flex: 1; padding: 10px; font-size: 16px; border-radius: 10px; border: 1px solid #ccc;">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
         
         <table class="data-table">
             <thead>
@@ -213,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_categoryID']))
                         <td><?php echo $category['categoryID']; ?></td>
                         <td><?php echo $category['categoryName']; ?></td>
                         <td>
-                            
+
                             <form action="viewCleaningCategoryPage.php" method="post" style="display:inline;">
                                 <input type="hidden" name="categoryID" value="<?php echo $category['categoryID']; ?>">
                                 <button type="submit" class="btn btn-view">View Cleaning Category Details</button>
