@@ -103,11 +103,19 @@ if (!isset($_SESSION["username"])) {
 
 
         <?php if ($_SESSION["userProfileID"] == 1): ?>
-            <div class="header">Platform Management Homepage</div>
+            <div class="header">User Admin Homepage</div>
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="viewAlluserAccountPage.php" class="nav-button">User Account Management</a>
                 <a href="./viewAllUserProfilePage.php" class="nav-button">User Profile Management</a>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($_SESSION["userProfileID"] == 2): ?>
+            <div class="header">Cleaner Homepage</div>
+            <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
+            <div class="button-container">
+                <a href="viewAllServicePage.php" class="nav-button">View And Manage All Services</a>
             </div>
         <?php endif; ?>
 
