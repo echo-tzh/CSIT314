@@ -1,14 +1,15 @@
 <?php
-require_once '../entity/service.php'; // Make sure the path to your service entity is correct
+require_once '../entity/service.php';
 
 class viewAllServiceController {
 
     public function viewAllServices() {
-        // Create entity object
-        $serviceEntity = new Service(); // Corrected class name to Service
+        $serviceEntity = new Service();
         
-        // Call entity method to get all services
-        $services = $serviceEntity->viewAllServices(); // Assuming this method name in your Service entity
+        // Get the user's ID from the session
+        $cleanerID = $_SESSION['userAccountID'] ?? null;  // Assuming userAccountID stores the cleanerID
+        
+        $services = $serviceEntity->viewAllServices($cleanerID);
         
         return $services;
     }

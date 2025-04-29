@@ -34,9 +34,15 @@ class Service {
         return true;
     }
 
-    public function viewAllServices() {
+    public function viewAllServices(int $cleanerID = null) {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID FROM service ORDER BY serviceID";
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID FROM service";
+        
+        if ($cleanerID !== null) {
+            $sql .= " WHERE cleanerID = " . $cleanerID;
+        }
+        
+        $sql .= " ORDER BY serviceID";
         $result = $this->conn->query($sql);
         
         if ($result && $result->num_rows > 0) {
