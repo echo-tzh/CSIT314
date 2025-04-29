@@ -119,6 +119,14 @@ if (!isset($_SESSION["username"])) {
             </div>
         <?php endif; ?>
 
+        <?php if ($_SESSION["userProfileID"] == 3): ?>
+            <div class="header">Home Owner Homepage</div>
+            <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
+            <div class="button-container">
+                <a href="viewAllServicePage.php" class="nav-button">View And Manage All Services</a>
+            </div>
+        <?php endif; ?>
+
         <?php if ($_SESSION["userProfileID"] == 4): ?>
             
             <div class="header">Platform Management Homepage</div>
