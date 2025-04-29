@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_serviceID'])) 
 // Handle search
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 if (!empty($searchTerm)) {
-    $services = $serviceController->searchServices($searchTerm); // Assuming you have a searchServices method
+    require_once '../controller/searchServiceController.php';  
+    $searchServiceController = new searchServiceController();    
+    $services = $searchServiceController->searchService($searchTerm); 
 }
 
 ?>
