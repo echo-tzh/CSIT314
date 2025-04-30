@@ -115,7 +115,7 @@ if (!isset($_SESSION["username"])) {
             <div class="header">Cleaner Homepage</div>
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
-                <a href="viewAllServicePage.php" class="nav-button">View And Manage All Services</a>
+                <a href="viewOwnServicePage.php" class="nav-button">View And Manage All Services</a>
             </div>
         <?php endif; ?>
 
