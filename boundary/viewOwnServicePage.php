@@ -10,9 +10,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the controller to fetch services
-require_once '../controller/viewAllServiceController.php';
-$serviceController = new viewAllServiceController();
-$services = $serviceController->viewAllServices();
+require_once '../controller/viewOwnServiceController.php';
+$serviceController = new viewOwnServiceController();
+$services = $serviceController->viewOwnServices();
 
 // Handle service deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_serviceID'])) {
@@ -34,14 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_serviceID'])) 
         ];
     }
 
-    header("Location: viewAllServicePage.php");
+    header("Location: viewOwnServicePage.php");
     exit();
 }
 
 // Handle search
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 if (!empty($searchTerm)) {
-    $services = $serviceController->searchServices($searchTerm); // Assuming you have a searchServices method
+    require_once '../controller/searchServiceController.php';  
+    $searchServiceController = new searchServiceController();    
+    $services = $searchServiceController->searchService($searchTerm); 
 }
 
 ?>
@@ -52,7 +54,7 @@ if (!empty($searchTerm)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View All Services</title>
+    <title>View All Of My Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -77,7 +79,7 @@ if (!empty($searchTerm)) {
     <?php endif; ?>
 
     <div class="flex justify-center items-center mb-4">
-        <form action="viewAllServicePage.php" method="get"
+        <form action="viewOwnServicePage.php" method="get"
             class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
             <input type="text" name="search" placeholder="Search service name or description"
                 value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-grow" />
@@ -133,7 +135,7 @@ if (!empty($searchTerm)) {
                             class="text-green-500 hover:underline">Update</a>
                     </td>
                     <td class="px-4 py-2 border">
-                        <form action="viewAllServicePage.php" method="post"
+                        <form action="viewOwnServicePage.php" method="post"
                             onsubmit="return confirm('Are you sure you want to delete this service?');">
                             <input type="hidden" name="delete_serviceID" value="<?php echo htmlspecialchars($service['serviceID']); ?>">
                             <button type="submit"

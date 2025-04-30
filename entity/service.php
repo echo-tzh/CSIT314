@@ -34,7 +34,7 @@ class Service {
         return true;
     }
 
-    public function viewAllServices(int $cleanerID = null) {
+    public function viewOwnServices(int $cleanerID = null) {
         $services = [];
         $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID FROM service";
         

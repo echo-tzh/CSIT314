@@ -224,7 +224,7 @@ $categories = $categoryController->viewAllCleaningCategory(); // method to get a
             
             <div class="button-group">
                 <button type="submit" class="btn-primary">Create Service</button>
-                <a href="viewAllServicePage.php" class="btn-secondary">Back to View All Services</a>
+                <a href="viewOwnServicePage.php" class="btn-secondary">Back to View All Services</a>
             </div>
             <input type="hidden" id="cleanerID" name="cleanerID" value="<?php echo $_SESSION['userAccountID']; ?>">
         </form>
