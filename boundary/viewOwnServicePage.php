@@ -71,7 +71,7 @@ if (!empty($searchTerm)) {
                 viewBox="0 0 20 20">
                 <title>Close</title>
                 <path
-                    d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.15 2.759-3.152a1.2 1.2 0 0 1 0 1.697z" />
+                    d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.15 2.759-3.152a1.2 1.2 0 0 1 0 1.697z" />
             </svg>
         </span>
     </div>
@@ -106,7 +106,7 @@ if (!empty($searchTerm)) {
                     <th class="px-4 py-2 border">Description</th>
                     <th class="px-4 py-2 border">Price</th>
                     <th class="px-4 py-2 border">Service Date</th>
-                    <th class="px-4 py-2 border">View</th>
+                    <th class="px-4 py-2 border">Status</th> <th class="px-4 py-2 border">View</th>
                     <th class="px-4 py-2 border">Update</th>
                     <th class="px-4 py-2 border">Delete</th>
                 </tr>
@@ -124,6 +124,19 @@ if (!empty($searchTerm)) {
                             //  Format the date for display (adjust format as needed)
                             $date = new DateTime($service['serviceDate']);
                             echo htmlspecialchars($date->format('Y-m-d H:i')); 
+                        ?>
+                    </td>
+                    <td class="px-4 py-2 border">
+                        <?php 
+                            if (isset($service['status'])) {
+                                if ($service['status'] == 1) {
+                                    echo "Available";
+                                } else {
+                                    echo "Booked";
+                                }
+                            } else {
+                                echo "N/A"; // Or any other default value you prefer
+                            }
                         ?>
                     </td>
                     <td class="px-4 py-2 border">

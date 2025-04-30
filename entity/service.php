@@ -36,21 +36,21 @@ class Service {
 
     public function viewOwnServices(int $cleanerID = null) {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID FROM service";
-        
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status FROM service"; // Added status
+    
         if ($cleanerID !== null) {
             $sql .= " WHERE cleanerID = " . $cleanerID;
         }
-        
+    
         $sql .= " ORDER BY serviceID";
         $result = $this->conn->query($sql);
-        
+    
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $services[] = $row;
             }
         }
-        
+    
         return $services;
     }
 

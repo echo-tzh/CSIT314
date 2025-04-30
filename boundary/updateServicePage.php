@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceName'])) {
 
         if ($success) {
             $_SESSION['status'] = "Service updated successfully!"; // Success message
-            header("Location: viewAllServicePage.php"); // Redirect to the list page
+            header("Location: viewOwnServicePage.php"); // Redirect to the list page
             exit();
         } else {
             $_SESSION['status'] = "Failed to update service."; // Error message
@@ -268,8 +268,7 @@ if (isset($_SESSION['status'])) {
 
                 <div class="form-group">
                     <label for="cleanerID">Cleaner ID:</label>
-                    <input type="text" id="cleanerID" name="cleanerID"
-                        value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required>
+                    <input type="text" id="cleanerID" name="cleanerID" value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required readonly>
                 </div>
 
                 <div class="form-group">
