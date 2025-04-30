@@ -133,7 +133,7 @@ $serviceDetails = $controller->viewService($serviceID);
             <p>Service not found.</p>
         <?php endif; ?>
 
-        <a href="viewAllServicePage.php" class="btn-secondary">Back to All Services</a>
+        <a href="viewOwnServicePage.php" class="btn-secondary">Back to All Services</a>
     </div>
 </body>
 

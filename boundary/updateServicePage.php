@@ -307,7 +307,7 @@ if (isset($_SESSION['status'])) {
             </form>
         </div>
 
-        <a href="viewAllServicePage.php" class="btn-secondary">Back to All Services</a>
+        <a href="viewOwnServicePage.php" class="btn-secondary">Back to All Services</a>
     </div>
 </body>
 
