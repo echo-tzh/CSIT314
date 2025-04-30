@@ -21,52 +21,46 @@ class Shortlist {
     }
 
     public function saveFavorite(int $homeOwnerID, int $serviceID): bool {
-        // 1. Check if the favorite already exists
-        if ($this->isFavoriteExists($homeOwnerID, $serviceID)) {
-            return false;
-        }
-
-        // 2. If it doesn't exist, then insert
-        $query = "INSERT INTO shortlist (homeOwnerID, serviceID) VALUES (?, ?)";
-        $stmt = $this->conn->prepare($query);
-
-        if (!$stmt) {
-            error_log("Database prepare error: " . $this->conn->error);
-            return false;
-        }
-
-        $stmt->bind_param("ii", $homeOwnerID, $serviceID);
-
-        $result = $stmt->execute();
-
-        if (!$result) {
-            error_log("Database execute error: " . $this->conn->error);
-        }
-
-        $stmt->close();
-        return $result;
-    }
-
-    private function isFavoriteExists(int $homeOwnerID, int $serviceID): bool {
+        // Check if the favorite already exists
         $query = "SELECT COUNT(*) FROM shortlist WHERE homeOwnerID = ? AND serviceID = ?";
         $stmt = $this->conn->prepare($query);
-
-        // Initialize $count
         $count = 0;
-
+    
         if (!$stmt) {
             error_log("Database prepare error: " . $this->conn->error);
             return false;
         }
-
+    
         $stmt->bind_param("ii", $homeOwnerID, $serviceID);
         $stmt->execute();
         $stmt->bind_result($count);
         $stmt->fetch();
         $stmt->close();
-
-        return $count > 0;
+    
+        if ($count > 0) {
+            return false; // Already exists
+        }
+    
+        // Insert new favorite
+        $insertQuery = "INSERT INTO shortlist (homeOwnerID, serviceID) VALUES (?, ?)";
+        $insertStmt = $this->conn->prepare($insertQuery);
+    
+        if (!$insertStmt) {
+            error_log("Database prepare error: " . $this->conn->error);
+            return false;
+        }
+    
+        $insertStmt->bind_param("ii", $homeOwnerID, $serviceID);
+        $result = $insertStmt->execute();
+    
+        if (!$result) {
+            error_log("Database execute error: " . $this->conn->error);
+        }
+    
+        $insertStmt->close();
+        return $result;
     }
+    
 
     public function getShortlistedServiceIds(int $homeOwnerID): array {
         $ids = [];
