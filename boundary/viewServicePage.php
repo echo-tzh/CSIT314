@@ -115,7 +115,10 @@ $serviceDetails = $controller->viewService($serviceID);
                 <p><strong>Description:</strong> <?php echo $serviceDetails['description']; ?></p>
                 <p><strong>Price:</strong> <?php echo $serviceDetails['price']; ?></p>
                 <p><strong>Service Date:</strong> <?php echo $serviceDetails['serviceDate']; ?></p>
-                <p><strong>Cleaner ID:</strong> <?php echo $serviceDetails['cleanerID']; ?></p>
+                <div class="form-group" <?php if ($_SESSION['userProfileID'] == 2) echo 'style="display: none;"'; ?>>
+                    <label for="cleanerID">Cleaner ID:</label>
+                    <input type="text" id="cleanerID" name="cleanerID" value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required readonly>
+                </div>
                 <p><strong>Category:</strong> <?php echo $serviceDetails['categoryName']; ?></p>
                 <p><strong>Status:</strong> 
                     <?php 

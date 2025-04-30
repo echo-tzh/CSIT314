@@ -266,9 +266,9 @@ if (isset($_SESSION['status'])) {
                         value="<?php echo date('Y-m-d\TH:i', strtotime($service['serviceDate'])); ?>" required>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                     <label for="cleanerID">Cleaner ID:</label>
-                    <input type="text" id="cleanerID" name="cleanerID" value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required readonly>
+                    <input type="hidden" id="cleanerID" name="cleanerID" value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -299,7 +299,7 @@ if (isset($_SESSION['status'])) {
                 <div class="form-group">
                     <label for="viewCount">View Count:</label>
                     <input type="text" id="viewCount" name="viewCount"
-                        value="<?php echo htmlspecialchars($service['viewCount']); ?>" required>
+                        value="<?php echo htmlspecialchars($service['viewCount']); ?>" required readonly>
                 </div>
 
                 <button type="submit" class="btn-primary">Save Update</button>
