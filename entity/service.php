@@ -115,5 +115,29 @@ class Service {
             return false;
         }
     }
+
+    public function searchService(string $searchTerm): array {
+        $services = [];
+        $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
+
+        $stmt = $this->conn->prepare("
+            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID 
+            FROM service 
+            WHERE serviceName LIKE ? OR description LIKE ?
+            ORDER BY serviceID
+        ");
+        $stmt->bind_param("ss", $searchTerm, $searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $services[] = $row;
+            }
+        }
+
+        $stmt->close();
+        return $services;
+    }
 }
 ?>
