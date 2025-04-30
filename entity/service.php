@@ -154,6 +154,57 @@ class Service {
         return $services;
     }
 
+    public function viewServiceHomeOwner(int $serviceID): array {
+       
+    
+        // Check if this service has already been viewed in this session
+        if (!isset($_SESSION['viewedServices'])) {
+            $_SESSION['viewedServices'] = [];
+        }
+    
+        if (!in_array($serviceID, $_SESSION['viewedServices'])) {
+            // Increment view count only once per session
+            $updateStmt = $this->conn->prepare("UPDATE service SET viewCount = viewCount + 1 WHERE serviceID = ?");
+            $updateStmt->bind_param("i", $serviceID);
+            $updateStmt->execute();
+            $updateStmt->close();
+    
+            // Mark this service as viewed
+            $_SESSION['viewedServices'][] = $serviceID;
+        }
+    
+        // Fetch service details
+        $serviceDetails = null;
+        $stmt = $this->conn->prepare("
+            SELECT 
+                s.serviceID, 
+                s.serviceName, 
+                s.description, 
+                s.price, 
+                s.serviceDate, 
+                s.cleanerID, 
+                s.categoryID,
+                c.categoryName,  
+                s.status, 
+                s.viewCount
+            FROM service s
+            JOIN cleaningCategory c ON s.categoryID = c.categoryID
+            WHERE s.serviceID = ?
+        ");
+        $stmt->bind_param("i", $serviceID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result && $result->num_rows > 0) {
+            $serviceDetails = $result->fetch_assoc();
+        }
+    
+        $stmt->close();
+        return $serviceDetails;
+    }
+    
+    
+
   
 
 

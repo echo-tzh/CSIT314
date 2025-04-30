@@ -253,8 +253,11 @@ if (!empty($searchTerm)) {
                         ?>
                     </td>
                     <td>
-                        <a href="viewServicePage.php?id=<?php echo htmlspecialchars($service['serviceID']); ?>"
-                            class="btn btn-view">View</a>
+                    <form method="post" action="viewServiceHomeOwnerPage.php">
+                        <input type="hidden" name="serviceID" value="<?php echo htmlspecialchars($service['serviceID']); ?>" />
+                        <button type="submit" class="btn btn-view">View</button>
+                    </form>
+
                     </td>
                 </tr>
                 <?php endforeach; ?>
