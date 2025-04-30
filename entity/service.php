@@ -139,5 +139,24 @@ class Service {
         $stmt->close();
         return $services;
     }
+
+    public function viewAllServices() {
+        $services = [];
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status FROM service ORDER BY serviceID";
+        $result = $this->conn->query($sql);
+    
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $services[] = $row;
+            }
+        }
+    
+        return $services;
+    }
+
+  
+
+
+
 }
 ?>

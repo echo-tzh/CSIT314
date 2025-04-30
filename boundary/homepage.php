@@ -123,7 +123,7 @@ if (!isset($_SESSION["username"])) {
             <div class="header">Home Owner Homepage</div>
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
-                <a href="viewAllServicePage.php" class="nav-button">View And Manage All Services</a>
+                <a href="viewAllServicePage.php" class="nav-button">View All Cleaning Services</a>
             </div>
         <?php endif; ?>
 
