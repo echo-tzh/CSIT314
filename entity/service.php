@@ -121,7 +121,7 @@ class Service {
         $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
 
         $stmt = $this->conn->prepare("
-            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID 
+            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status
             FROM service 
             WHERE serviceName LIKE ? OR description LIKE ?
             ORDER BY serviceID

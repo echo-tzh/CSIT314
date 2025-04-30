@@ -10,17 +10,46 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 3) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Include the controller to fetch all services
+// Include the controller and entity
 require_once '../controller/viewAllServiceController.php';
+require_once '../controller/saveFavoriteController.php';
+require_once '../entity/shortlist.php';
+
 $serviceController = new viewAllServiceController();
 $services = $serviceController->viewAllServices();
 
 // Handle search
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 if (!empty($searchTerm)) {
-    require_once '../controller/searchServiceController.php';  
-    $searchServiceController = new searchServiceController();    
-    $services = $searchServiceController->searchService($searchTerm); 
+    require_once '../controller/searchServiceController.php';
+    $searchServiceController = new searchServiceController();
+    $services = $searchServiceController->searchService($searchTerm);
+}
+
+// Get the homeOwnerID from the session
+$homeOwnerID = $_SESSION['userAccountID']; // Assuming userAccountID is the homeOwnerID
+
+// Handle Favorite Saving (if triggered)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id'])) {
+    $favoriteServiceId = $_POST['favorite_service_id'];
+
+    // Validate (VERY IMPORTANT!)
+    if ($homeOwnerID !== null && $favoriteServiceId !== null) {
+        $saveFavoriteController = new SaveFavoriteController();
+        $result = $saveFavoriteController->saveFavorite($homeOwnerID, $favoriteServiceId);
+
+        if ($result) {
+            $_SESSION['status'] = 'Service added to favorites!'; // Use session for message
+        } else {
+            $_SESSION['status'] = 'Error: Service already in favorites or an error occurred.';
+        }
+        header("Location: viewAllServicePage.php"); // Redirect to refresh and show message
+        exit();
+    } else {
+        $_SESSION['status'] = 'Error: Invalid data for adding to favorites.';
+        header("Location: viewAllServicePage.php");
+        exit();
+    }
 }
 ?>
 
@@ -206,66 +235,76 @@ if (!empty($searchTerm)) {
         <h1>Service Management</h1>
 
         <?php if (isset($_SESSION["status"])): ?>
-        <div class="message success">
-            <strong>Success!</strong>
-            <span><?php echo $_SESSION["status"]; ?></span>
-        </div>
-        <?php unset($_SESSION["status"]); ?>
+            <div class="message <?php echo strpos($_SESSION['status'], 'Error') === 0 ? 'error' : 'success'; ?>">
+                <strong><?php echo strpos($_SESSION['status'], 'Error') === 0 ? 'Error!' : 'Success!'; ?></strong>
+                <span><?php echo $_SESSION["status"]; ?></span>
+            </div>
+            <?php unset($_SESSION["status"]); ?>
         <?php endif; ?>
 
         <div class="search-container">
             <form action="viewAllServicePage.php" method="get">
                 <input type="text" name="search" placeholder="Search service name or description"
-                    value="<?php echo htmlspecialchars($searchTerm); ?>" />
+                       value="<?php echo htmlspecialchars($searchTerm); ?>"/>
                 <button type="submit">Search</button>
             </form>
+            
         </div>
+        <a href="viewShortlistedPage.php" class="btn btn-primary">View My Favorites</a>
 
         <table class="data-table">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Service Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Service Date</th>
-                    <th>Status</th>
-                    <th>View</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Service Date</th>
+                <th>Status</th>
+                <th>View</th>
+                <th>Favorites</th>
+            </tr>
             </thead>
             <tbody>
-                <?php if (!empty($services)): ?>
+            <?php if (!empty($services)): ?>
                 <?php foreach ($services as $service): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($service['serviceID']); ?></td>
-                    <td><?php echo htmlspecialchars($service['serviceName']); ?></td>
-                    <td><?php echo htmlspecialchars($service['description']); ?></td>
-                    <td><?php echo htmlspecialchars($service['price']); ?></td>
-                    <td>
-                        <?php 
+                    <tr>
+                        <td><?php echo htmlspecialchars($service['serviceID']); ?></td>
+                        <td><?php echo htmlspecialchars($service['serviceName']); ?></td>
+                        <td><?php echo htmlspecialchars($service['description']); ?></td>
+                        <td><?php echo htmlspecialchars($service['price']); ?></td>
+                        <td>
+                            <?php
                             $date = new DateTime($service['serviceDate']);
-                            echo htmlspecialchars($date->format('Y-m-d H:i')); 
-                        ?>
-                    </td>
-                    <td>
-                        <?php 
+                            echo htmlspecialchars($date->format('Y-m-d H:i'));
+                            ?>
+                        </td>
+                        <td>
+                            <?php
                             echo $service['status'] == 1 ? "Available" : "Booked";
-                        ?>
-                    </td>
-                    <td>
-                    <form method="post" action="viewServiceHomeOwnerPage.php">
-                        <input type="hidden" name="serviceID" value="<?php echo htmlspecialchars($service['serviceID']); ?>" />
-                        <button type="submit" class="btn btn-view">View</button>
-                    </form>
-
-                    </td>
-                </tr>
+                            ?>
+                        </td>
+                        <td>
+                            <form method="post" action="viewServiceHomeOwnerPage.php">
+                                <input type="hidden" name="serviceID"
+                                       value="<?php echo htmlspecialchars($service['serviceID']); ?>"/>
+                                <button type="submit" class="btn btn-view">View</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="favorite_service_id"
+                                       value="<?php echo htmlspecialchars($service['serviceID']); ?>"/>
+                                <button type="submit" class="btn btn-primary btn-favorite">Favorite</button>
+                            </form>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
-                <?php else: ?>
+            <?php else: ?>
                 <tr>
-                    <td colspan="7">No services found.</td>
+                    <td colspan="8">No services found.</td>
                 </tr>
-                <?php endif; ?>
+            <?php endif; ?>
             </tbody>
         </table>
 
