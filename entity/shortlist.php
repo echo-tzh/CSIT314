@@ -51,10 +51,30 @@ class Shortlist {
     
         if (!$result) {
             error_log("Database execute error: " . $this->conn->error);
+            $insertStmt->close(); // Close the insert statement even on error
+            return false;
+        }
+        $insertStmt->close();
+    
+        // Increment shortlistCount in service table
+        $updateQuery = "UPDATE service SET shortlistCount = shortlistCount + 1 WHERE serviceID = ?";
+        $updateStmt = $this->conn->prepare($updateQuery);
+    
+        if (!$updateStmt) {
+            error_log("Database prepare error: " . $this->conn->error);
+            return false; // Or consider throwing an exception
         }
     
-        $insertStmt->close();
-        return $result;
+        $updateStmt->bind_param("i", $serviceID);
+        $updateResult = $updateStmt->execute();
+    
+        if (!$updateResult) {
+            error_log("Database execute error: " . $this->conn->error);
+        }
+    
+        $updateStmt->close();
+    
+        return $result && $updateResult; // Return true only if both insert and update succeed
     }
     
 

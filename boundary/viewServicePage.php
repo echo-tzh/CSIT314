@@ -130,6 +130,7 @@ $serviceDetails = $controller->viewService($serviceID);
                     ?>
                 </p>
                 <p><strong>View Count:</strong> <?php echo $serviceDetails['viewCount']; ?></p>
+                <p><strong>Shortlist Count:</strong> <?php echo $serviceDetails['shortlistCount']; ?></p>  </div>
             </div>
 
         <?php else : ?>

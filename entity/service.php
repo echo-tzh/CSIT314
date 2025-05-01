@@ -68,7 +68,8 @@ class Service {
                 s.categoryID,
                 c.categoryName,  
                 s.status, 
-                s.viewCount
+                s.viewCount,
+                s.shortlistCount
             FROM service s
             JOIN cleaningCategory c ON s.categoryID = c.categoryID
             WHERE s.serviceID = ?
