@@ -99,7 +99,7 @@ if ($checktable->num_rows == 0) {
         categoryID INT,
         status BOOLEAN,
         viewCount INT DEFAULT 0,
-        shortlistCount INT DEFAULT 0,
+      
         FOREIGN KEY (cleanerID) REFERENCES userAccount(userAccountID),
         FOREIGN KEY (categoryID) REFERENCES cleaningCategory(categoryID)
     )";
@@ -191,6 +191,17 @@ if ($checkColumn->num_rows == 0) {
 } else {
     echo "'description' column already exists in 'cleaningCategory'.<br>";
 }
+
+
+// Add 'shortlistCount' column to service table if it doesn't exist
+$checkColumn = $conn->query("SHOW COLUMNS FROM service LIKE 'shortlistCount'");
+if ($checkColumn->num_rows == 0) {
+    $sql = "ALTER TABLE service ADD COLUMN shortlistCount INT DEFAULT 0";
+    echo $conn->query($sql) ? "'shortlistCount' column added to 'service'.<br>" : "Error adding 'shortlistCount' column: " . $conn->error . "<br>";
+} else {
+    echo "'shortlistCount' column already exists in 'service'.<br>";
+}
+
 
 return $conn;
 
