@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['userAccountID'])) {
-    header("Location: login.php");
+    header("Location: loginPage.php");
     exit();
 }
 
@@ -14,8 +14,30 @@ $viewShortlistedController = new ViewShortlistedController();
 // Get the homeOwnerID from the session
 $homeOwnerID = $_SESSION['userAccountID']; // Assuming userAccountID is the homeOwnerID
 
-// Fetch the shortlisted services
+// Get all shortlisted services
 $shortlistedServices = $viewShortlistedController->getShortlistedServices($homeOwnerID);
+
+// Check if a search was submitted via POST
+$searchTerm = '';
+$filteredServices = $shortlistedServices; // Default to showing all services
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($_POST['search'])) {
+    // If search is submitted, filter the services in the boundary for now
+    $searchTerm = trim($_POST['search']);
+    $filteredServices = [];
+    
+    // Filter services based on search term
+    foreach ($shortlistedServices as $service) {
+        if (
+            stripos($service['serviceName'], $searchTerm) !== false ||
+            stripos($service['description'], $searchTerm) !== false ||
+            stripos($service['price'], $searchTerm) !== false ||
+            stripos($service['serviceDate'], $searchTerm) !== false
+        ) {
+            $filteredServices[] = $service;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -110,54 +132,6 @@ $shortlistedServices = $viewShortlistedController->getShortlistedServices($homeO
             background-color: #d5d5d5;
         }
 
-        .btn-view {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-view:hover {
-            background-color: #218838;
-        }
-
-        .btn-edit {
-            background-color: #ff9800;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background-color: #e68900;
-        }
-
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: #e53935;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .data-table th, .data-table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        .data-table th {
-            background-color: #f4f4f9;
-            font-weight: bold;
-        }
-
-        .data-table td {
-            background-color: #fff;
-        }
-
         .search-container {
             margin-bottom: 20px;
             display: flex;
@@ -187,10 +161,57 @@ $shortlistedServices = $viewShortlistedController->getShortlistedServices($homeO
         .search-container button:hover {
             background-color: #45a049;
         }
+        
+        .clear-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .clear-button:hover {
+            background-color: #d5d5d5;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background-color: #f4f4f9;
+            font-weight: bold;
+        }
+
+        .data-table td {
+            background-color: #fff;
+        }
 
         .back-button {
             margin-top: 30px;
             display: inline-block;
+        }
+        
+        .no-results {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            color: #6c757d;
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -206,9 +227,24 @@ $shortlistedServices = $viewShortlistedController->getShortlistedServices($homeO
             <?php unset($_SESSION['shortlist_message']); // Clear the message ?>
         <?php endif; ?>
 
-        <?php if (empty($shortlistedServices)): ?>
-            <p>You have not shortlisted any services yet.</p>
+        <!-- Search form using POST method -->
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="search-container" style="display: flex; width: 100%; gap: 10px;">
+            <input type="text" name="search" placeholder="Search services..." value="<?php echo htmlspecialchars($searchTerm); ?>">
+            <button type="submit" class="btn-primary">Search</button>
+            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="clear-button">Clear</a>
+        </form>
+
+        <?php if (empty($filteredServices)): ?>
+            <?php if (!empty($searchTerm)): ?>
+                <div class="no-results">No services found matching "<?php echo htmlspecialchars($searchTerm); ?>"</div>
+            <?php else: ?>
+                <p>You have not shortlisted any services yet.</p>
+            <?php endif; ?>
         <?php else: ?>
+            <?php if (!empty($searchTerm)): ?>
+                <p>Showing results for: "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+            <?php endif; ?>
+            
             <table class="data-table">
                 <thead>
                     <tr>
@@ -217,23 +253,23 @@ $shortlistedServices = $viewShortlistedController->getShortlistedServices($homeO
                         <th>Description</th>
                         <th>Price</th>
                         <th>Service Date</th>
-                        </tr>
+                    </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($shortlistedServices as $service): ?>
+                    <?php foreach ($filteredServices as $service): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($service['serviceID']); ?></td>
                             <td><?php echo htmlspecialchars($service['serviceName']); ?></td>
                             <td><?php echo htmlspecialchars($service['description']); ?></td>
                             <td><?php echo htmlspecialchars($service['price']); ?></td>
                             <td><?php echo htmlspecialchars($service['serviceDate']); ?></td>
-                            </tr>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         <?php endif; ?>
 
-        <a href="viewAllServicePage.php" class="btn btn-secondary back-button">Back to Home</a>
+        <a href="viewAllServicePage.php" class="btn btn-secondary back-button">Back to Services</a>
     </div>
 </body>
 </html>

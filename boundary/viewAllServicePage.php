@@ -223,6 +223,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
             background-color: #45a049;
         }
 
+        .clear-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .clear-button:hover {
+            background-color: #d5d5d5;
+        }
+
         .back-button {
             margin-top: 30px;
             display: inline-block;
@@ -243,13 +260,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
         <?php endif; ?>
 
         <div class="search-container">
-            <form action="viewAllServicePage.php" method="get">
+            <form action="viewAllServicePage.php" method="get" style="display: flex; width: 100%; gap: 10px;">
                 <input type="text" name="search" placeholder="Search service name or description"
-                       value="<?php echo htmlspecialchars($searchTerm); ?>"/>
+                    value="<?php echo htmlspecialchars($searchTerm); ?>"/>
                 <button type="submit">Search</button>
+                <a href="viewAllServicePage.php" class="clear-button">Clear</a>
             </form>
-            
         </div>
+
         <a href="viewShortlistedPage.php" class="btn btn-primary">View My Favorites</a>
 
         <table class="data-table">

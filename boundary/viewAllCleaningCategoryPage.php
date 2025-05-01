@@ -204,9 +204,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_categoryID']))
         
         <a href="createCategoryPage.php" class="btn btn-primary">Create New Category</a>
         <form action="viewAllCleaningCategoryPage.php" method="post" style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-            <input type="text" name="search" placeholder="Search categories..." style="flex: 1; padding: 10px; font-size: 16px; border-radius: 10px; border: 1px solid #ccc;">
+            <input type="text" name="search" placeholder="Search categories..." value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>" style="flex: 1; padding: 10px; font-size: 16px; border-radius: 10px; border: 1px solid #ccc;">
             <button type="submit" class="btn btn-primary">Search</button>
+            <a href="viewAllCleaningCategoryPage.php" class="btn btn-secondary">Clear</a>
         </form>
+
 
         
         <table class="data-table">

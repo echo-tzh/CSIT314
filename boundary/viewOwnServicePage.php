@@ -79,17 +79,21 @@ if (!empty($searchTerm)) {
     <?php endif; ?>
 
     <div class="flex justify-center items-center mb-4">
-        <form action="viewOwnServicePage.php" method="get"
-            class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
-            <input type="text" name="search" placeholder="Search service name or description"
-                value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-grow" />
-        </form>
-        <button type="submit" onclick="document.forms[0].submit();"
-            class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-2">
-            Search
-        </button>
-    </div>
-
+    <form action="viewOwnServicePage.php" method="get"
+        class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
+        <input type="text" name="search" placeholder="Search service name or description"
+            value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-grow" />
+    </form>
+    <button type="submit" onclick="document.forms[0].submit();"
+        class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-2">
+        Search
+    </button>
+   
+    <button type="button" onclick="document.querySelector('input[name=\'search\']').value=''; document.forms[0].submit();"
+        class="bg-red-200 hover:bg-red-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-2">
+        Clear
+    </button>
+</div>
     <div class="flex justify-center items-center mb-6">
         <a href="createServicePage.php"
             class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block">

@@ -80,5 +80,45 @@ class Shortlist {
         $stmt->close();
         return $ids;
     }
+
+    public function searchShortlist(string $searchTerm): array {
+        // Get homeOwnerID from session
+        if (!isset($_SESSION['userAccountID'])) {
+            return []; // Return empty array if not logged in
+        }
+        $homeOwnerID = $_SESSION['userAccountID'];
+        
+        // First get the shortlisted service IDs
+        $shortlistedServiceIds = $this->getShortlistedServiceIds($homeOwnerID);
+        
+        // If no shortlisted services, return empty array
+        if (empty($shortlistedServiceIds)) {
+            return [];
+        }
+        
+        // Get service controller to fetch service details
+        $serviceController = new viewAllServiceController();
+        $services = $serviceController->viewAllServices();
+        
+        // Filter services based on shortlist and search term
+        $result = [];
+        foreach ($services as $service) {
+            if (in_array($service['serviceID'], $shortlistedServiceIds)) {
+                // Check if search term appears in any relevant fields
+                if (
+                    stripos($service['serviceName'], $searchTerm) !== false ||
+                    stripos($service['description'], $searchTerm) !== false ||
+                    stripos($service['price'], $searchTerm) !== false ||
+                    stripos($service['serviceDate'], $searchTerm) !== false
+                ) {
+                    $result[] = $service;
+                }
+            }
+        }
+        
+        return $result;
+    }
+
+
 }
 ?>

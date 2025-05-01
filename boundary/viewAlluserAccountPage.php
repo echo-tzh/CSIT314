@@ -66,17 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
     <div class="flex justify-between items-center mb-6">
         <!-- Search form on the left -->
         <form method="POST" action="" class="flex items-center flex-grow max-w-lg">
-            <div class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-full">
-                <span class="text-lg mr-2">☰</span>
-                <input type="text" name="search" id="searchInput" placeholder="Search by username or name" 
-                       value="<?php echo htmlspecialchars($searchTerm); ?>" 
-                       class="bg-transparent outline-none flex-1" />
-                <button type="submit" name="search_submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 ml-2 rounded">
-                    Search
-                </button>
-            </div>
+    <div class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-full">
+        <span class="text-lg mr-2">☰</span>
+        <input type="text" name="search" id="searchInput" placeholder="Search by username or name" 
+               value="<?php echo htmlspecialchars($searchTerm); ?>" 
+               class="bg-transparent outline-none flex-1" />
+            <button type="submit" name="search_submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 ml-2 rounded">
+            Search
+            </button>
+            <button type="submit" name="clear_search" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1 ml-2 rounded">
+            Clear
+            </button>
+        </div>
         </form>
-        
+
         <!-- Create User Account button all the way to the right -->
         <a href="./createAccountPage.php" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block">
             Create User Account

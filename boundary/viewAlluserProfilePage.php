@@ -60,16 +60,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
 <body class="bg-white text-gray-800 p-8">
 
     <h1 class="text-2xl font-semibold text-center mb-6">User Profile Management</h1>
-
     <div class="flex justify-center items-center mb-6">
     <form action="viewAlluserProfilePage.php" method="get" class="flex items-center bg-green-100 px-4 py-2 rounded-md shadow-sm w-1/2 max-w-md">
-        <input type="text" name="search" placeholder="Search user profile or description" value="<?php echo htmlspecialchars($searchTerm); ?>" class="bg-transparent outline-none flex-1" />
+        <input type="text" name="search" placeholder="Search user profile or description" 
+               value="<?php echo htmlspecialchars($searchTerm); ?>" 
+               class="bg-transparent outline-none flex-1" />
+        <button type="submit" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow ml-2">Search</button>
+        <a href="viewAlluserProfilePage.php" class="bg-gray-200 hover:bg-gray-300 text-sm px-4 py-2 rounded-md shadow ml-2">Clear</a>
     </form>
-    <button type="submit" onclick="document.forms[0].submit();" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-2">Search</button>
     <a href="./createUserProfilePage.php" class="bg-green-200 hover:bg-green-300 text-sm px-4 py-2 rounded-md shadow inline-block ml-4">
         Create User Profile
     </a>
 </div>
+
+
 
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
