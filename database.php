@@ -99,6 +99,7 @@ if ($checktable->num_rows == 0) {
         categoryID INT,
         status BOOLEAN,
         viewCount INT DEFAULT 0,
+        shortlistCount INT DEFAULT 0,
         FOREIGN KEY (cleanerID) REFERENCES userAccount(userAccountID),
         FOREIGN KEY (categoryID) REFERENCES cleaningCategory(categoryID)
     )";
