@@ -1,24 +1,20 @@
 <?php
-// shortlist.php (in the entity directory)
-include_once '../inc_dbconnect.php';
+
+
 
 class Shortlist {
     private $conn;
 
     public function __construct() {
-        $this->conn = $this->getConnection(); // Establish connection in constructor
+        // You can either connect here directly or include a separate db class
+        include '../inc_dbconnect.php'; // Sets up $conn
+        $this->conn = $conn;
+
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
     }
 
-    private function getConnection() {
-        if (!isset($this->conn)) {
-            include '../inc_dbconnect.php';
-            return $conn;
-        }
-        return $this->conn;
-    }
 
     public function saveFavorite(int $homeOwnerID, int $serviceID): bool {
         // Check if the favorite already exists
