@@ -92,11 +92,10 @@ class Service {
         string $newServiceDate,
         int $newCleanerID,
         int $newCategoryID,
-        string $newStatus, // Include status
-        int $newViewCount  // Include viewCount
+        string $newStatus // Include status
     ): bool {
-        $stmt = $this->conn->prepare("UPDATE service SET serviceName = ?, description = ?, price = ?, serviceDate = ?, cleanerID = ?, categoryID = ?, status = ?, viewCount = ? WHERE serviceID = ?");
-        $stmt->bind_param("ssdssiisi", $newName, $newDescription, $newPrice, $newServiceDate, $newCleanerID, $newCategoryID, $newStatus, $newViewCount, $serviceID);
+        $stmt = $this->conn->prepare("UPDATE service SET serviceName = ?, description = ?, price = ?, serviceDate = ?, cleanerID = ?, categoryID = ?, status = ? WHERE serviceID = ?");
+        $stmt->bind_param("ssdssiii", $newName, $newDescription, $newPrice, $newServiceDate, $newCleanerID, $newCategoryID, $newStatus, $serviceID);
         $success = $stmt->execute();
         $stmt->close();
         

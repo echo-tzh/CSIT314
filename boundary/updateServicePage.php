@@ -2,7 +2,7 @@
 session_start();
 // Check if user is logged in and has the right permissions
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 2) {
-    header("Location: login.php");
+    header("Location: loginPage.php");
     exit();
 }
 
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceName'])) {
     $newCleanerID = $_POST['cleanerID'];
     $newCategoryID = $_POST['categoryID'];
     $newStatus = $_POST['status'];
-    $newViewCount = $_POST['viewCount'];
+
 
     // If POST request with service name, update the service
     if (!isset($error)) { // Only proceed if there's no date error
@@ -72,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceName'])) {
             $newCleanerID,
             $newCategoryID,
             $newStatus,
-            $newViewCount
         );
 
         if ($success) {
@@ -296,11 +295,7 @@ if (isset($_SESSION['status'])) {
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="viewCount">View Count:</label>
-                    <input type="text" id="viewCount" name="viewCount"
-                        value="<?php echo htmlspecialchars($service['viewCount']); ?>" required readonly>
-                </div>
+
 
                 <button type="submit" class="btn-primary">Save Update</button>
             </form>

@@ -10,8 +10,8 @@ class updateServiceController {
         DateTime $newServiceDate,
         int $newCleanerID,
         int $newCategoryID,
-        string $newStatus,
-        int $newViewCount
+        string $newStatus
+        
     ) {
         $service = new Service();
         $newServiceDateString = $newServiceDate->format('Y-m-d H:i:s');
@@ -23,8 +23,8 @@ class updateServiceController {
             $newServiceDateString,
             $newCleanerID,
             $newCategoryID,
-            $newStatus, // Include status
-            $newViewCount  // Include viewCount
+            $newStatus// Include status
+           
         );
     }
 }
