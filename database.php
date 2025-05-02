@@ -62,10 +62,10 @@ if ($checktable->num_rows == 0) {
 
     // Insert default user accounts
     $sql = "INSERT INTO userAccount (userAccountID, username, password, name, userProfileID) VALUES
-        (1, 'harry_tan', 'password123', 'Harry Tan', 1),
-        (2, 'will_ng', 'qwerty456', 'Will Ng', 2),
-        (3, 'hui_yi', 'qwerty456', 'Lim Hui Yi', 3),
-        (4, 's_kumar', 'qwerty456', 'Shamugan Kumar', 4)";
+        (1, 'userAdmin', '12345678', 'Harry Tan', 1),
+        (2, 'cleaner', '12345678', 'Will Ng', 2),
+        (3, 'homeowner', '12345678', 'Lim Hui Yi', 3),
+        (4, 'platformManagement', '12345678', 'Shamugan Kumar', 4)";
     echo $conn->query($sql) ? "Default records inserted into 'userAccount'.<br>" : "Error inserting into 'userAccount': " . $conn->error . "<br>";
 } else {
     echo "Table '$dbtable' already exists.<br>";
@@ -103,6 +103,10 @@ if ($checktable->num_rows == 0) {
         FOREIGN KEY (categoryID) REFERENCES cleaningCategory(categoryID)
     )";
     echo $conn->query($sql) ? "Table '$dbtable' created successfully.<br>" : "Error creating '$dbtable': " . $conn->error . "<br>";
+
+    // Add 'isDeleted' column after the table is created
+    $sql = "ALTER TABLE $dbtable ADD COLUMN isDeleted TINYINT(1) DEFAULT 0";
+    echo $conn->query($sql) ? "'isDeleted' column added to '$dbtable'.<br>" : "Error adding 'isDeleted' column: " . $conn->error . "<br>";
 } else {
     echo "Table '$dbtable' already exists.<br>";
 }
@@ -117,7 +121,7 @@ if ($checktable->num_rows == 0) {
         serviceID INT,
         bookingDate DATETIME,
         FOREIGN KEY (homeOwnerID) REFERENCES userAccount(userAccountID),
-        FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+        FOREIGN KEY (serviceID) REFERENCES service(serviceID) ON DELETE SET NULL
     )";
     echo $conn->query($sql) ? "Table '$dbtable' created successfully.<br>" : "Error creating '$dbtable': " . $conn->error . "<br>";
 } else {
@@ -218,35 +222,17 @@ if ($row['count'] == 0) {
 }
 
 // Check if services already exist to avoid duplicates
-$checkServices = $conn->query("SELECT COUNT(*) as count FROM service WHERE serviceName = 'Kitchen Deep Clean'");
+$checkServices = $conn->query("SELECT COUNT(*) as count FROM service");
 $row = $checkServices->fetch_assoc();
-
 if ($row['count'] == 0) {
-    // Insert services with proper columns
-    $sql = "INSERT INTO service (cleanerID, serviceName, description, price, serviceDate, categoryID, status, viewCount, shortlistCount) VALUES
-        (2, 'Kitchen Deep Clean', 'Intensive cleaning of kitchen surfaces and appliances.', 120.00, '2025-05-05 09:00:00', 1, 1, 5, 2),
-        (2, 'Bathroom Sanitization', 'Professional sanitization of bathroom areas.', 90.00, '2025-05-06 10:00:00', 1, 1, 8, 1),
-        (2, 'Window Washing', 'Interior and exterior window washing for homes.', 70.00, '2025-05-07 11:00:00', 1, 1, 3, 0)";
+    $sql = "INSERT INTO service (cleanerID, serviceName, description, price, serviceDate, categoryID, status) VALUES
+        (2, 'Home Cleaning Service', 'Standard home cleaning service', 50.00, '2025-05-05 09:00:00', 1, 1),
+        (2, 'Office Cleaning Service', 'Complete office cleaning service', 100.00, '2025-05-05 10:00:00', 2, 1),
+        (2, 'Instensive Cleaning', 'Complete office cleaning service', 100.00, '2025-05-05 10:00:00', 2, 1)";
 
-    if ($conn->query($sql)) {
-        echo "Sample services for cleaner inserted.<br>";
-        
-        // Get the IDs of inserted services
-        $firstServiceID = $conn->insert_id;
-        
-        // Insert sample bookings for those services
-        $sql = "INSERT INTO bookingHistory (homeOwnerID, serviceID, bookingDate) VALUES
-            (3, $firstServiceID, '2025-05-05 12:00:00'),
-            (3, " . ($firstServiceID + 1) . ", '2025-05-06 13:30:00'),
-            (7, " . ($firstServiceID + 2) . ", '2025-05-07 15:45:00')";
-        
-        echo $conn->query($sql) ? "Sample bookings inserted into bookingHistory.<br>" : "Error inserting bookings: " . $conn->error . "<br>";
-    } else {
-        echo "Error inserting services: " . $conn->error . "<br>";
-    }
-} else {
-    echo "Services already exist.<br>";
+    
+    echo $conn->query($sql) ? "Services inserted.<br>" : "Error inserting services: " . $conn->error . "<br>";
 }
 
-echo "Database setup completed successfully.<br>";
+$conn->close();
 ?>

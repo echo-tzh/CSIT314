@@ -152,7 +152,6 @@ $shortlistedCount = $controller->viewShortlistedCount($serviceID);
             <p>Service not found.</p>
         <?php endif; ?>
 
-        <a href="viewOwnServicePage.php" class="btn-secondary">Back to All Services</a>
     </div>
 </body>
 

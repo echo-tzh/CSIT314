@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $controller = new CreateServiceController();
     $result = $controller->createService($serviceName, $description, $price, $serviceDate, $cleanerID, $categoryID); // Pass new parameters
     
+    unset($_SESSION['message']);
     if ($result) {
         $_SESSION['message'] = [
             'text' => "Service created successfully!",
@@ -33,6 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'type' => 'error'
         ];
     }
+    // Clear previous message
+
+
     
     // Redirect to prevent form resubmission
     header("Location: ".$_SERVER['PHP_SELF']);

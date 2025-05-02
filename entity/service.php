@@ -36,10 +36,12 @@ class Service {
 
     public function viewOwnServices(int $cleanerID = null) {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status FROM service"; // Added status
-    
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
+                FROM service 
+                WHERE isDeleted = 0";  // Added condition to check for not deleted services
+        
         if ($cleanerID !== null) {
-            $sql .= " WHERE cleanerID = " . $cleanerID;
+            $sql .= " AND cleanerID = " . $cleanerID;  // Filter by cleaner if provided
         }
     
         $sql .= " ORDER BY serviceID";
@@ -53,6 +55,7 @@ class Service {
     
         return $services;
     }
+    
 
     public function viewService(int $serviceID): array {
         $serviceDetails = null;
@@ -103,7 +106,8 @@ class Service {
     }
 
     public function deleteService(int $serviceID): bool {
-        $stmt = $this->conn->prepare("DELETE FROM service WHERE serviceID = ?");
+        // Prepare the statement to update isDeleted to 1 (soft delete)
+        $stmt = $this->conn->prepare("UPDATE service SET isDeleted = 1 WHERE serviceID = ?");
         if ($stmt) {
             $stmt->bind_param("i", $serviceID);
             $result = $stmt->execute();
@@ -137,10 +141,12 @@ class Service {
         $stmt->close();
         return $services;
     }
-
     public function viewAllServices() {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status FROM service ORDER BY serviceID";
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
+                FROM service 
+                WHERE isDeleted = 0 
+                ORDER BY serviceID";
         $result = $this->conn->query($sql);
     
         if ($result && $result->num_rows > 0) {
@@ -151,6 +157,7 @@ class Service {
     
         return $services;
     }
+    
 
     public function viewServiceHomeOwner(int $serviceID): array {
        
