@@ -17,11 +17,14 @@ class bookingHistory {
         $results = [];
 
         $sql = "SELECT bh.bookingID, ua.name AS homeOwnerName, s.serviceName, s.description, s.price, bh.bookingDate
-                FROM bookingHistory bh
-                JOIN service s ON bh.serviceID = s.serviceID
-                JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
-                WHERE s.cleanerID = ?
-                AND (s.serviceName LIKE ? OR s.description LIKE ?)";
+        FROM bookingHistory bh
+        JOIN service s ON bh.serviceID = s.serviceID
+        JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
+        WHERE s.cleanerID = ?
+        AND (s.serviceName LIKE ? OR s.description LIKE ?)
+        AND s.status = 0";
+
+        
         
         $stmt = $this->conn->prepare($sql);
         $likeKeyword = '%' . $keyword . '%';

@@ -1,5 +1,4 @@
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -85,7 +84,7 @@ if ($checktable->num_rows == 0) {
     echo "Table '$dbtable' already exists.<br>";
 }
 
-// Create service table with viewCount column
+// Create service table
 $dbtable = "service";
 $checktable = $conn->query("SHOW TABLES LIKE '$dbtable'");
 if ($checktable->num_rows == 0) {
@@ -99,7 +98,7 @@ if ($checktable->num_rows == 0) {
         categoryID INT,
         status BOOLEAN,
         viewCount INT DEFAULT 0,
-      
+        shortlistCount INT DEFAULT 0,
         FOREIGN KEY (cleanerID) REFERENCES userAccount(userAccountID),
         FOREIGN KEY (categoryID) REFERENCES cleaningCategory(categoryID)
     )";
@@ -183,7 +182,7 @@ if ($checkColumn->num_rows == 0) {
     echo "'status' column already exists in 'userAccount'.<br>";
 }
 
-
+// Add 'description' column to cleaningCategory if it doesn't exist
 $checkColumn = $conn->query("SHOW COLUMNS FROM cleaningCategory LIKE 'description'");
 if ($checkColumn->num_rows == 0) {
     $sql = "ALTER TABLE cleaningCategory ADD COLUMN description VARCHAR(255)";
@@ -192,17 +191,62 @@ if ($checkColumn->num_rows == 0) {
     echo "'description' column already exists in 'cleaningCategory'.<br>";
 }
 
+// Insert additional user accounts if they don't already exist
+$checkUser = $conn->query("SELECT COUNT(*) as count FROM userAccount WHERE username = 'cleaner2'");
+$row = $checkUser->fetch_assoc();
 
-// Add 'shortlistCount' column to service table if it doesn't exist
-$checkColumn = $conn->query("SHOW COLUMNS FROM service LIKE 'shortlistCount'");
-if ($checkColumn->num_rows == 0) {
-    $sql = "ALTER TABLE service ADD COLUMN shortlistCount INT DEFAULT 0";
-    echo $conn->query($sql) ? "'shortlistCount' column added to 'service'.<br>" : "Error adding 'shortlistCount' column: " . $conn->error . "<br>";
-} else {
-    echo "'shortlistCount' column already exists in 'service'.<br>";
+if ($row['count'] == 0) {
+    $sql = "INSERT INTO userAccount (username, password, name, userProfileID) VALUES
+        ('admin2', '12345678', 'User Admin 2', 1),
+        ('cleaner2', '12345678', 'Cleaner 2', 2),
+        ('homeowner2', '12345678', 'Home Owner 2', 3),
+        ('platform2', '12345678', 'Platform Manager 2', 4)";
+    echo $conn->query($sql) ? "Additional predefined users inserted into 'userAccount'.<br>" : "Error inserting additional users: " . $conn->error . "<br>";
 }
 
+// Insert cleaning categories if they don't exist
+$checkCategories = $conn->query("SELECT COUNT(*) as count FROM cleaningCategory");
+$row = $checkCategories->fetch_assoc();
 
-return $conn;
+if ($row['count'] == 0) {
+    $sql = "INSERT INTO cleaningCategory (categoryID, categoryName, description) VALUES
+        (1, 'Home Cleaning', 'General home cleaning services'),
+        (2, 'Office Cleaning', 'Professional office cleaning services'),
+        (3, 'Specialized Cleaning', 'Deep cleaning and specialized services')";
+    
+    echo $conn->query($sql) ? "Cleaning categories inserted.<br>" : "Error inserting cleaning categories: " . $conn->error . "<br>";
+}
 
+// Check if services already exist to avoid duplicates
+$checkServices = $conn->query("SELECT COUNT(*) as count FROM service WHERE serviceName = 'Kitchen Deep Clean'");
+$row = $checkServices->fetch_assoc();
+
+if ($row['count'] == 0) {
+    // Insert services with proper columns
+    $sql = "INSERT INTO service (cleanerID, serviceName, description, price, serviceDate, categoryID, status, viewCount, shortlistCount) VALUES
+        (2, 'Kitchen Deep Clean', 'Intensive cleaning of kitchen surfaces and appliances.', 120.00, '2025-05-05 09:00:00', 1, 1, 5, 2),
+        (2, 'Bathroom Sanitization', 'Professional sanitization of bathroom areas.', 90.00, '2025-05-06 10:00:00', 1, 1, 8, 1),
+        (2, 'Window Washing', 'Interior and exterior window washing for homes.', 70.00, '2025-05-07 11:00:00', 1, 1, 3, 0)";
+
+    if ($conn->query($sql)) {
+        echo "Sample services for cleaner inserted.<br>";
+        
+        // Get the IDs of inserted services
+        $firstServiceID = $conn->insert_id;
+        
+        // Insert sample bookings for those services
+        $sql = "INSERT INTO bookingHistory (homeOwnerID, serviceID, bookingDate) VALUES
+            (3, $firstServiceID, '2025-05-05 12:00:00'),
+            (3, " . ($firstServiceID + 1) . ", '2025-05-06 13:30:00'),
+            (7, " . ($firstServiceID + 2) . ", '2025-05-07 15:45:00')";
+        
+        echo $conn->query($sql) ? "Sample bookings inserted into bookingHistory.<br>" : "Error inserting bookings: " . $conn->error . "<br>";
+    } else {
+        echo "Error inserting services: " . $conn->error . "<br>";
+    }
+} else {
+    echo "Services already exist.<br>";
+}
+
+echo "Database setup completed successfully.<br>";
 ?>
