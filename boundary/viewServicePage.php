@@ -10,6 +10,8 @@ ini_set('display_errors', 1);
 
 // Initialize the controller to get specific service details
 require_once '../controller/viewServiceController.php';
+require_once '../controller/viewViewCountController.php';
+require_once '../controller/viewShortlistedCountController.php';
 
 // Get service ID from POST
 if (isset($_GET['id'])) {
@@ -22,6 +24,16 @@ if (isset($_GET['id'])) {
 
 $controller = new viewServiceController();
 $serviceDetails = $controller->viewService($serviceID);
+
+
+
+
+$controller = new viewViewCountController();
+$viewCount = $controller->viewViewCount($serviceID);
+
+$controller = new viewShortlistedCountController();
+$shortlistedCount = $controller->viewShortlistedCount($serviceID);
+
 
 ?>
 
@@ -129,8 +141,8 @@ $serviceDetails = $controller->viewService($serviceID);
                     }
                     ?>
                 </p>
-                <p><strong>View Count:</strong> <?php echo $serviceDetails['viewCount']; ?></p>
-                <p><strong>Shortlist Count:</strong> <?php echo $serviceDetails['shortlistCount']; ?></p>  </div>
+                <p><strong>View Count:</strong> <?php echo $viewCount['viewCount']; ?></p>
+                <p><strong>Shortlist Count:</strong> <?php echo $shortlistedCount['shortlistCount']; ?></p>  </div>
             </div>
 
         <?php else : ?>

@@ -67,9 +67,7 @@ class Service {
                 s.cleanerID, 
                 s.categoryID,
                 c.categoryName,  
-                s.status, 
-                s.viewCount,
-                s.shortlistCount
+                s.status
             FROM service s
             JOIN cleaningCategory c ON s.categoryID = c.categoryID
             WHERE s.serviceID = ?
@@ -202,6 +200,49 @@ class Service {
     
         $stmt->close();
         return $serviceDetails;
+    }
+
+
+    public function viewViewCount(int $serviceID): array {
+        $viewCount = null;
+    
+        $stmt = $this->conn->prepare("
+            SELECT 
+                viewCount
+            FROM service 
+            WHERE serviceID = ?
+        ");
+        $stmt->bind_param("i", $serviceID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result && $result->num_rows > 0) {
+            $viewCount = $result->fetch_assoc();
+        }
+    
+        $stmt->close();
+        return $viewCount;
+    }
+
+    public function viewShortlistedCount(int $serviceID): array {
+        $shortlistedCount = null;
+    
+        $stmt = $this->conn->prepare("
+            SELECT 
+                shortlistCount
+            FROM service 
+            WHERE serviceID = ?
+        ");
+        $stmt->bind_param("i", $serviceID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result && $result->num_rows > 0) {
+            $shortlistedCount = $result->fetch_assoc();
+        }
+    
+        $stmt->close();
+        return $shortlistedCount;
     }
     
     
