@@ -129,6 +129,9 @@ if (!isset($_SESSION["username"])) {
             <div class="button-container">
                 <a href="viewAllServicePage.php" class="nav-button">View All Cleaning Services</a>
             </div>
+            <div class="button-container">
+                <a href="historyPage.php" class="nav-button">Search History</a>
+            </div>
         <?php endif; ?>
 
         <?php if ($_SESSION["userProfileID"] == 4): ?>

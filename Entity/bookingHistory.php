@@ -39,5 +39,35 @@ class bookingHistory {
         $stmt->close();
         return $results;
     }
+
+    public function searchUsedService(string $keyword, int $homeOwnerID): array {
+        $results = [];
+
+    $sql = "SELECT bh.bookingID,
+                   ua.name AS cleanerName,  -- Alias for cleaner's name
+                   s.serviceName,
+                   s.description,
+                   s.price,
+                   bh.bookingDate
+            FROM bookingHistory bh
+            JOIN service s ON bh.serviceID = s.serviceID
+            JOIN userAccount ua ON s.cleanerID = ua.userAccountID  -- Join to get cleaner's name
+            WHERE bh.homeOwnerID = ?
+              AND (s.serviceName LIKE ? OR s.description LIKE ?)
+              AND s.status = 0";
+
+    $stmt = $this->conn->prepare($sql);
+    $likeKeyword = '%' . $keyword . '%';
+    $stmt->bind_param("iss", $homeOwnerID, $likeKeyword, $likeKeyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $results[] = $row;
+    }
+
+    $stmt->close();
+    return $results;
+    }
 }
 ?>
