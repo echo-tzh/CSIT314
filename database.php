@@ -234,5 +234,8 @@ if ($row['count'] == 0) {
     echo $conn->query($sql) ? "Services inserted.<br>" : "Error inserting services: " . $conn->error . "<br>";
 }
 
+
+
+
 $conn->close();
 ?>
