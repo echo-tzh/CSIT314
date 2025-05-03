@@ -69,8 +69,6 @@ class bookingHistory {
     $stmt->close();
     return $results;
     }
-<<<<<<< HEAD
-=======
 
     public function viewFilteredServices(int $cleanerID, int $categoryID) : array {
         $results = [];
@@ -99,10 +97,6 @@ class bookingHistory {
         }
     }
 
-    public function getFilteredBookingsByCategory($categoryID): array {
-        $bookings = [];
->>>>>>> origin/main
-    
     public function getFilteredBookingsByCategory($categoryID, $homeOwnerID): array {
         $results = [];
         $stmt = $this->conn->prepare("
@@ -130,7 +124,6 @@ class bookingHistory {
         $stmt->close();
         return $results;
     }
-    
 
 
 
