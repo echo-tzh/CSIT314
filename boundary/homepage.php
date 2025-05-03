@@ -123,7 +123,7 @@ if (!isset($_SESSION["username"])) {
             </div>
 
             <div class="button-container">
-                <a href="viewFilteredServicesPage.php" class="nav-button">Search History</a>
+                <a href="viewFilteredServicesPage.php" class="nav-button">View Filter by Service Type</a>
             </div>
         <?php endif; ?>
 
