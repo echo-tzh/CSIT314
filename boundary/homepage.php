@@ -121,6 +121,10 @@ if (!isset($_SESSION["username"])) {
             <div class="button-container">
                 <a href="searchHistoryPage.php" class="nav-button">Search History</a>
             </div>
+
+            <div class="button-container">
+                <a href="viewFilteredServicesPage.php" class="nav-button">Search History</a>
+            </div>
         <?php endif; ?>
 
         <?php if ($_SESSION["userProfileID"] == 3): ?>
