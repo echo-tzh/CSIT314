@@ -69,30 +69,36 @@ class bookingHistory {
     $stmt->close();
     return $results;
     }
-
-    public function getFilteredBookingsByCategory($categoryID): array {
-        $bookings = [];
     
-        $sql = "SELECT b.bookingID, b.homeOwnerID, s.serviceName, c.categoryName, b.bookingDate
-        FROM bookingHistory b
-        JOIN service s ON b.serviceID = s.serviceID
-        JOIN cleaningCategory c ON s.categoryID = c.categoryID
-        WHERE c.categoryID = ?";
-
-    
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $categoryID);
+    public function getFilteredBookingsByCategory($categoryID, $homeOwnerID): array {
+        $results = [];
+        $stmt = $this->conn->prepare("
+            SELECT b.bookingID, b.homeOwnerID, s.serviceName, c.categoryName, b.bookingDate
+            FROM bookingHistory b
+            JOIN service s ON b.serviceID = s.serviceID
+            JOIN cleaningCategory c ON s.categoryID = c.categoryID
+            WHERE s.categoryID = ? 
+            AND b.homeOwnerID = ?
+            AND s.status = 0
+        ");
+        
+        if (!$stmt) {
+            die("Prepare failed: " . $this->conn->error);
+        }
+        
+        $stmt->bind_param("ii", $categoryID, $homeOwnerID);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+        
         while ($row = $result->fetch_assoc()) {
-            $bookings[] = $row;
+            $results[] = $row;
         }
-    
+        
         $stmt->close();
-        return $bookings;
+        return $results;
     }
-
+    
+    
 
 
 }

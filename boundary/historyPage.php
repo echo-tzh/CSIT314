@@ -139,7 +139,7 @@ error_reporting(E_ALL);
     <form method="post">
         <input type="text" name="keyword" placeholder="Enter keyword to search" value="<?php echo isset($_POST['keyword']) ? htmlspecialchars($_POST['keyword']) : ''; ?>" required>
         <button type="submit" name="search" class="btn btn-primary">Search</button>
-        <a href="searchHistoryPage.php" class="btn btn-secondary">Clear</a>
+        <a href="historyPage.php" class="btn btn-secondary">Clear</a>
     </form>
 
     <?php

@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -6,12 +7,15 @@ require_once '../controller/viewFilteredHistoryController.php';
 require_once '../entity/bookingHistory.php';
 require_once '../entity/cleaningCategory.php';
 
+
+
 $controller = new ViewFilteredHistoryController();
 $categories = $controller->getAllCategories();
 $filteredBookings = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryID'])) {
-    $filteredBookings = $controller->getFilteredBookings($_POST['categoryID']);
+    $homeOwnerID = $_SESSION['userAccountID'];
+    $filteredBookings = $controller->getFilteredBookingsByCategory($_POST['categoryID'], $homeOwnerID);
 }
 ?>
 

@@ -9,9 +9,8 @@ class ViewFilteredHistoryController {
         return $categoryEntity->viewAllCleaningCategory(); // returns categoryID and categoryName
     }
 
-    public function getFilteredBookings(string $categoryID): array {
+    public function getFilteredBookingsByCategory(string $categoryID, string $homeOwnerID): array {
         $bookingEntity = new bookingHistory();
-        // Use the method you've already defined
-        return $bookingEntity->getFilteredBookingsByCategory($categoryID); // This method already exists in your BookingHistory entity
+        return $bookingEntity->getFilteredBookingsByCategory($categoryID, $homeOwnerID); // Pass both params
     }
 }
