@@ -70,6 +70,33 @@ class bookingHistory {
     return $results;
     }
 
+    public function viewFilteredServices(int $cleanerID, int $categoryID) : array {
+        $results = [];
+        $sql = "SELECT bh.bookingID, ua.name AS homeOwnerName, s.serviceName, s.description, s.price, bh.bookingDate
+                FROM bookingHistory bh
+                JOIN service s ON bh.serviceID = s.serviceID
+                JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
+                WHERE s.cleanerID= ? AND  s.categoryID = ?";  // Added cleanerID filter
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ii", $cleanerID, $categoryID); //  Bind both parameters
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            while ($row = $result->fetch_assoc()) {
+                $results[] = $row;
+            }
+    
+            $stmt->close();
+            return $results;
+    
+        } catch (Exception $e) {
+            error_log("Database error: " . $e->getMessage());
+            return [];
+        }
+    }
+
     public function getFilteredBookingsByCategory($categoryID): array {
         $bookings = [];
     
