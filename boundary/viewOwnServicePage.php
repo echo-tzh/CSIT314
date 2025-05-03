@@ -1,8 +1,8 @@
 <?php
 session_start();
-// Check if user is logged in and has the right permissions.  Assuming userProfileID 2 is for admins.
+
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 2) {
-    header("Location: login.php"); // Redirect to login page if not logged in or not an admin
+    header("Location: login.php"); 
     exit();
 }
 
