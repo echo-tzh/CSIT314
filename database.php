@@ -237,5 +237,38 @@ if ($row['count'] == 0) {
 
 
 
+
+$conn->query("INSERT INTO service (cleanerID, serviceName, description, price, serviceDate, categoryID, status) VALUES
+(2, 'Service 1', 'Cleaning service #1', 60.0, '2025-05-04 10:00:00', 1, 1),
+(2, 'Service 2', 'Cleaning service #2', 45.0, '2025-05-05 10:00:00', 3, 0),
+(2, 'Service 3', 'Cleaning service #3', 80.0, '2025-05-06 14:00:00', 1, 1),
+(2, 'Service 4', 'Cleaning service #4', 55.0, '2025-05-07 14:00:00', 2, 1),
+(2, 'Service 5', 'Cleaning service #5', 100.0, '2025-05-08 09:00:00', 3, 0),
+(2, 'Service 6', 'Cleaning service #6', 75.0, '2025-05-09 15:00:00', 2, 1),
+(2, 'Service 7', 'Cleaning service #7', 95.0, '2025-05-10 11:00:00', 3, 1),
+(2, 'Service 8', 'Cleaning service #8', 85.0, '2025-05-11 13:00:00', 1, 0),
+(2, 'Service 9', 'Cleaning service #9', 70.0, '2025-05-12 16:00:00', 2, 1),
+(2, 'Service 10', 'Cleaning service #10', 65.0, '2025-05-13 12:00:00', 1, 1)
+");
+
+// Insert bookings by homeowner (homeOwnerID = 3)
+$conn->query("INSERT INTO bookingHistory (homeOwnerID, serviceID, bookingDate) VALUES
+(3, 1, '2025-05-04 10:00:00'),
+(3, 2, '2025-05-05 10:00:00'),
+(3, 3, '2025-05-06 14:00:00'),
+(3, 4, '2025-05-07 14:00:00'),
+(3, 5, '2025-05-08 09:00:00'),
+(3, 6, '2025-05-09 15:00:00'),
+(3, 7, '2025-05-10 11:00:00'),
+(3, 8, '2025-05-11 13:00:00'),
+(3, 9, '2025-05-12 16:00:00'),
+(3, 10, '2025-05-13 12:00:00')
+");
+
+echo "Database seeded successfully.";
+
+
+
+
 $conn->close();
 ?>
