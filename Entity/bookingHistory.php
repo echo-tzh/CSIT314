@@ -69,5 +69,31 @@ class bookingHistory {
     $stmt->close();
     return $results;
     }
+
+    public function getFilteredBookingsByCategory($categoryID): array {
+        $bookings = [];
+    
+        $sql = "SELECT b.bookingID, b.homeOwnerID, s.serviceName, c.categoryName, b.bookingDate
+        FROM bookingHistory b
+        JOIN service s ON b.serviceID = s.serviceID
+        JOIN cleaningCategory c ON s.categoryID = c.categoryID
+        WHERE c.categoryID = ?";
+
+    
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $categoryID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        while ($row = $result->fetch_assoc()) {
+            $bookings[] = $row;
+        }
+    
+        $stmt->close();
+        return $bookings;
+    }
+
+
+
 }
 ?>

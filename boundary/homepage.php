@@ -132,6 +132,7 @@ if (!isset($_SESSION["username"])) {
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="viewAllServicePage.php" class="nav-button">View All Cleaning Services</a>
+                <a href="viewFilteredHistoryPage.php" class="nav-button">Search Filtered History Page</a>
             </div>
             <div class="button-container">
                 <a href="historyPage.php" class="nav-button">Search History</a>
