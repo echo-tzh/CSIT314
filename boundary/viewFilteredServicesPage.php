@@ -182,10 +182,15 @@ if (isset($_GET['category']) && is_numeric($_GET['category'])) {
                 <?php endforeach; ?>
             </tbody>
         </table>
+        
     <?php elseif (isset($_GET['category'])): ?>
         <p>No services found for this category.</p>
     <?php endif; ?>
+    
 </div>
-    </div>
+<div class="button-group">
+            <a href="homepage.php" class="btn-primary">Back to Home</a>
+</div>
+</div>
 </body>
 </html>
