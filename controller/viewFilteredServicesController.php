@@ -7,7 +7,7 @@ class viewFilteredServicesController {
     public function viewFilteredServices(int $cleanerID, int $categoryID) {
         $confirmedServices = new bookingHistory();
         
-        return $confirmedServices->viewFilteredServices($categoryID, $cleanerID);
+        return $confirmedServices->viewFilteredServices($cleanerID, $categoryID);
     }
 }
 ?>
