@@ -70,7 +70,8 @@ class bookingHistory {
     return $results;
     }
 
-    public function viewFilteredServices(int $cleanerID, int $categoryID) : array {
+    //this is for cleaner to view filtered services.
+    public function viewOwnFilteredServices(int $cleanerID, int $categoryID) : array {
         $results = [];
         $sql = "SELECT bh.bookingID, ua.name AS homeOwnerName, s.serviceName, s.description, s.price, bh.bookingDate
                 FROM bookingHistory bh
@@ -100,7 +101,9 @@ class bookingHistory {
         }
     }
 
-    public function getFilteredBookingsByCategory($categoryID, $homeOwnerID): array {
+    
+    //Get filtered, this is for homeowner
+    public function getAllFilteredHistoryByCategory($categoryID, $homeOwnerID): array {
         $results = [];
         $stmt = $this->conn->prepare("
             SELECT b.bookingID, b.homeOwnerID, s.serviceName, c.categoryName, b.bookingDate

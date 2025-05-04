@@ -6,6 +6,8 @@ if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 2) {
     exit();
 }
 
+
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -38,12 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_serviceID'])) 
     exit();
 }
 
+
 // Handle search
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+$userAccountID = $_SESSION['userAccountID'];
 if (!empty($searchTerm)) {
-    require_once '../controller/searchServiceController.php';  
-    $searchServiceController = new searchServiceController();    
-    $services = $searchServiceController->searchService($searchTerm); 
+    require_once '../controller/searchOwnServiceController.php';  
+    $searchOwnServiceController = new searchOwnServiceController();    
+    $services = $searchOwnServiceController->searchOwnService($searchTerm, $userAccountID); 
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 require_once '../entity/cleaningCategory.php';
 
-class viewAllsCleaningCategoryController {
+class viewAllCleaningCategoryController {
 
     public function viewCleaningCategory($categoryID) {
         // Create entity object

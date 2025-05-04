@@ -123,7 +123,7 @@ if (!isset($_SESSION["username"])) {
             </div>
 
             <div class="button-container">
-                <a href="viewFilteredServicesPage.php" class="nav-button">View Filter by Service Type</a>
+                <a href="viewOwnFilteredServicesPage.php" class="nav-button">View Filter by Service Type</a>
             </div>
         <?php endif; ?>
 
@@ -132,7 +132,7 @@ if (!isset($_SESSION["username"])) {
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="viewAllServicePage.php" class="nav-button">View All Cleaning Services</a>
-                <a href="viewFilteredHistoryPage.php" class="nav-button">Search Filtered History Page</a>
+                <a href="viewAllFilteredHistoryPage.php" class="nav-button">Search Filtered History Page</a>
             </div>
             <div class="button-container">
                 <a href="historyPage.php" class="nav-button">Search History</a>

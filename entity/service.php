@@ -34,6 +34,7 @@ class Service {
         return true;
     }
 
+    //cleaner to view 
     public function viewOwnServices(int $cleanerID = null) {
         $services = [];
         $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
@@ -56,7 +57,7 @@ class Service {
         return $services;
     }
     
-
+    //Homeowner to view 
     public function viewService(int $serviceID): array {
         $serviceDetails = null;
 
@@ -86,7 +87,7 @@ class Service {
         $stmt->close();
         return $serviceDetails;
     }
-
+    //cleaner
     public function updateService(
         int $serviceID,
         string $newName,
@@ -105,6 +106,7 @@ class Service {
         return $success;
     }
 
+    //cleaner
     public function deleteService(int $serviceID): bool {
         // Prepare the statement to update isDeleted to 1 (soft delete)
         $stmt = $this->conn->prepare("UPDATE service SET isDeleted = 1 WHERE serviceID = ?");
@@ -118,6 +120,8 @@ class Service {
         }
     }
 
+
+    //this is for homeowner to search
     public function searchService(string $searchTerm): array {
         $services = [];
         $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
@@ -141,6 +145,33 @@ class Service {
         $stmt->close();
         return $services;
     }
+
+
+    // this is for cleaner to search 
+    public function searchOwnService(string $searchTerm, int $userAccountID): array {
+        $services = [];
+        $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
+        $stmt = $this->conn->prepare("
+            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status
+            FROM service
+            WHERE (serviceName LIKE ? OR description LIKE ?) AND cleanerID = ?
+            ORDER BY serviceID
+        ");
+        $stmt->bind_param("ssi", $searchTerm, $searchTerm, $userAccountID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $services[] = $row;
+            }
+        }
+        $stmt->close();
+        return $services;
+    }
+
+
+
+    //homeowner view 
     public function viewAllServices() {
         $services = [];
         $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
