@@ -11,17 +11,17 @@ require_once '../controller/viewAllCleaningCategoryController.php';
 $categoryController = new viewAllCleaningCategoryController();
 $categories = $categoryController->viewAllCleaningCategory();
 
-require_once '../controller/viewFilteredServicesController.php';
+require_once '../controller/viewOwnFilteredServicesController.php';
 
 $filteredServices = [];
 $userAccountID = $_SESSION['userAccountID']; // Get userAccountID from session
 
 if (isset($_GET['category']) && is_numeric($_GET['category'])) {
     $categoryID = intval($_GET['category']);
-    $filteredController = new viewFilteredServicesController();
+    $filteredController = new viewOwnFilteredServicesController();
     // Pass the userAccountID to the controller function
     
-    $filteredServices = $filteredController->viewFilteredServices($userAccountID, $categoryID);
+    $filteredServices = $filteredController->viewOwnFilteredServices($userAccountID, $categoryID);
 }
 ?>
 
