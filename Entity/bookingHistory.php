@@ -76,7 +76,10 @@ class bookingHistory {
                 FROM bookingHistory bh
                 JOIN service s ON bh.serviceID = s.serviceID
                 JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
-                WHERE s.cleanerID= ? AND  s.categoryID = ?";  // Added cleanerID filter
+                WHERE s.cleanerID= ? 
+                AND s.categoryID = ?
+                AND s.status = 0
+                ";  // Added cleanerID filter
     
         try {
             $stmt = $this->conn->prepare($sql);
