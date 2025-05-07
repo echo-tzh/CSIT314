@@ -145,7 +145,15 @@ if (!isset($_SESSION["username"])) {
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
                 <a href="viewAllCleaningCategoryPage.php" class="nav-button">View And Manage All Category</a>
+
             </div>
+
+            <div class="button-container">
+
+                <a href="getDailyReportPage.php" class="nav-button">View Daily Report</a>
+                <a href="getWeeklyReportPage.php" class="nav-button">View Weekly Report</a>
+                <a href="getMonthlyReportPage.php" class="nav-button">View Monthly Report</a>
+        </div>
         <?php endif; ?>
 
         <a href="logoutPage.php" class="logout-button">Log Out</a>

@@ -139,7 +139,7 @@ $userProfiles = $userProfile->getAllUserProfiles();
             
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($userAccount['username']); ?>" required>
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($userAccount['username']); ?>" readonly>
             </div>
             
             <div class="form-group">
