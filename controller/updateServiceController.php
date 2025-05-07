@@ -10,7 +10,6 @@ class updateServiceController {
         DateTime $newServiceDate,
         int $newCleanerID,
         int $newCategoryID,
-        string $newStatus
         
     ) {
         $service = new Service();
@@ -22,9 +21,7 @@ class updateServiceController {
             $newPrice,
             $newServiceDateString,
             $newCleanerID,
-            $newCategoryID,
-            $newStatus// Include status
-           
+            $newCategoryID,          
         );
     }
 }

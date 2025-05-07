@@ -21,8 +21,7 @@ class bookingHistory {
         JOIN service s ON bh.serviceID = s.serviceID
         JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
         WHERE s.cleanerID = ?
-        AND (s.serviceName LIKE ? OR s.description LIKE ?)
-        AND s.status = 0";
+        AND (s.serviceName LIKE ? OR s.description LIKE ?)";
 
         
         
@@ -54,7 +53,7 @@ class bookingHistory {
             JOIN userAccount ua ON s.cleanerID = ua.userAccountID  -- Join to get cleaner's name
             WHERE bh.homeOwnerID = ?
               AND (s.serviceName LIKE ? OR s.description LIKE ?)
-              AND s.status = 0";
+              ";
 
     $stmt = $this->conn->prepare($sql);
     $likeKeyword = '%' . $keyword . '%';
@@ -79,7 +78,6 @@ class bookingHistory {
                 JOIN userAccount ua ON bh.homeOwnerID = ua.userAccountID
                 WHERE s.cleanerID= ? 
                 AND s.categoryID = ?
-                AND s.status = 0
                 ";  // Added cleanerID filter
     
         try {
@@ -112,7 +110,6 @@ class bookingHistory {
             JOIN cleaningCategory c ON s.categoryID = c.categoryID
             WHERE s.categoryID = ? 
             AND b.homeOwnerID = ?
-            AND s.status = 0
         ");
         
         if (!$stmt) {

@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceID'])) {
         <div class="detail-row"><span class="detail-label">Description:</span> <?php echo htmlspecialchars($serviceDetails['description']); ?></div>
         <div class="detail-row"><span class="detail-label">Price:</span> $<?php echo htmlspecialchars($serviceDetails['price']); ?></div>
         <div class="detail-row"><span class="detail-label">Date:</span> <?php echo htmlspecialchars($serviceDetails['serviceDate']); ?></div>
-        <div class="detail-row"><span class="detail-label">Status:</span> <?php echo $serviceDetails['status'] == 1 ? "Available" : "Booked"; ?></div>
         
     <?php else: ?>
         <p>Service not found.</p>

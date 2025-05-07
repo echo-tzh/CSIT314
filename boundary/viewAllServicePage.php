@@ -278,7 +278,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
                 <th>Description</th>
                 <th>Price</th>
                 <th>Service Date</th>
-                <th>Status</th>
                 <th>View</th>
                 <th>Favorites</th>
             </tr>
@@ -295,11 +294,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
                             <?php
                             $date = new DateTime($service['serviceDate']);
                             echo htmlspecialchars($date->format('Y-m-d H:i'));
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo $service['status'] == 1 ? "Available" : "Booked";
                             ?>
                         </td>
                         <td>

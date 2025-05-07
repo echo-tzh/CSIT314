@@ -114,7 +114,7 @@ if (!empty($searchTerm)) {
                     <th class="px-4 py-2 border">Description</th>
                     <th class="px-4 py-2 border">Price</th>
                     <th class="px-4 py-2 border">Service Date</th>
-                    <th class="px-4 py-2 border">Status</th> <th class="px-4 py-2 border">View</th>
+                    <th class="px-4 py-2 border">View</th>
                     <th class="px-4 py-2 border">Update</th>
                     <th class="px-4 py-2 border">Delete</th>
                 </tr>
@@ -132,19 +132,6 @@ if (!empty($searchTerm)) {
                             //  Format the date for display (adjust format as needed)
                             $date = new DateTime($service['serviceDate']);
                             echo htmlspecialchars($date->format('Y-m-d H:i')); 
-                        ?>
-                    </td>
-                    <td class="px-4 py-2 border">
-                        <?php 
-                            if (isset($service['status'])) {
-                                if ($service['status'] == 1) {
-                                    echo "Available";
-                                } else {
-                                    echo "Booked";
-                                }
-                            } else {
-                                echo "N/A"; // Or any other default value you prefer
-                            }
                         ?>
                     </td>
                     <td class="px-4 py-2 border">

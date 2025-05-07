@@ -25,7 +25,7 @@ class Service {
         }
         $checkStmt->close();
         
-        $insertStmt = $this->conn->prepare("INSERT INTO service (serviceName, description, price, serviceDate, cleanerID, categoryID, status, viewCount) VALUES (?, ?, ?, ?, ?, ?, 1, 0)");
+        $insertStmt = $this->conn->prepare("INSERT INTO service (serviceName, description, price, serviceDate, cleanerID, categoryID, viewCount) VALUES (?, ?, ?, ?, ?, ?, 0)");
         $insertStmt->bind_param("ssdssi", $serviceName, $description, $price, $serviceDate, $cleanerID, $categoryID);
         
         $success = $insertStmt->execute();
@@ -37,7 +37,7 @@ class Service {
     //cleaner to view 
     public function viewOwnServices(int $cleanerID = null) {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID 
                 FROM service 
                 WHERE isDeleted = 0";  // Added condition to check for not deleted services
         
@@ -70,8 +70,7 @@ class Service {
                 s.serviceDate, 
                 s.cleanerID, 
                 s.categoryID,
-                c.categoryName,  
-                s.status
+                c.categoryName  
             FROM service s
             JOIN cleaningCategory c ON s.categoryID = c.categoryID
             WHERE s.serviceID = ?
@@ -96,10 +95,9 @@ class Service {
         string $newServiceDate,
         int $newCleanerID,
         int $newCategoryID,
-        string $newStatus // Include status
     ): bool {
-        $stmt = $this->conn->prepare("UPDATE service SET serviceName = ?, description = ?, price = ?, serviceDate = ?, cleanerID = ?, categoryID = ?, status = ? WHERE serviceID = ?");
-        $stmt->bind_param("ssdssiii", $newName, $newDescription, $newPrice, $newServiceDate, $newCleanerID, $newCategoryID, $newStatus, $serviceID);
+        $stmt = $this->conn->prepare("UPDATE service SET serviceName = ?, description = ?, price = ?, serviceDate = ?, cleanerID = ?, categoryID = ? WHERE serviceID = ?");
+        $stmt->bind_param("ssdssii", $newName, $newDescription, $newPrice, $newServiceDate, $newCleanerID, $newCategoryID, $serviceID);
         $success = $stmt->execute();
         $stmt->close();
         
@@ -127,7 +125,7 @@ class Service {
         $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
 
         $stmt = $this->conn->prepare("
-            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status
+            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
             FROM service 
             WHERE serviceName LIKE ? OR description LIKE ?
             ORDER BY serviceID
@@ -152,7 +150,7 @@ class Service {
         $services = [];
         $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
         $stmt = $this->conn->prepare("
-            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status
+            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
             FROM service
             WHERE (serviceName LIKE ? OR description LIKE ?) AND cleanerID = ?
             ORDER BY serviceID
@@ -174,7 +172,7 @@ class Service {
     //homeowner view 
     public function viewAllServices() {
         $services = [];
-        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID, status 
+        $sql = "SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID 
                 FROM service 
                 WHERE isDeleted = 0 
                 ORDER BY serviceID";
@@ -221,7 +219,6 @@ class Service {
                 s.cleanerID, 
                 s.categoryID,
                 c.categoryName,  
-                s.status, 
                 s.viewCount
             FROM service s
             JOIN cleaningCategory c ON s.categoryID = c.categoryID

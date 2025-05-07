@@ -132,15 +132,6 @@ $shortlistedCount = $controller->viewShortlistedCount($serviceID);
                     <input type="text" id="cleanerID" name="cleanerID" value="<?php echo htmlspecialchars($service['cleanerID']); ?>" required readonly>
                 </div>
                 <p><strong>Category:</strong> <?php echo $serviceDetails['categoryName']; ?></p>
-                <p><strong>Status:</strong> 
-                    <?php 
-                    if ($serviceDetails['status'] == 1) {
-                        echo "Available";
-                    } else {
-                        echo "Booked"; // Or any other status you want to display for 0
-                    }
-                    ?>
-                </p>
                 <p><strong>View Count:</strong> <?php echo $viewCount['viewCount']; ?></p>
                 <p><strong>Shortlist Count:</strong> <?php echo $shortlistedCount['shortlistCount']; ?></p>  </div>
 

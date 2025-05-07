@@ -57,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceName'])) {
 
     $newCleanerID = $_POST['cleanerID'];
     $newCategoryID = $_POST['categoryID'];
-    $newStatus = $_POST['status'];
 
 
     // If POST request with service name, update the service
@@ -71,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['serviceName'])) {
             $newServiceDate, // Pass the DateTime object
             $newCleanerID,
             $newCategoryID,
-            $newStatus,
         );
 
         if ($success) {
@@ -284,18 +282,6 @@ if (isset($_SESSION['status'])) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <select id="status" name="status" required>
-                        <option value="1" <?php if ($service['status'] == 1)
-                              echo 'selected'; ?>>Available</option>
-                        <option value="0" <?php if ($service['status'] == 0)
-                              echo 'selected'; ?>>Booked</option>
-                    </select>
-                </div>
-
-
 
                 <button type="submit" class="btn-primary">Save Update</button>
             </form>
