@@ -2,8 +2,7 @@
 require_once '../entity/userProfile.php';
 
 class UpdateUserProfileController {
-    //  No __construct()
-
+   
     public function updateUserProfile(int $userProfileID, string $userProfileName, string $description): bool {
         //  **Crucial:  Server-side validation**
         $userProfileName = trim($userProfileName);

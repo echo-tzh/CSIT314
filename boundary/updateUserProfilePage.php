@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: viewAlluserProfilePage.php");
         exit();
     } else {
-        $_SESSION['status'] = "Failed to update user profile.";
+        $_SESSION['status'] = "<p style='color:red;'>Failed to update user profile.</p>"; // Set with HTML and inline style
     }
 }
 ?>
@@ -59,6 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="p-6">
+        <?php
+            if (isset($_SESSION['status'])) {
+                echo $_SESSION['status']; // Display the status message
+                unset($_SESSION['status']);   // Clear the session status
+            }
+        ?>
         <form action="" method="post" class="space-y-4">
             <div>
                 <label for="userProfileName" class="block font-medium text-gray-700">Name:</label>

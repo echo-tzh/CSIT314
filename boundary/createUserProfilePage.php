@@ -13,7 +13,7 @@ $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newProfile = [
-        'profile' => filter_input(INPUT_POST, 'profile', FILTER_SANITIZE_STRING),
+        'userProfileName' => filter_input(INPUT_POST, 'userProfileName', FILTER_SANITIZE_STRING),  // Changed key to 'userProfileName'
         'description' => filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING)
     ];
 
@@ -121,8 +121,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if ($message) echo $message; ?>
         <form action="" method="post">
             <div class="form-group">
-                <label for="profile">User Profile Name:</label>
-                <input type="text" id="profile" name="profile" placeholder="Enter new user profile name" required>
+                <label for="userProfileName">User Profile Name:</label>
+                <input type="text" id="userProfileName" name="userProfileName" placeholder="Enter new user profile name" required>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>

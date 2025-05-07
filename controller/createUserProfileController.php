@@ -3,16 +3,16 @@ include '../Entity/userProfile.php';
 
 class CreateUserProfileController {
 
-    public function createUserProfile(array $newProfile): bool {
+    public function createUserProfile(array $newUserProfile): bool {
             
-        $profileName = trim($newProfile['profile']);
-        $description = trim($newProfile['description']);
+        $userProfileName = trim($newUserProfile['userProfileName']);
+        $description = trim($newUserProfile['description']);
 
         // Create UserProfile entity
-        $userProfile = new UserProfile(); // DB conn inside
+        $userProfile = new UserProfile(); 
 
         // Call createUserProfile method in the entity
-        return $userProfile->createUserProfile($profileName, $description);
+        return $userProfile->createUserProfile($userProfileName, $description);
     }
 }
 ?>

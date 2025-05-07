@@ -59,59 +59,62 @@ class UserProfile {
     }
 
     public function createUserProfile(string $userProfileName, string $description): bool {
-         // Validation is now in the controller
-        $sql = "INSERT INTO userProfile (userProfileName, description) VALUES (?, ?)";
+        $sql = "INSERT INTO userProfile (userProfileName, description)
+                SELECT ?, ?
+                WHERE NOT EXISTS (SELECT 1 FROM userProfile WHERE userProfileName = ?)";
         $stmt = $this->conn->prepare($sql);
-
+    
         if (!$stmt) {
             error_log("Prepare failed: " . $this->conn->error);
             return false;
         }
-
-        $stmt->bind_param("ss", $userProfileName, $description);
-
+    
+        // Bind the parameters - note that $userProfileName is bound twice
+        $stmt->bind_param("sss", $userProfileName, $description, $userProfileName);
+    
         if ($stmt->execute()) {
-            return true;
+            // Check the number of affected rows to see if the insertion occurred
+            return $stmt->affected_rows > 0;
         } else {
             error_log("Database error: " . $this->conn->error);
             return false;
         }
     }
 
-    public function updateUserProfile(int $userProfileID, string $userProfileName, string $description): bool {  // **Modified function signature**
+    public function updateUserProfile(int $userProfileID, string $userProfileName, string $description): bool {
         // Validation is now in the controller
         $checkSql = "SELECT * FROM userProfile WHERE userProfileName = ? AND userProfileID != ?";
         $checkStmt = $this->conn->prepare($checkSql);
-
+    
         if (!$checkStmt) {
             error_log("Prepare failed: " . $this->conn->error);
             return false;
         }
-
+    
         $checkStmt->bind_param("si", $userProfileName, $userProfileID);
         $checkStmt->execute();
         $checkResult = $checkStmt->get_result();
-
+    
         if ($checkResult && $checkResult->num_rows > 0) {
             return false;
         }
-
-        $sql = "UPDATE userProfile SET userProfileName = ?, description = ? WHERE userProfileID = ?";  // **Modified SQL**
+    
+        $sql = "UPDATE userProfile SET userProfileName = ?, description = ? WHERE userProfileID = ?";
         $stmt = $this->conn->prepare($sql);
-
+    
         if (!$stmt) {
             error_log("Prepare failed: " . $this->conn->error);
             return false;
         }
-
-        $stmt->bind_param("ssi", $userProfileName, $description, $userProfileID);  // **Modified bind_param**
+    
+        $stmt->bind_param("ssi", $userProfileName, $description, $userProfileID);
         $result = $stmt->execute();
-
+    
         if (!$result) {
             error_log("Database error: " . $this->conn->error);
             return false;
         }
-
+    
         return $result;
     }
 
