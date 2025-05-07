@@ -251,6 +251,16 @@ if ($row['count'] == 0) {
     executeSafely($conn, $sql, "Bookings insertion");
 }
 
+
+
+
+// Remove status column from service if it exists
+if (columnExists($conn, "service", "status")) {
+    executeSafely($conn, "ALTER TABLE service DROP COLUMN status", 
+                "Removing status column from service");
+}
+
+
 echo "<h3>Database Setup Complete</h3>";
 echo "The database has been successfully set up with all necessary tables and sample data.<br>";
 echo "Important Note: All service statuses have been set to 0 so they will be visible in filtered views.<br>";
