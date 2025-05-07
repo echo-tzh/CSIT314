@@ -260,6 +260,11 @@ if (columnExists($conn, "service", "status")) {
                 "Removing status column from service");
 }
 
+if (!columnExists($conn, "cleaningCategory", "isDeleted")) {
+    executeSafely($conn, "ALTER TABLE cleaningCategory ADD COLUMN isDeleted TINYINT(1) DEFAULT 0", 
+                "Adding isDeleted column to cleaningCategory");
+}
+
 
 echo "<h3>Database Setup Complete</h3>";
 echo "The database has been successfully set up with all necessary tables and sample data.<br>";

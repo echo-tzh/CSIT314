@@ -42,7 +42,7 @@ class cleaningCategory {
     public function viewAllCleaningCategory() {
         $categories = [];
         
-        $sql = "SELECT categoryID, categoryName FROM cleaningCategory ORDER BY categoryID";
+        $sql = "SELECT categoryID, categoryName FROM cleaningCategory WHERE isDeleted = 0 ORDER BY categoryID";
         $result = $this->conn->query($sql);
         
         if ($result && $result->num_rows > 0) {
@@ -80,9 +80,9 @@ class cleaningCategory {
     }
 
     public function deleteCleaningCategory($categoryID) {
-        $conn = $this->conn; 
-    
-        $stmt = $conn->prepare("DELETE FROM cleaningcategory WHERE categoryID = ?");
+        $conn = $this->conn;
+        // Update the isDeleted flag instead of performing a physical delete
+        $stmt = $conn->prepare("UPDATE cleaningCategory SET isDeleted = 1 WHERE categoryID = ?");
         if ($stmt) {
             $stmt->bind_param("i", $categoryID);
             $result = $stmt->execute();

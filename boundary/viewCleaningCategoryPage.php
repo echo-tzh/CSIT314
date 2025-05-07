@@ -15,7 +15,7 @@ require_once '../controller/viewCleaningCategoryController.php';
 $categoryID =$_POST['categoryID'];
 
 
-$controller = new viewAllCleaningCategoryController();
+$controller = new viewCleaningCategoryController();
 $categoryDetails = $controller->viewCleaningCategory($categoryID);
 
 
