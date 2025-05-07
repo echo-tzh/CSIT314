@@ -10,7 +10,7 @@ if (!isset($_SESSION["username"])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Admin Homepage</title>
+    <title>Homepage</title>
     <style>
         body {
             font-family: sans-serif;
