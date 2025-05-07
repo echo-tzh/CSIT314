@@ -7,7 +7,7 @@ class ViewUserProfileController {
     
         $userProfileEntity = new UserProfile();
 
-        $result = $userProfileEntity->getUserProfile($userProfileID);
+        $result = $userProfileEntity->viewUserProfile($userProfileID);
         if ($result) {
             return $result;
         } else {

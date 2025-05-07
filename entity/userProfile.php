@@ -20,7 +20,7 @@ class UserProfile {
     }
 
 
-    public function getUserProfile(int $userProfileID): array {  // Changed return type to array
+    public function viewUserProfile(int $userProfileID): array {  // Changed return type to array
         if (empty($userProfileID)) {
             return [];  // Return an empty array on failure
         }
