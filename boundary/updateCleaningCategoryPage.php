@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryName'])) {
         header("Location: viewAllCleaningCategoryPage.php");
         exit();
     } else {
-        $error = "Failed to update category.";
+        $error = "Failed to update category, category name exists";
     }
 }
 ?>

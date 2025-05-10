@@ -71,15 +71,30 @@ class cleaningCategory {
     }
     
     public function updateCategory($categoryID, $newName, $newDescription): bool {
+    // Check if the new category name already exists (excluding current categoryID)
+        $checkStmt = $this->conn->prepare("SELECT categoryID FROM cleaningCategory WHERE categoryName = ? AND categoryID != ?");
+        $checkStmt->bind_param("si", $newName, $categoryID);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+
+        if ($checkStmt->num_rows > 0) {
+        // Category name already exists
+            $checkStmt->close();
+            return false;
+        }
+        $checkStmt->close();
+
+    // Proceed with update
         $stmt = $this->conn->prepare("UPDATE cleaningCategory SET categoryName = ?, description = ? WHERE categoryID = ?");
         $stmt->bind_param("ssi", $newName, $newDescription, $categoryID);
         $success = $stmt->execute();
         $stmt->close();
-        
-        return $success;
-    }
 
-    public function deleteCleaningCategory($categoryID) {
+    return $success;
+}
+
+
+    public function deleteCleaningCategory($categoryID):bool {
         $conn = $this->conn;
         // Update the isDeleted flag instead of performing a physical delete
         $stmt = $conn->prepare("UPDATE cleaningCategory SET isDeleted = 1 WHERE categoryID = ?");

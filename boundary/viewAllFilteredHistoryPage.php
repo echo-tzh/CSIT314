@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryID'])) {
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Filter</button>
-            <a href="viewFilteredHistoryPage.php" class="btn btn-secondary">Clear</a>
+            <a href="viewAllFilteredHistoryPage.php" class="btn btn-secondary">Clear</a>
         </form>
 
         <?php if (!empty($filteredBookings)): ?>

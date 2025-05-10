@@ -14,24 +14,29 @@ class UserAccount {
         }
     }
 
-    public function login(string $username, string $password): array|bool {
-        // Prepare SQL query to check for matching credentials
-        $sql = "SELECT * FROM userAccount WHERE username = '$username' AND password = '$password' AND status = 1";
-        $result = $this->conn->query($sql);
+public function login(string $username, string $password): array|bool {
+    // Use prepared statement with BINARY for case-sensitive match
+    $stmt = $this->conn->prepare("SELECT * FROM userAccount WHERE BINARY username = ? AND BINARY password = ? AND status = 1");
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result && $result->num_rows > 0) {
-            $userData = $result->fetch_assoc();
-            return [
-                'success' => true,
-                'user_data' => $userData
-            ];
-        } else {
-            return [
-                'success' => false,
-                'user_data' => null  
-            ];
-        }
+    if ($result && $result->num_rows > 0) {
+        $userData = $result->fetch_assoc();
+        $stmt->close();
+        return [
+            'success' => true,
+            'user_data' => $userData
+        ];
+    } else {
+        $stmt->close();
+        return [
+            'success' => false,
+            'user_data' => null  
+        ];
     }
+}
+
 
     public function createAccount($username, $password, $name, $userProfileID): bool {
         // Check if username already exists
