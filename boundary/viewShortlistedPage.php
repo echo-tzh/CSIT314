@@ -1,5 +1,8 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 // Check if user is logged in
 if (!isset($_SESSION['userAccountID'])) {
@@ -7,37 +10,33 @@ if (!isset($_SESSION['userAccountID'])) {
     exit();
 }
 
-// Include the controller
+// Include the controllers
 require_once '../controller/viewShortlistedController.php';
-$viewShortlistedController = new ViewShortlistedController();
+require_once '../controller/searchShortlistedController.php';
 
 // Get the homeOwnerID from the session
-$homeOwnerID = $_SESSION['userAccountID']; // Assuming userAccountID is the homeOwnerID
+$homeOwnerID = $_SESSION['userAccountID'];
 
-// Get all shortlisted services
-$shortlistedServices = $viewShortlistedController->getShortlistedServices($homeOwnerID);
+// Initialize controllers
+
+$searchController = new searchShortlistedController();
+
+// Initialize variables
+$searchTerm = '';
+$shortlistedServices = [];
 
 // Check if a search was submitted via POST
-$searchTerm = '';
-$filteredServices = $shortlistedServices; // Default to showing all services
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($_POST['search'])) {
-    // If search is submitted, filter the services in the boundary for now
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $searchTerm = trim($_POST['search']);
-    $filteredServices = [];
     
-    // Filter services based on search term
-    foreach ($shortlistedServices as $service) {
-        if (
-            stripos($service['serviceName'], $searchTerm) !== false ||
-            stripos($service['description'], $searchTerm) !== false ||
-            stripos($service['price'], $searchTerm) !== false ||
-            stripos($service['serviceDate'], $searchTerm) !== false
-        ) {
-            $filteredServices[] = $service;
-        }
+    if (!empty($searchTerm)) {
+        // Use the search controller to find matching shortlisted services
+        $shortlistedServices = $searchController->searchShortlist($searchTerm, $homeOwnerID);
     }
-}
+
+} 
+    // Initial page load - get all shortlisted services
+    
 ?>
 
 <!DOCTYPE html>
@@ -234,11 +233,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($
             <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="clear-button">Clear</a>
         </form>
 
-        <?php if (empty($filteredServices)): ?>
+        <?php if (empty($shortlistedServices)): ?>
             <?php if (!empty($searchTerm)): ?>
                 <div class="no-results">No services found matching "<?php echo htmlspecialchars($searchTerm); ?>"</div>
             <?php else: ?>
-                <p>You have not shortlisted any services yet.</p>
+                <p>Key in services to start searching</p>
             <?php endif; ?>
         <?php else: ?>
             <?php if (!empty($searchTerm)): ?>
@@ -256,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($filteredServices as $service): ?>
+                    <?php foreach ($shortlistedServices as $service): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($service['serviceID']); ?></td>
                             <td><?php echo htmlspecialchars($service['serviceName']); ?></td>
