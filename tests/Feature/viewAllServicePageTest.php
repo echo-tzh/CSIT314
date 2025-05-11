@@ -16,7 +16,7 @@ afterEach(function () {
 it('shows all services if user is logged in as admin', function () {
     // Mock the controller behavior
     $_SESSION['userAccountID'] = 1; // Admin user
-    $_SESSION['userProfileID'] = 3; // Admin profile
+    $_SESSION['userProfileID'] = 3; // Cleaner profile
 
     // Mock the service fetching all services
     $this->mockService->shouldReceive('viewAllServices')
