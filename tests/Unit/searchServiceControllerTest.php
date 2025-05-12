@@ -2,25 +2,12 @@
 
 // tests/Unit/SearchServiceControllerTest.php
 
-// Assuming your Service entity might be namespaced like in viewAllServiceControllerTest
-// If not, you'll need to ensure Service class is available globally (e.g. via require_once)
-// For consistency with viewAllServiceControllerTest.php, let's assume a namespace
-// use App\Entities\Service; // If your Service class is in this namespace
-// If your Service class is global and not namespaced, remove the line above
-// and ensure it's loaded, e.g. via require_once if not autoloaded.
+
 
 use Mockery; // Already used in your original searchServiceControllerTest
 
-// If your classes are not autoloaded via Composer and PSR-4 for App\Controller,
-// ensure the controller is loaded.
-// The require_once for the controller will be handled by the chdir() approach
-// if we continue with that to solve the relative path issue inside the controller.
-// Or, if you've solved the path issue by correcting it in the source file, then a direct require_once here would be fine.
 
-// --- Ensure classes are available ---
-// This is crucial. Adjust paths if your structure is different or if you've fixed the include.
-// If you fixed the internal `require_once` in searchServiceController.php to use `__DIR__`,
-// then the `chdir` workaround is not needed here.
+
 $controllerPathOkay = false;
 if (file_exists(__DIR__ . '/../../controller/searchServiceController.php')) {
     // Attempt to include service.php first, as it's a dependency for searchServiceController
