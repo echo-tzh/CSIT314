@@ -9,7 +9,7 @@ class ViewAllFilteredHistoryController {
         return $categoryEntity->viewAllCleaningCategory(); // returns categoryID and categoryName
     }
 
-    public function getAllFilteredHistoryByCategory(string $categoryID, int $homeOwnerID): array {
+    public function getAllFilteredHistoryByCategory(int $categoryID, int $homeOwnerID): array {
         $bookingEntity = new bookingHistory();
         return $bookingEntity->getAllFilteredHistoryByCategory($categoryID, $homeOwnerID); // Pass both params
     }

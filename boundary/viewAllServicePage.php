@@ -27,7 +27,7 @@ if (!empty($searchTerm)) {
 }
 
 // Get the homeOwnerID from the session
-$homeOwnerID = $_SESSION['userAccountID']; // Assuming userAccountID is the homeOwnerID
+$homeOwnerID = $_SESSION['userAccountID']; 
 
 // Handle Favorite Saving (if triggered)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id'])) {
