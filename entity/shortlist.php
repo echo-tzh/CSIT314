@@ -1,19 +1,26 @@
 <?php
 
 
-
+require_once __DIR__ . '/../inc_dbconnect.php';
 class Shortlist {
     private $conn;
-
     public function __construct() {
-        // You can either connect here directly or include a separate db class
-        include '../inc_dbconnect.php'; // Sets up $conn
+   
+        include __DIR__ . '/../inc_dbconnect.php'; // New line
+
         $this->conn = $conn;
 
+        // Ensure that the connection is successful
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
     }
+
+    public function setConn($conn){
+        $this ->conn =$conn;
+    }
+
+    
 
 
     public function saveFavorite(int $homeOwnerID, int $serviceID): bool {
@@ -102,42 +109,40 @@ class Shortlist {
     }
 
     public function searchShortlist(string $searchTerm): array {
-        // Get homeOwnerID from session
-        if (!isset($_SESSION['userAccountID'])) {
-            return []; // Return empty array if not logged in
-        }
-        $homeOwnerID = $_SESSION['userAccountID'];
-        
-        // First get the shortlisted service IDs
-        $shortlistedServiceIds = $this->getShortlistedServiceIds($homeOwnerID);
-        
-        // If no shortlisted services, return empty array
-        if (empty($shortlistedServiceIds)) {
-            return [];
-        }
-        
-        // Get service controller to fetch service details
-        $serviceController = new viewAllServiceController();
-        $services = $serviceController->viewAllServices();
-        
-        // Filter services based on shortlist and search term
-        $result = [];
-        foreach ($services as $service) {
-            if (in_array($service['serviceID'], $shortlistedServiceIds)) {
-                // Check if search term appears in any relevant fields
-                if (
-                    stripos($service['serviceName'], $searchTerm) !== false ||
-                    stripos($service['description'], $searchTerm) !== false ||
-                    stripos($service['price'], $searchTerm) !== false ||
-                    stripos($service['serviceDate'], $searchTerm) !== false
-                ) {
-                    $result[] = $service;
-                }
+    // Get homeOwnerID from session
+    if (!isset($_SESSION['userAccountID'])) {
+        return []; // Return empty array if not logged in
+    }
+    $homeOwnerID = $_SESSION['userAccountID'];
+    
+    // First get the shortlisted service IDs
+    $shortlistedServiceIds = $this->getShortlistedServiceIds($homeOwnerID);
+    
+    // If no shortlisted services, return empty array
+    if (empty($shortlistedServiceIds)) {
+        return [];
+    }
+    
+    // Get service controller to fetch service details
+    $serviceController = new viewAllServiceController();
+    $services = $serviceController->viewAllServices();
+    
+    // Filter services based on shortlist and search term
+    $result = [];
+    foreach ($services as $service) {
+        if (in_array($service['serviceID'], $shortlistedServiceIds)) {
+            // Only check name and description
+            if (
+                stripos($service['serviceName'], $searchTerm) !== false ||
+                stripos($service['description'], $searchTerm) !== false
+            ) {
+                $result[] = $service;
             }
         }
-        
-        return $result;
     }
+    
+    return $result;
+}
 
 
 }

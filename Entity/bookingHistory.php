@@ -13,6 +13,7 @@ class bookingHistory {
         }
     }
 
+
     public function searchConfirmedMatches(string $keyword, int $cleanerID): array {
         $results = [];
 
@@ -39,6 +40,7 @@ class bookingHistory {
         return $results;
     }
 
+    //for homeowner
     public function searchUsedService(string $keyword, int $homeOwnerID): array {
         $results = [];
 

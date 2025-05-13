@@ -1,6 +1,6 @@
 <?php
 // saveFavoriteController.php
-include '../entity/shortlist.php';
+require_once __DIR__ . '/../entity/shortlist.php';
 
 class SaveFavoriteController {
 

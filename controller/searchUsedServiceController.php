@@ -1,5 +1,6 @@
 <?php
-require_once '../entity/bookingHistory.php';
+require_once __DIR__ . '/../entity/bookingHistory.php';
+
 
 class searchUsedServiceController {
     public function searchUsedService(string $keyword): array {
