@@ -3,16 +3,13 @@
 include_once '../entity/userProfile.php';
 
 class ViewUserProfileController {
-    public function viewUserProfile(int $userProfileID) {
+    public function viewUserProfile(int $userProfileID):array {
     
         $userProfileEntity = new UserProfile();
 
         $result = $userProfileEntity->viewUserProfile($userProfileID);
-        if ($result) {
-            return $result;
-        } else {
-            return []; // Return an empty array on failure
-        }
+        return $result;
     }
+
 }
 ?>

@@ -2,7 +2,7 @@
 require_once '../entity/service.php';
 
 class viewServiceHomeOwnerController {
-    public function viewServiceHomeOwner($serviceID) {
+    public function viewServiceHomeOwner($serviceID):array{
         $serviceEntity = new Service();
         return $serviceEntity->viewServiceHomeOwner($serviceID);
     }

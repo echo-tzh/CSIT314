@@ -2,10 +2,10 @@
 include '../entity/cleaningCategory.php';
 
 class CreateCategoryController {
-    public function createCategory($categoryName, $description) {
+    public function createCategory(String $categoryName, String $description):bool {
         $cleaningCategory = new CleaningCategory();
         $result = $cleaningCategory->createCategory($categoryName, $description);
-        return $result === true;
+        return $result;
     }
     
 }

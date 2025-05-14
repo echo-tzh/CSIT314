@@ -3,7 +3,7 @@ require_once '../entity/service.php';
 
 class viewShortlistedCountController {
 
-    public function viewShortlistedCount(int $serviceID) {
+    public function viewShortlistedCount(int $serviceID):array {
         // Create entity object
         $serviceEntity = new Service();
 

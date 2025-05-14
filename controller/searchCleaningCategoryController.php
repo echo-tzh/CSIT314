@@ -3,9 +3,9 @@ require_once '../entity/CleaningCategory.php';
 
 class searchCleaningCategoryController {
 
-    public function searchCleaningCategory($searchCleaningCat) {
+    public function searchCleaningCategory(string $searchCleaningCat):array {
         $cleaningCategory = new CleaningCategory();
-        return $cleaningCategory->searchCategory($searchCleaningCat);
+        return $cleaningCategory->searchCleaningCategory($searchCleaningCat);
     }
 }
 ?>

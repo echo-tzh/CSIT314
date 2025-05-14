@@ -103,7 +103,7 @@ class bookingHistory {
 
     
     //Get filtered, this is for homeowner
-    public function getAllFilteredHistoryByCategory($categoryID, $homeOwnerID): array {
+    public function getAllFilteredHistoryByCategory(int $categoryID, int $homeOwnerID): array {
         $results = [];
         $stmt = $this->conn->prepare("
             SELECT b.bookingID, b.homeOwnerID, s.serviceName, c.categoryName, b.bookingDate

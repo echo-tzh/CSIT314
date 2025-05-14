@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result) {
         $message = "<p class='success-message'>User profile successfully created!</p>";
     } else {
-        $message = "<p class='error-message'>Failed to create user profile.</p>";
+        $message = "<p class='error-message'>Failed to create user profile. Profile exists</p>";
     }
 }
 ?>

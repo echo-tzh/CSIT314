@@ -58,28 +58,33 @@ class UserProfile {
         return $userProfiles;
     }
 
-    public function createUserProfile(string $userProfileName, string $description): bool {
-        $sql = "INSERT INTO userProfile (userProfileName, description)
-                SELECT ?, ?
-                WHERE NOT EXISTS (SELECT 1 FROM userProfile WHERE userProfileName = ?)";
-        $stmt = $this->conn->prepare($sql);
-    
-        if (!$stmt) {
-            error_log("Prepare failed: " . $this->conn->error);
-            return false;
-        }
-    
-        // Bind the parameters - note that $userProfileName is bound twice
-        $stmt->bind_param("sss", $userProfileName, $description, $userProfileName);
-    
-        if ($stmt->execute()) {
-            // Check the number of affected rows to see if the insertion occurred
-            return $stmt->affected_rows > 0;
-        } else {
-            error_log("Database error: " . $this->conn->error);
-            return false;
-        }
+   public function createUserProfile(array $newUserProfile): bool {
+    $userProfileName = trim($newUserProfile['userProfileName']);
+    $description = trim($newUserProfile['description']);
+
+    $sql = "INSERT INTO userProfile (userProfileName, description)
+            SELECT ?, ?
+            WHERE NOT EXISTS (SELECT 1 FROM userProfile WHERE userProfileName = ?)";
+
+    $stmt = $this->conn->prepare($sql);
+
+    if (!$stmt) {
+        error_log("Prepare failed: " . $this->conn->error);
+        return false;
     }
+
+    // Bind the parameters - note that $userProfileName is bound twice
+    $stmt->bind_param("sss", $userProfileName, $description, $userProfileName);
+
+    if ($stmt->execute()) {
+        // Check if a row was inserted
+        return $stmt->affected_rows > 0;
+    } else {
+        error_log("Database error: " . $this->conn->error);
+        return false;
+    }
+}
+
 
     public function updateUserProfile(int $userProfileID, string $userProfileName, string $description): bool {
         // Validation is now in the controller
@@ -118,29 +123,7 @@ class UserProfile {
         return $result;
     }
 
-    public function deleteUserProfile(int $userProfileID): bool {
-        if (empty($userProfileID)) {
-            return false;
-        }
 
-        $sql = "DELETE FROM userProfile WHERE userProfileID = ?";
-        $stmt = $this->conn->prepare($sql);
-
-        if (!$stmt) {
-            error_log("Prepare failed: " . $this->conn->error);
-            return false;
-        }
-
-        $stmt->bind_param("i", $userProfileID);
-        $result = $stmt->execute();
-
-        if (!$result) {
-            error_log("Database error: " . $this->conn->error);
-            return false;
-        }
-
-        return $result;
-    }
 
     public function suspendUserProfile(int $userProfileID): bool {
         if (empty($userProfileID)) {

@@ -15,7 +15,7 @@ class cleaningCategory {
     }
 
     //create category
-    public function createCategory($categoryName, $description): bool {
+    public function createCategory(string $categoryName, string $description): bool {
         // Check if the category already exists
         $checkStmt = $this->conn->prepare("SELECT categoryID FROM cleaningCategory WHERE categoryName = ?");
         $checkStmt->bind_param("s", $categoryName);
@@ -54,7 +54,7 @@ class cleaningCategory {
         return $categories;
     }
 
-    public function viewCleaningCategory($categoryID):array {
+    public function viewCleaningCategory(int $categoryID):array {
         $categoryDetails = null;
     
         $stmt = $this->conn->prepare("SELECT categoryID, categoryName, description FROM cleaningCategory WHERE categoryID = ?");
@@ -70,7 +70,7 @@ class cleaningCategory {
         return $categoryDetails;
     }
     
-    public function updateCategory($categoryID, $newName, $newDescription): bool {
+    public function updateCategory(int $categoryID, String $newName, String $newDescription): bool {
     // Check if the new category name already exists (excluding current categoryID)
         $checkStmt = $this->conn->prepare("SELECT categoryID FROM cleaningCategory WHERE categoryName = ? AND categoryID != ?");
         $checkStmt->bind_param("si", $newName, $categoryID);
@@ -94,7 +94,7 @@ class cleaningCategory {
 }
 
 
-    public function deleteCleaningCategory($categoryID):bool {
+    public function deleteCleaningCategory(int $categoryID):bool {
         $conn = $this->conn;
         // Update the isDeleted flag instead of performing a physical delete
         $stmt = $conn->prepare("UPDATE cleaningCategory SET isDeleted = 1 WHERE categoryID = ?");
@@ -108,10 +108,10 @@ class cleaningCategory {
         }
     }
 
-    public function searchCategory($searchCleaningCat) {
+    public function searchCleaningCategory(string $searchCleaningCat):array {
         $categories = [];
     
-        $stmt = $this->conn->prepare("SELECT categoryID, categoryName FROM cleaningCategory WHERE categoryName LIKE ?");
+       $stmt = $this->conn->prepare("SELECT categoryID, categoryName FROM cleaningCategory WHERE categoryName LIKE ? AND isDeleted = 0");
         $searchTerm = "%" . $searchCleaningCat . "%";
         $stmt->bind_param("s", $searchTerm);
         $stmt->execute();

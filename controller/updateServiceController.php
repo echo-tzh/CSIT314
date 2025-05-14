@@ -11,7 +11,7 @@ class updateServiceController {
         int $newCleanerID,
         int $newCategoryID,
         
-    ) {
+    ):bool {
         $service = new Service();
         $newServiceDateString = $newServiceDate->format('Y-m-d H:i:s');
         return $service->updateService(

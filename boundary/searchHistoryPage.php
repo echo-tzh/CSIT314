@@ -143,8 +143,9 @@ error_reporting(E_ALL);
     <?php
     if (isset($_POST['search'])) {
         $keyword = $_POST['keyword'];
+        $cleanerID = $_SESSION['userAccountID'];
         $controller = new searchConfirmedController();
-        $results = $controller->searchConfirmedMatches($keyword);
+        $results = $controller->searchConfirmedMatches($keyword, $cleanerID);
 
         if (count($results) > 0) {
             echo "<table class='data-table'>

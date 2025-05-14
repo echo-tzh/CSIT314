@@ -3,7 +3,7 @@ require_once '../entity/service.php';
 
 class viewServiceController {
 
-    public function viewService(int $serviceID) {
+    public function viewService(int $serviceID):array {
         // Create entity object
         $serviceEntity = new Service();
 

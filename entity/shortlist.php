@@ -84,65 +84,49 @@ class Shortlist {
         return $result && $updateResult; // Return true only if both insert and update succeed
     }
     
+public function getShortlistedServices(int $homeOwnerID): array {
+    $query = "SELECT s.* 
+              FROM shortlist sl
+              JOIN service s ON sl.serviceID = s.serviceID
+              WHERE sl.homeOwnerID = ?";
+              
+    $stmt = $this->conn->prepare($query);
 
-    public function getShortlistedServiceIds(int $homeOwnerID): array {
-        $ids = [];
-        $query = "SELECT serviceID FROM shortlist WHERE homeOwnerID = ?";
-        $stmt = $this->conn->prepare($query);
-    
-        if (!$stmt) {
-            error_log("Database prepare error: " . $this->conn->error);
-            return []; // Return empty array on error
-        }
-    
-        $stmt->bind_param("i", $homeOwnerID);
-        $stmt->execute();
-        $serviceId = 0; // Initialize $serviceId (or null, depending on your needs)
-        $stmt->bind_result($serviceId);
-    
-        while ($stmt->fetch()) {
-            $ids[] = $serviceId;
-        }
-    
-        $stmt->close();
-        return $ids;
+    if (!$stmt) {
+        error_log("Database prepare error: " . $this->conn->error);
+        return []; // Return empty array on error
     }
 
-    public function searchShortlist(string $searchTerm): array {
-    // Get homeOwnerID from session
-    if (!isset($_SESSION['userAccountID'])) {
-        return []; // Return empty array if not logged in
+    $stmt->bind_param("i", $homeOwnerID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $services = [];
+    while ($row = $result->fetch_assoc()) {
+        $services[] = $row;
     }
-    $homeOwnerID = $_SESSION['userAccountID'];
-    
-    // First get the shortlisted service IDs
-    $shortlistedServiceIds = $this->getShortlistedServiceIds($homeOwnerID);
-    
-    // If no shortlisted services, return empty array
-    if (empty($shortlistedServiceIds)) {
-        return [];
-    }
-    
-    // Get service controller to fetch service details
-    $serviceController = new viewAllServiceController();
-    $services = $serviceController->viewAllServices();
-    
-    // Filter services based on shortlist and search term
+
+    $stmt->close();
+    return $services;
+}
+
+
+   public function searchShortlist(string $searchTerm, int $homeOwnerID): array {
+    $shortlistedServices = $this->getShortlistedServices($homeOwnerID);
+
     $result = [];
-    foreach ($services as $service) {
-        if (in_array($service['serviceID'], $shortlistedServiceIds)) {
-            // Only check name and description
-            if (
-                stripos($service['serviceName'], $searchTerm) !== false ||
-                stripos($service['description'], $searchTerm) !== false
-            ) {
-                $result[] = $service;
-            }
+    foreach ($shortlistedServices as $service) {
+        if (
+            stripos($service['serviceName'], $searchTerm) !== false ||
+            stripos($service['description'], $searchTerm) !== false
+        ) {
+            $result[] = $service;
         }
     }
-    
+
     return $result;
 }
+
 
 
 }

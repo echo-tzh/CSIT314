@@ -3,7 +3,7 @@ require_once '../entity/cleaningCategory.php';
 
 class viewCleaningCategoryController {
 
-    public function viewCleaningCategory($categoryID) {
+    public function viewCleaningCategory(int $categoryID):array {
         // Create entity object
         $categoryEntity = new cleaningCategory();
 

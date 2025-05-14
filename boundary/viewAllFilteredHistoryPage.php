@@ -9,8 +9,12 @@ require_once '../entity/cleaningCategory.php';
 
 
 
+$catEntity = new cleaningCategory();
+$categories = $catEntity->viewAllCleaningCategory();
+
+
 $controller = new ViewAllFilteredHistoryController();
-$categories = $controller->getAllCategories();
+
 $filteredBookings = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryID'])) {

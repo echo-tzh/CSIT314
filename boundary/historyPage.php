@@ -145,8 +145,9 @@ error_reporting(E_ALL);
     <?php
     if (isset($_POST['search'])) {
         $keyword = $_POST['keyword'];
+        $homeOwnerID = $_SESSION['userAccountID'];
         $controller = new searchUsedServiceController();
-        $results = $controller->searchUsedService($keyword);
+        $results = $controller->searchUsedService($keyword, $homeOwnerID);
 
         if (count($results) > 0) {
             echo "<table class='data-table'>
