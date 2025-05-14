@@ -5,7 +5,7 @@ include_once '../entity/userProfile.php';
 include_once '../inc_dbconnect.php';
 
 class ViewAccountController {
-    public function viewAccount($userID) {
+    public function viewAccount(int $userID):array {
         // Validate input
         
 

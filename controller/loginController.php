@@ -3,7 +3,7 @@ include '../entity/UserAccount.php';
 //include '../inc_dbconnect.php';
 
 class loginController {
-    public function login(string $username, string $password) {
+    public function login(string $username, string $password):array|bool {
         $userAccount = new UserAccount();
         return $userAccount->login($username, $password);
     }
