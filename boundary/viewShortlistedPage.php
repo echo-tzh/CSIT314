@@ -25,17 +25,23 @@ $searchController = new searchShortlistedController();
 $searchTerm = '';
 $shortlistedServices = [];
 
-// Check if a search was submitted via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $searchTerm = trim($_POST['search']);
-    
-    if (!empty($searchTerm)) {
+
+    if ($searchTerm === '') {
+        // Empty search term, show all shortlisted services
+        $viewController = new viewShortlistedController();
+        $shortlistedServices = $viewController->getShortlistedServices($homeOwnerID);
+    } else {
         // Use the search controller to find matching shortlisted services
         $shortlistedServices = $searchController->searchShortlist($searchTerm, $homeOwnerID);
     }
-
-} 
+} else {
     // Initial page load - get all shortlisted services
+    $viewController = new viewShortlistedController();
+    $shortlistedServices = $viewController->getShortlistedServices($homeOwnerID);
+}
+
     
 ?>
 

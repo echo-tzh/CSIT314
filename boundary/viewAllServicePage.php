@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
             </form>
         </div>
 
-        <a href="viewShortlistedPage.php" class="btn btn-primary">Search My Favorites</a>
+        <a href="viewShortlistedPage.php" class="btn btn-primary">View and Search My Favorites</a>
 
         <table class="data-table">
             <thead>
