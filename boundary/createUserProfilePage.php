@@ -12,13 +12,11 @@ include '../controller/createUserProfileController.php';
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $newProfile = [
-        'userProfileName' => filter_input(INPUT_POST, 'userProfileName', FILTER_SANITIZE_STRING),  // Changed key to 'userProfileName'
-        'description' => filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING)
-    ];
+    $userProfileName = filter_input(INPUT_POST, 'userProfileName', FILTER_SANITIZE_STRING);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
 
     $controller = new CreateUserProfileController();
-    $result = $controller->createUserProfile($newProfile);
+    $result = $controller->createUserProfile($userProfileName, $description);
 
     if ($result) {
         $message = "<p class='success-message'>User profile successfully created!</p>";
@@ -27,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -38,12 +38,7 @@ public function login(string $username, string $password): array|bool {
 }
 
 
- public function createAccount(array $newUser): bool {
-    $username = $newUser['username'];
-    $password = $newUser['password'];
-    $name = $newUser['name'];
-    $userProfileID = $newUser['userProfileID'];
-
+public function createAccount(string $username, string $password, string $name, int $userProfileID): bool {
     // Check if username already exists
     $checkSql = "SELECT * FROM userAccount WHERE username = ?";
     $checkStmt = $this->conn->prepare($checkSql);
@@ -72,6 +67,7 @@ public function login(string $username, string $password): array|bool {
     $stmt->bind_param("sssi", $username, $password, $name, $userProfileID);
     return $stmt->execute();
 }
+
 
 
 

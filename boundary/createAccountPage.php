@@ -8,17 +8,17 @@ if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $newUser = [
-        'username' => $_POST['username'],
-        'password' => $_POST['password'],
-        'name' => $_POST['name'],
-        'userProfileID' => $_POST['userProfileID']
-    ];
-    
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $name = $_POST['name'];
+    $userProfileID = $_POST['userProfileID'];
+
     $controller = new createAccountController($conn);
-    $result = $controller->createAccount($newUser);
+    $result = $controller->createAccount($username, $password, $name, $userProfileID);
     
     if ($result) {
         echo "<p style='color: green;'>Account successfully created!</p>";

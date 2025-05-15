@@ -1,12 +1,13 @@
 <?php
-include '../Entity/userProfile.php';
+include '../entity/userProfile.php';
 
 class CreateUserProfileController {
 
-   public function createUserProfile(array $newUserProfile): bool {
-    $userProfile = new UserProfile(); 
-    return $userProfile->createUserProfile($newUserProfile);
-}
+    public function createUserProfile(string $userProfileName, string $description): bool {
+        $userProfile = new UserProfile(); 
+        return $userProfile->createUserProfile($userProfileName, $description);
+    }
 
 }
 ?>
+

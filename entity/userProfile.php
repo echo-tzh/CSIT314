@@ -46,7 +46,7 @@ class UserProfile {
 
     public function getAllUserProfiles(): array {
         $userProfiles = [];
-        $query = "SELECT userProfileID, userProfileName, description FROM userProfile";
+        $query = "SELECT userProfileID, userProfileName, description, status FROM userProfile";
         $result = $this->conn->query($query);  // Consider prepared statement
 
         if ($result && $result->num_rows > 0) {
@@ -58,12 +58,12 @@ class UserProfile {
         return $userProfiles;
     }
 
-   public function createUserProfile(array $newUserProfile): bool {
-    $userProfileName = trim($newUserProfile['userProfileName']);
-    $description = trim($newUserProfile['description']);
+   public function createUserProfile(string $userProfileName, string $description): bool {
+    $userProfileName = trim($userProfileName);
+    $description = trim($description);
 
-    $sql = "INSERT INTO userProfile (userProfileName, description)
-            SELECT ?, ?
+    $sql = "INSERT INTO userProfile (userProfileName, description, status)
+            SELECT ?, ?, 1
             WHERE NOT EXISTS (SELECT 1 FROM userProfile WHERE userProfileName = ?)";
 
     $stmt = $this->conn->prepare($sql);
@@ -73,17 +73,16 @@ class UserProfile {
         return false;
     }
 
-    // Bind the parameters - note that $userProfileName is bound twice
     $stmt->bind_param("sss", $userProfileName, $description, $userProfileName);
 
     if ($stmt->execute()) {
-        // Check if a row was inserted
         return $stmt->affected_rows > 0;
     } else {
         error_log("Database error: " . $this->conn->error);
         return false;
     }
 }
+
 
 
     public function updateUserProfile(int $userProfileID, string $userProfileName, string $description): bool {

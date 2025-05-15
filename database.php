@@ -47,18 +47,20 @@ function columnExists($conn, $tableName, $columnName) {
 // 1. userProfile table
 if (!tableExists($conn, "userProfile")) {
     $sql = "CREATE TABLE userProfile (
-        userProfileID INT AUTO_INCREMENT PRIMARY KEY,
-        userProfileName VARCHAR(255) NOT NULL
-    )";
+    userProfileID INT AUTO_INCREMENT PRIMARY KEY,
+    userProfileName VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    status INT
+)";
     executeSafely($conn, $sql, "userProfile table creation");
     
     // Insert default user profiles
-    $sql = "INSERT INTO userProfile (userProfileID, userProfileName) VALUES
-        (1, 'User Admin'),
-        (2, 'Cleaner'),
-        (3, 'Home Owner'),
-        (4, 'Platform Management')";
-    executeSafely($conn, $sql, "Default userProfile insertion");
+$sql = "INSERT INTO userProfile (userProfileID, userProfileName, status) VALUES
+    (1, 'User Admin', 1),
+    (2, 'Cleaner', 1),
+    (3, 'Home Owner', 1),
+    (4, 'Platform Management', 1)";
+executeSafely($conn, $sql, "Default userProfile insertion");
 } else {
     echo "Table 'userProfile' already exists.<br>";
 }

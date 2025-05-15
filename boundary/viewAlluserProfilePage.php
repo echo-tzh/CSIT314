@@ -98,12 +98,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
                                 <a href="viewUserProfilePage.php?id=<?php echo $profile['userProfileID']; ?>" class="text-blue-500 hover:underline">View</a>
                             </td>
                             <td class="px-4 py-2 border"><a href="updateUserProfilePage.php?id=<?php echo $profile['userProfileID']; ?>" class="text-green-500 hover:underline">Update</a></td>
-                            <td class="px-4 py-2 border">
-                                <form action="viewAlluserProfilePage.php" method="post" onsubmit="return confirm('Are you sure you want to suspend this user profile?');">
-                                    <input type="hidden" name="id" value="<?php echo $profile['userProfileID']; ?>">
-                                    <button type="submit" class="text-red-500 hover:underline bg-transparent border-none cursor-pointer">Suspend</button>
-                                </form>
-                            </td>
+                        <td class="px-4 py-2 border">
+                            <?php if (isset($profile['status']) && $profile['status'] == 0): ?>
+                            <span class="text-gray-500 italic">Already Suspended</span>
+                        <?php else: ?>
+                            <form action="viewAlluserProfilePage.php" method="post" onsubmit="return confirm('Are you sure you want to suspend this user profile?');">
+                            <input type="hidden" name="id" value="<?php echo $profile['userProfileID']; ?>">
+                            <button type="submit" class="text-red-500 hover:underline bg-transparent border-none cursor-pointer">Suspend</button>
+                        </form>
+                    <?php endif; ?>
+                    </td>
+
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

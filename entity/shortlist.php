@@ -16,12 +16,6 @@ class Shortlist {
         }
     }
 
-    public function setConn($conn){
-        $this ->conn =$conn;
-    }
-
-    
-
 
     public function saveFavorite(int $homeOwnerID, int $serviceID): bool {
         // Check if the favorite already exists
