@@ -5,16 +5,13 @@ require_once __DIR__ . '/../inc_dbconnect.php';
 class Service {
     private $conn;
 
-    public function __construct($conn = null) {
-        if ($conn !== null) {
-            $this->conn = $conn;
-        } else {
-            include '../inc_dbconnect.php';
-            $this->conn = $conn;
+    public function __construct() {
+        
+        include '../inc_dbconnect.php'; 
+        $this->conn = $conn;
 
-            if ($this->conn->connect_error) {
-                die("Connection failed: " . $this->conn->connect_error);
-            }
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
         }
     }
 

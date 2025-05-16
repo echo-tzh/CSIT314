@@ -23,14 +23,14 @@ class SearchServiceController {
     }
 }
 
-// ✅ Test: Entity returns matching results
+
 test('Entity: searchService returns matching services', function () {
     $entity = new TestServiceEntity();
     $result = $entity->searchService('cleaning');
     expect($result)->toHaveCount(3);
 });
 
-// ✅ Test: Entity returns empty for no match
+
 test('Entity: searchService returns empty if no match', function () {
     $entity = new TestServiceEntity();
     $result = $entity->searchService('massage');
@@ -38,7 +38,7 @@ test('Entity: searchService returns empty if no match', function () {
     expect($result)->toBeEmpty();
 });
 
-// ✅ Test: Controller calls entity and returns correct result
+
 test('Controller: search returns correct data from entity', function () {
     $controller = new SearchServiceController();
     $result = $controller->search('window');

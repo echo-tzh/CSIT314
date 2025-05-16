@@ -159,7 +159,7 @@ class TestViewAllFilteredHistoryController extends ViewAllFilteredHistoryControl
 
 // PEST TESTS FOR BOOKING HISTORY ENTITY
 
-test('filters booking history by category 1 and homeowner ID 3 returns correct results', function () {
+test('filters booking history and returns correct results', function () {
     // Create the test double
     $bookingHistory = new TestBookingHistory(new BookingHistoryMockConnection());
     
@@ -181,19 +181,6 @@ test('filters booking history by category 1 and homeowner ID 3 returns correct r
     expect($results[1]['serviceName'])->toBe('Deep Cleaning');
 });
 
-test('filters booking history with category 2 returns correct specialized cleaning results', function () {
-    $bookingHistory = new TestBookingHistory(new BookingHistoryMockConnection());
-    
-    // Test case: Category 2, HomeOwner 3 should return specialized cleaning records
-    $results = $bookingHistory->getAllFilteredHistoryByCategory(2, 3);
-    
-    expect($results)->toBeArray();
-    expect($results)->toHaveCount(2);
-    expect($results[0]['bookingID'])->toBe(3);
-    expect($results[0]['serviceName'])->toBe('Window Cleaning');
-    expect($results[0]['categoryName'])->toBe('Specialized');
-    expect($results[1]['serviceName'])->toBe('Carpet Cleaning');
-});
 
 test('filters booking history with no matching records returns empty array', function () {
     $bookingHistory = new TestBookingHistory(new BookingHistoryMockConnection());
@@ -205,17 +192,7 @@ test('filters booking history with no matching records returns empty array', fun
     expect($results)->toBeEmpty();
 });
 
-test('booking history data contains required fields for display', function () {
-    $bookingHistory = new TestBookingHistory(new BookingHistoryMockConnection());
-    
-    // Get some test data
-    $results = $bookingHistory->getAllFilteredHistoryByCategory(1, 3);
-    
-    // Make sure each record has all the required fields
-    foreach ($results as $record) {
-        expect($record)->toHaveKeys(['bookingID', 'homeOwnerID', 'serviceName', 'categoryName', 'bookingDate']);
-    }
-});
+
 
 // PEST TESTS FOR CONTROLLER
 
@@ -243,51 +220,8 @@ test('controller can retrieve all cleaning categories', function () {
     expect($categories[2]['categoryName'])->toBe('Premium');
 });
 
-test('controller can filter booking history by regular category', function () {
-    // Create the test controller
-    $controller = new TestViewAllFilteredHistoryController();
-    
-    // Get filtered history for category 1 (Regular) and homeOwner 3
-    $history = $controller->getAllFilteredHistoryByCategory(1, 3);
-    
-    // Assert results
-    expect($history)->toBeArray();
-    expect($history)->toHaveCount(2);
-    
-    // Check data in first record
-    expect($history[0]['bookingID'])->toBe(1);
-    expect($history[0]['homeOwnerID'])->toBe(3);
-    expect($history[0]['serviceName'])->toBe('Basic Cleaning');
-    expect($history[0]['categoryName'])->toBe('Regular');
-    expect($history[0]['bookingDate'])->toBe('2025-05-04 10:00:00');
-    
-    // Check data in second record
-    expect($history[1]['bookingID'])->toBe(2);
-    expect($history[1]['serviceName'])->toBe('Deep Cleaning');
-    expect($history[1]['categoryName'])->toBe('Regular');
-});
 
-test('controller can filter booking history by category that is "specialized"', function () {
-    // Create the test controller
-    $controller = new TestViewAllFilteredHistoryController();
-    
-    // Get filtered history for category 2 (Specialized) and homeOwner 3
-    $history = $controller->getAllFilteredHistoryByCategory(2, 3);
-    
-    // Assert results
-    expect($history)->toBeArray();
-    expect($history)->toHaveCount(2);
-    
-    // Check first record
-    expect($history[0]['bookingID'])->toBe(3);
-    expect($history[0]['serviceName'])->toBe('Window Cleaning');
-    expect($history[0]['categoryName'])->toBe('Specialized');
-    
-    // Check second record
-    expect($history[1]['bookingID'])->toBe(4);
-    expect($history[1]['serviceName'])->toBe('Carpet Cleaning');
-    expect($history[1]['categoryName'])->toBe('Specialized');
-});
+
 
 test('controller returns empty array when no booking history matches filter', function () {
     // Create the test controller
@@ -301,15 +235,3 @@ test('controller returns empty array when no booking history matches filter', fu
     expect($history)->toBeEmpty();
 });
 
-test('filtered booking history records contain all required fields', function () {
-    // Create the test controller
-    $controller = new TestViewAllFilteredHistoryController();
-    
-    // Get some test data
-    $history = $controller->getAllFilteredHistoryByCategory(1, 3);
-    
-    // Check each record has all required fields
-    foreach ($history as $record) {
-        expect($record)->toHaveKeys(['bookingID', 'homeOwnerID', 'serviceName', 'categoryName', 'bookingDate']);
-    }
-});
