@@ -115,16 +115,14 @@ if (!isset($_SESSION["username"])) {
             <div class="header">Cleaner Homepage</div>
             <div class="welcome">Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</div>
             <div class="button-container">
-                <a href="viewOwnServicePage.php" class="nav-button">View And Manage All Services</a>
-            </div>
-
-            <div class="button-container">
+                <a href="viewOwnServicePage.php" class="nav-button">View And Manage My Own Services</a>
                 <a href="searchHistoryPage.php" class="nav-button">Search History</a>
-            </div>
-
-            <div class="button-container">
                 <a href="viewOwnFilteredServicesPage.php" class="nav-button">View Filter by Service Type</a>
             </div>
+
+ 
+
+
         <?php endif; ?>
 
         <?php if ($_SESSION["userProfileID"] == 3): ?>
