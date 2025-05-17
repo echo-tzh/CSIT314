@@ -12,7 +12,7 @@ echo "<!DOCTYPE html>
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Weekly Service Report</title>
+    <title>Weekly Booking Service Report</title>
     <style>
         body {
             font-family: sans-serif;
@@ -128,7 +128,7 @@ echo "<!DOCTYPE html>
 </head>
 <body>
     <div class='container'>
-        <h2>Weekly Service Report</h2>";
+        <h2>Weekly Booking Report</h2>";
 
 echo "<table class='data-table'>";
 echo "<thead><tr><th>Week</th><th>Total Services</th></tr></thead>";
