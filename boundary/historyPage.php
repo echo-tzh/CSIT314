@@ -7,7 +7,10 @@ if (!isset($_SESSION['userProfileID']) || $_SESSION['userProfileID'] != 3) {
     exit();
 }
 
-
+if (!isset($_SESSION["username"])) {
+    header("Location: loginPage.php");
+    exit();
+}
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

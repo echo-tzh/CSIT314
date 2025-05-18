@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 3) {
-    header("Location: logiPage.php");
+    header("Location: loginPage.php");
     exit();
 }
 

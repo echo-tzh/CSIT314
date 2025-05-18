@@ -2,8 +2,8 @@
 require_once '../controller/searchConfirmedController.php';
 session_start();
 
-if (!isset($_SESSION['userProfileID']) || $_SESSION['userProfileID'] != 2) {
-    echo "<p style='color: red; font-weight: bold;'>No access rights.</p>";
+if (!isset($_SESSION["username"])) {
+    header("Location: loginPage.php");
     exit();
 }
 

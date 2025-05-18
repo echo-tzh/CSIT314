@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 2) {
-    header("Location: login.php"); 
+    header("Location: loginPage.php"); 
     exit();
 }
 

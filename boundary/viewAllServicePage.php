@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in and has the right permissions. Assuming userProfileID 3 is for admins.
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 3) {
-    header("Location: login.php"); // Redirect to login page if not logged in or not an admin
+    header("Location: loginPage.php"); // Redirect to login page if not logged in or not an admin
     exit();
 }
 

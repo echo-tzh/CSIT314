@@ -3,7 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once '../controller/getWeeklyReportController.php';
-
+session_start();
+// Check if user is logged in and has the right permissions
+if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
+    header("Location: loginPage.php");
+    exit();
+}
 $controller = new getWeeklyReportController();
 $report = $controller->getWeeklyReport();
 

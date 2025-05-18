@@ -7,6 +7,10 @@ require_once '../controller/viewAllFilteredHistoryController.php';
 require_once '../entity/bookingHistory.php';
 require_once '../entity/cleaningCategory.php';
 
+if (!isset($_SESSION["username"])) {
+    header("Location: loginPage.php");
+    exit();
+}
 
 
 $catEntity = new cleaningCategory();

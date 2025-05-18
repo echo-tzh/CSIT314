@@ -2,7 +2,7 @@
 session_start();
 // Check if user is logged in and has the right permissions
 if (!isset($_SESSION['userAccountID']) || $_SESSION['userProfileID'] != 4) {
-    header("Location: login.php");
+    header("Location: loginPage.php");
     exit();
 }
 
