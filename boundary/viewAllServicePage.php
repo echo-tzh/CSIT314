@@ -39,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
         $result = $saveFavoriteController->saveFavorite($homeOwnerID, $favoriteServiceId);
 
         if ($result) {
-            $_SESSION['status'] = 'Service added to favorites!'; // Use session for message
+            $_SESSION['status'] = 'Service shortlisted successfully!!'; // Use session for message
         } else {
-            $_SESSION['status'] = 'Error: Service already in favorites or an error occurred.';
+            $_SESSION['status'] = 'Error: Service already shortlisted or an error occurred.';
         }
         header("Location: viewAllServicePage.php"); // Redirect to refresh and show message
         exit();
@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
             </form>
         </div>
 
-        <a href="viewShortlistedPage.php" class="btn btn-primary">View and Search My Favorites</a>
+        <a href="viewShortlistedPage.php" class="btn btn-primary">View and Search My Shortlisted</a>
 
         <table class="data-table">
             <thead>
@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
                 <th>Price</th>
                 <th>Service Date</th>
                 <th>View</th>
-                <th>Favorites</th>
+                <th>Shortlist</th>
             </tr>
             </thead>
             <tbody>
@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
                             <form method="post">
                                 <input type="hidden" name="favorite_service_id"
                                        value="<?php echo htmlspecialchars($service['serviceID']); ?>"/>
-                                <button type="submit" class="btn btn-primary btn-favorite">Favorite</button>
+                                <button type="submit" class="btn btn-primary btn-favorite">Shortlist</button>
                             </form>
                         </td>
                     </tr>

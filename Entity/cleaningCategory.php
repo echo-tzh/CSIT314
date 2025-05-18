@@ -96,7 +96,7 @@ class cleaningCategory {
 
     public function deleteCleaningCategory(int $categoryID):bool {
         $conn = $this->conn;
-        // Update the isDeleted flag instead of performing a physical delete
+        // soft delete
         $stmt = $conn->prepare("UPDATE cleaningCategory SET isDeleted = 1 WHERE categoryID = ?");
         if ($stmt) {
             $stmt->bind_param("i", $categoryID);

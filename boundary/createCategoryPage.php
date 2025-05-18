@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
     } else {
         $_SESSION['message'] = [
-            'text' => "Error creating category!",
+            'text' => "Error creating category, Category Exists!",
             'type' => 'error'
         ];
     }

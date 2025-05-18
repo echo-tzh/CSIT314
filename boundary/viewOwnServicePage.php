@@ -26,12 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_serviceID'])) 
 
     if ($success) {
         $_SESSION['message'] = [
-            'type' => 'success',
+            
             'text' => 'Service deleted successfully.'
         ];
     } else {
         $_SESSION['message'] = [
-            'type' => 'error',
             'text' => 'Failed to delete service.'
         ];
     }
@@ -66,10 +65,11 @@ if (!empty($searchTerm)) {
 
     <h1 class="text-2xl font-semibold text-center mb-6">Service Management</h1>
 
-    <?php if (isset($_SESSION["status"])): ?>
+    <?php if (isset($_SESSION["message"])): ?>
     <div class="bg-green-200 border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         <strong class="font-bold">Success!</strong>
-        <span class="block sm:inline"><?php echo $_SESSION["status"]; ?></span>
+        <span class="block sm:inline"><?php echo $_SESSION["message"]["text"];
+ ?></span>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
             <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20">
@@ -79,7 +79,7 @@ if (!empty($searchTerm)) {
             </svg>
         </span>
     </div>
-    <?php unset($_SESSION["status"]); ?>
+    <?php unset($_SESSION["message"]); ?>
     <?php endif; ?>
 
     <div class="flex justify-center items-center mb-4">
