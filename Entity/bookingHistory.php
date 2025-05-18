@@ -3,6 +3,8 @@
 class bookingHistory {
     private $conn;
 
+    
+
     public function __construct() {
         // You can either connect here directly or include a separate db class
         include '../inc_dbconnect.php'; // Sets up $conn

@@ -3,9 +3,10 @@
 class UserProfile {
     private $conn;
 
+
     public function __construct() {
         // Include and establish the database connection here
-        include '../inc_dbconnect.php';  // **Critical:** Ensure this sets up `$conn` correctly
+        include '../inc_dbconnect.php';  
         $this->conn = $conn;
 
         if ($this->conn->connect_error) {
@@ -141,7 +142,7 @@ class UserProfile {
             return false;
         }
 
-        // Suspend related user accounts (within UserProfile class - BAD!)
+
         $sqlAccount = "UPDATE userAccount SET status = 0 WHERE userProfileID = ?";
         $stmtAccount = $this->conn->prepare($sqlAccount);
 
@@ -157,7 +158,7 @@ class UserProfile {
 
 
     public function searchUserProfile(string $searchTerm): array {
-        $searchTerm = "%" . $this->conn->real_escape_string($searchTerm) . "%";  //  For security and correct SQL
+        $searchTerm = "%" . $this->conn->real_escape_string($searchTerm) . "%";  
     
         $sql = "SELECT userProfileID, userProfileName, description FROM userProfile WHERE userProfileName LIKE ? OR description LIKE ?";  // Modified SQL
         $stmt = $this->conn->prepare($sql);
@@ -167,7 +168,7 @@ class UserProfile {
             return [];
         }
     
-        $stmt->bind_param("ss", $searchTerm, $searchTerm);  // Bind the parameter twice
+        $stmt->bind_param("ss", $searchTerm, $searchTerm);  
         $stmt->execute();
         $result = $stmt->get_result();
     
