@@ -1,9 +1,9 @@
 <?php
-require_once '../entity/service.php';
+require_once '../entity/bookingHistory.php';
 
 class getMonthlyReportController {
     public function getMonthlyReport(): array {
-        $service = new Service();
-        return $service->getMonthlyReport();
+        $bookingHistory = new bookingHistory();
+        return $bookingHistory->getMonthlyReport();
     }
 }
