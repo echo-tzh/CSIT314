@@ -141,7 +141,7 @@ echo "<tbody>";
 
 foreach ($report as $row) {
     echo "<tr>";
-    echo "<td>" . htmlspecialchars($row['serviceDate']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['bookingDate']) . "</td>";
     echo "<td>" . htmlspecialchars($row['totalBookings']) . "</td>";
     echo "</tr>";
 }

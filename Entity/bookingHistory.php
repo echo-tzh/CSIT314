@@ -132,19 +132,13 @@ class bookingHistory {
         return $results;
     }
 
-        public function getDailyReport(): array {
+    public function getDailyReport(): array {
         $report = [];
-        $sql = "SELECT DATE(s.serviceDate) AS serviceDate,
-       COUNT(*) AS totalBookings
-FROM service s
-GROUP BY DATE(s.serviceDate)
-ORDER BY s.serviceDate DESC;
-
-";
-
-
-
-
+        $sql = "SELECT DATE(bookingDate) AS bookingDate,
+                   COUNT(*) AS totalBookings
+            FROM bookingHistory
+            GROUP BY DATE(bookingDate)
+            ORDER BY bookingDate DESC";
 
         $result = $this->conn->query($sql);
 
@@ -157,19 +151,40 @@ ORDER BY s.serviceDate DESC;
         return $report;
     }
 
-        public function getWeeklyReport(): array {
+
+    public function getWeeklyReport(): array {
+        $report = [];
+
+        $sql = "SELECT 
+                YEAR(b.bookingDate) AS year,
+                MONTH(b.bookingDate) AS month,
+                WEEK(b.bookingDate, 1) AS week,
+                COUNT(*) AS totalBookings
+            FROM bookingHistory b
+            GROUP BY year, month, week
+            ORDER BY year DESC, month DESC, week DESC";
+
+        $result = $this->conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $report[] = $row;
+            }
+        }
+
+        return $report;
+    }
+
+
+
+public function getMonthlyReport(): array {
     $report = [];
 
-    $sql = "SELECT 
-    YEAR(s.serviceDate) AS year, 
-    WEEK(s.serviceDate) AS week,
-    COUNT(*) AS totalServices
-FROM service s
-GROUP BY year, week
-ORDER BY year DESC, week DESC";
-
-
-
+    $sql = "SELECT DATE_FORMAT(b.bookingDate, '%M %Y') AS month,
+                   COUNT(*) AS totalBookings
+            FROM bookingHistory b
+            GROUP BY YEAR(b.bookingDate), MONTH(b.bookingDate)
+            ORDER BY YEAR(b.bookingDate) DESC, MONTH(b.bookingDate) DESC;";
 
     $result = $this->conn->query($sql);
 
@@ -182,28 +197,6 @@ ORDER BY year DESC, week DESC";
     return $report;
 }
 
-    public function getMonthlyReport(): array {
-    $report = [];
-
-    $sql = "SELECT DATE_FORMAT(s.serviceDate, '%M %Y') AS month,  -- '%M' gives the full month name, '%Y' gives the year
-       COUNT(*) AS totalBookings
-FROM service s
-GROUP BY YEAR(s.serviceDate), MONTH(s.serviceDate)  -- Group by year and month separately
-ORDER BY YEAR(s.serviceDate) DESC, MONTH(s.serviceDate) DESC;";
-
-
-
-
-    $result = $this->conn->query($sql);
-
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $report[] = $row;
-        }
-    }
-
-    return $report;
-}
     
     
 

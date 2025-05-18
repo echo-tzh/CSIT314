@@ -136,15 +136,14 @@ echo "<!DOCTYPE html>
         <h2>Weekly Booking Report</h2>";
 
 echo "<table class='data-table'>";
-echo "<thead><tr><th>Week</th><th>Total Services</th></tr></thead>";
+echo "<thead><tr><th>Week</th><th>Total Bookings</th></tr></thead>";
 echo "<tbody>";
 
 foreach ($report as $row) {
-
     $weekYear = "Week " . htmlspecialchars($row['week']) . ", " . htmlspecialchars($row['year']);
     echo "<tr>";
     echo "<td>" . $weekYear . "</td>";
-    echo "<td>" . htmlspecialchars($row['totalServices']) . "</td>";
+    echo "<td>" . htmlspecialchars($row['totalBookings']) . "</td>";
     echo "</tr>";
 }
 
