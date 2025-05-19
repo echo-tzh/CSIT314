@@ -82,8 +82,8 @@ public function getShortlistedServices(int $homeOwnerID): array {
     $query = "SELECT s.* 
               FROM shortlist sl
               JOIN service s ON sl.serviceID = s.serviceID
-              WHERE sl.homeOwnerID = ?";
-              
+              WHERE sl.homeOwnerID = ?
+              AND s.isDeleted = 0"; 
     $stmt = $this->conn->prepare($query);
 
     if (!$stmt) {
