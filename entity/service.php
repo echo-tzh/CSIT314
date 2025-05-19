@@ -122,29 +122,30 @@ class service {
 
 
     //this is for homeowner to search
-    public function searchService(string $searchTerm): array {
-        $services = [];
-        $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
+   public function searchService(string $searchTerm): array {
+    $services = [];
+    $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
 
-        $stmt = $this->conn->prepare("
-            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
-            FROM service
-            WHERE serviceName LIKE ? OR description LIKE ?
-            ORDER BY serviceID
-        ");
-        $stmt->bind_param("ss", $searchTerm, $searchTerm);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $stmt = $this->conn->prepare("
+        SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
+        FROM service
+        WHERE isDeleted = 0 AND (serviceName LIKE ? OR description LIKE ?)
+        ORDER BY serviceID
+    ");
+    
+    $stmt->bind_param("ss", $searchTerm, $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $services[] = $row;
-            }
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $services[] = $row;
         }
-
-        $stmt->close();
-        return $services;
     }
+
+    $stmt->close();
+    return $services;
+}
 
 
     // this is for cleaner to search 
