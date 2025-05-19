@@ -7,7 +7,7 @@ if (!isset($_SESSION["username"])) {
 
 require_once '../controller/viewUserProfileController.php';
 
-$controller = new ViewUserProfileController();
+$controller = new viewUserProfileController();
 
 // Get the userProfileID from the URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {

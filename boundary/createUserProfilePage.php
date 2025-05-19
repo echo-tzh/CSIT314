@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userProfileName = filter_input(INPUT_POST, 'userProfileName', FILTER_SANITIZE_STRING);
     $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
 
-    $controller = new CreateUserProfileController();
+    $controller = new createUserProfileController();
     $result = $controller->createUserProfile($userProfileName, $description);
 
     if ($result) {

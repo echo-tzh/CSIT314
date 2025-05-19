@@ -7,7 +7,7 @@ class SearchUserProfileController {
     public function searchUserProfile(string $searchTerm): array {
        
 
-        $userProfile = new UserProfile(); // Instantiate UserProfile within the method
+        $userProfile = new userProfile(); // Instantiate UserProfile within the method
 
         return $userProfile->searchUserProfile($searchTerm);
     }

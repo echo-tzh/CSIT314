@@ -21,8 +21,8 @@ if (isset($_SESSION["status"])): ?>
 include_once '../entity/userProfile.php';
 include_once '../controller/searchUserProfileController.php';
 
-$userProfile = new UserProfile();
-$searchController = new SearchUserProfileController();
+$userProfile = new userProfile();
+$searchController = new searchUserProfileController();
 
 // Get the search term
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -39,7 +39,7 @@ include_once '../controller/suspendUserProfileController.php';
 
 // Handle the form submission for suspending
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
-    $controller = new SuspendUserProfileController();
+    $controller = new suspendUserProfileController();
     $result = $controller->suspendUserProfile($_POST["id"]);
 
     $message = $result ? "User profile suspended." : "Suspension failed.";

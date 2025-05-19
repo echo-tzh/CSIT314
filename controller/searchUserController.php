@@ -4,9 +4,9 @@
 include_once '../entity/userAccount.php';
 require_once '../entity/userProfile.php';
 
-class SearchUserController {
+class searchUserController {
     public function searchUserAccount(string $searchTerm):array {
-        $userAccount = new UserAccount();
+        $userAccount = new userAccount();
         return $userAccount->searchUserAccount($searchTerm);
     }
 }

@@ -22,7 +22,7 @@ $userID = $_POST['id'];
 include_once '../controller/viewAccountController.php';
 
 // Create the controller and get the user data
-$controller = new ViewAccountController();
+$controller = new viewAccountController();
 $userAccount = $controller->viewAccount($userID);
 
 // Check if user data was retrieved successfully

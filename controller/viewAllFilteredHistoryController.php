@@ -2,7 +2,7 @@
 require_once '../entity/bookingHistory.php';
 require_once '../entity/cleaningCategory.php';
 
-class ViewAllFilteredHistoryController {
+class viewAllFilteredHistoryController {
 
 
 

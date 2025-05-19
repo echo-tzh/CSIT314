@@ -8,8 +8,8 @@ if (!isset($_SESSION["username"])) {
 require_once '../controller/updateUserProfileController.php';
 require_once '../controller/viewUserProfileController.php';
 
-$updateController = new UpdateUserProfileController();
-$viewController = new ViewUserProfileController();
+$updateController = new updateUserProfileController();
+$viewController = new viewUserProfileController();
 
 // Get the userProfileID from the URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {

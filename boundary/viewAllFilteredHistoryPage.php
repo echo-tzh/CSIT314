@@ -17,7 +17,7 @@ $catEntity = new cleaningCategory();
 $categories = $catEntity->viewAllCleaningCategory();
 
 
-$controller = new ViewAllFilteredHistoryController();
+$controller = new viewAllFilteredHistoryController();
 
 $filteredBookings = [];
 

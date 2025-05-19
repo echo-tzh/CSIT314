@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../inc_dbconnect.php';
 
-class Service {
+class service {
     private $conn;
 
     public function __construct() {
@@ -152,11 +152,14 @@ class Service {
         $services = [];
         $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
         $stmt = $this->conn->prepare("
-            SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
-            FROM service
-            WHERE (serviceName LIKE ? OR description LIKE ?) AND cleanerID = ?
-            ORDER BY serviceID
+        SELECT serviceID, serviceName, description, price, serviceDate, cleanerID, categoryID
+        FROM service
+        WHERE (serviceName LIKE ? OR description LIKE ?)
+        AND cleanerID = ?
+        AND isDeleted = 0
+        ORDER BY serviceID
         ");
+
         $stmt->bind_param("ssi", $searchTerm, $searchTerm, $userAccountID);
         $stmt->execute();
         $result = $stmt->get_result();

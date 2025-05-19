@@ -2,10 +2,10 @@
 // saveFavoriteController.php
 require_once __DIR__ . '/../entity/shortlist.php';
 
-class SaveFavoriteController {
+class saveFavoriteController {
 
     public function saveFavorite(int $homeOwnerID, int $serviceID): bool {
-        $shortlist = new Shortlist();
+        $shortlist = new shortlist();
         return $shortlist->saveFavorite($homeOwnerID, $serviceID);
     }
 }

@@ -1,15 +1,21 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include '../controller/createAccountController.php';
+include '../entity/userProfile.php';  // Include the entity
 include '../inc_dbconnect.php';
-
 
 session_start();
 if (!isset($_SESSION["username"])) {
     header("Location: loginPage.php");
     exit();
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
+
+
+// Instantiate user profile entity and get all user profiles
+$userProfileEntity = new userProfile();
+$userProfiles = $userProfileEntity->getActiveUserProfiles();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -64,14 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="userProfileID">User Profile:</label>
                 <select id="userProfileID" name="userProfileID" required>
                     <?php
-                    // Get all user profiles from database
-                    $sql = "SELECT userProfileID, userProfileName FROM userProfile";
-                    $result = $conn->query($sql);
-                    
-                    if ($result && $result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            echo "<option value='" . $row['userProfileID'] . "'>" . $row['userProfileName'] . "</option>";
+                    if (!empty($userProfiles)) {
+                        foreach ($userProfiles as $profile) {
+                            echo "<option value='" . $profile['userProfileID'] . "'>" . htmlspecialchars($profile['userProfileName']) . "</option>";
                         }
+                    } else {
+                        echo "<option disabled>No profiles available</option>";
                     }
                     ?>
                 </select>
@@ -81,14 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="submit" class="btn" value="Create Account">
             </div>
 
-
             <a href="viewAlluserAccountPage.php" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Back to User Account Management</a>
-
-
-
-
-
-
         </form>
     </div>
 </body>

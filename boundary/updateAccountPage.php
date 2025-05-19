@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
     $userProfileID = $_POST['userProfileID'];
     
     // Create controller and update account
-    $controller = new UpdateAccountController();
+    $controller = new updateAccountController();
     $result = $controller->updateAccount($userID, $username, $name, $userProfileID);
     
     if ($result) {
@@ -40,7 +40,7 @@ else if (isset($_POST['id']) && is_numeric($_POST['id'])) {
     include_once '../controller/viewAccountController.php';
     
     // Get user data to populate the form
-    $controller = new ViewAccountController();
+    $controller = new viewAccountController();
     $userAccount = $controller->viewAccount($userID);
     
     if (!$userAccount) {
@@ -59,8 +59,8 @@ else if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 include_once '../inc_dbconnect.php';
 
 include_once '../entity/userProfile.php';
-$userProfile = new UserProfile(); 
-$userProfiles = $userProfile->getAllUserProfiles();
+$userProfile = new userProfile(); 
+$userProfiles = $userProfile->getActiveUserProfiles();
 ?>
 
 <!DOCTYPE html>

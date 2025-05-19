@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cleanerID = trim($_POST['cleanerID']); // Added cleanerID
     $categoryID = trim($_POST['categoryID']); // Added categoryID
     
-    $controller = new CreateServiceController();
+    $controller = new createServiceController();
     $result = $controller->createService($serviceName, $description, $price, $serviceDate, $cleanerID, $categoryID); // Pass new parameters
     
     unset($_SESSION['message']);

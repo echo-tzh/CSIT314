@@ -1,9 +1,9 @@
 <?php
 include '../entity/cleaningCategory.php';
 
-class CreateCategoryController {
+class createCategoryController {
     public function createCategory(String $categoryName, String $description):bool {
-        $cleaningCategory = new CleaningCategory();
+        $cleaningCategory = new cleaningCategory();
         $result = $cleaningCategory->createCategory($categoryName, $description);
         return $result;
     }

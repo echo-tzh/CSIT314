@@ -2,9 +2,9 @@
 // viewShortlistedController.php
 include_once '../entity/shortlist.php';
 
-class ViewShortlistedController {
+class viewShortlistedController {
     public function getShortlistedServices(int $homeOwnerID): array {
-        $shortlist = new Shortlist();
+        $shortlist = new shortlist();
         return $shortlist->getShortlistedServices($homeOwnerID);
     }
 }

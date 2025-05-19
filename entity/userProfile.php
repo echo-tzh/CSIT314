@@ -1,6 +1,6 @@
 <?php
 
-class UserProfile {
+class userProfile {
     private $conn;
 
 
@@ -58,6 +58,22 @@ class UserProfile {
 
         return $userProfiles;
     }
+
+        public function getActiveUserProfiles(): array {
+        $userProfiles = [];
+        $query = "SELECT userProfileID, userProfileName, description, status FROM userProfile WHERE status = 1";
+        $result = $this->conn->query($query);  // Consider prepared statement
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $userProfiles[] = $row;
+            }
+        }
+
+        return $userProfiles;
+    }
+
+
 
    public function createUserProfile(string $userProfileName, string $description): bool {
     $userProfileName = trim($userProfileName);

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = trim($_POST['description']);
 ;
     
-    $controller = new CreateCategoryController();
+    $controller = new createCategoryController();
     $result = $controller->createCategory($categoryName, $description);
     
     if ($result) {

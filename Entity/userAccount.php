@@ -1,7 +1,7 @@
 <?php
 include_once '../inc_dbconnect.php';
 
-class UserAccount {
+class userAccount {
     private $conn;
 
     public function __construct() {

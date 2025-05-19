@@ -5,7 +5,7 @@ class viewServiceController {
 
     public function viewService(int $serviceID):array {
         // Create entity object
-        $serviceEntity = new Service();
+        $serviceEntity = new service();
 
         // Call entity method to get specific service
         $serviceDetails = $serviceEntity->viewService($serviceID);

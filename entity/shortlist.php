@@ -2,7 +2,7 @@
 
 
 require_once __DIR__ . '/../inc_dbconnect.php';
-class Shortlist {
+class shortlist {
     private $conn;
     public function __construct() {
    

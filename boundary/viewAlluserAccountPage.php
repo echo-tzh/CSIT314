@@ -15,7 +15,7 @@ include_once '../controller/searchUserController.php';
 $searchTerm = '';
 $userAccounts = [];
 
-$controller = new SearchUserController();
+$controller = new searchUserController();
 
 if (isset($_POST['search_submit'])) {
     $searchTerm = isset($_POST['search']) ? $_POST['search'] : '';
@@ -42,7 +42,7 @@ include_once '../controller/suspendAccountController.php';
 
 // Handle the form submission for suspending
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"])) {
-    $suspendController = new SuspendAccountController();
+    $suspendController = new suspendAccountController();
     $result = $suspendController->suspendAccount($_POST["id"]);
 
     $message = $result ? "User account suspended." : "Suspension failed.";

@@ -4,7 +4,7 @@ include '../entity/UserAccount.php';
 
 class loginController {
     public function login(string $username, string $password):array|bool {
-        $userAccount = new UserAccount();
+        $userAccount = new userAccount();
         return $userAccount->login($username, $password);
     }
 }

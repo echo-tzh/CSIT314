@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['favorite_service_id']
 
     // Validate (VERY IMPORTANT!)
     if ($homeOwnerID !== null && $favoriteServiceId !== null) {
-        $saveFavoriteController = new SaveFavoriteController();
+        $saveFavoriteController = new saveFavoriteController();
         $result = $saveFavoriteController->saveFavorite($homeOwnerID, $favoriteServiceId);
 
         if ($result) {
